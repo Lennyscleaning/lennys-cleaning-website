@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility Classes */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.btn-primary {
+  @apply bg-forest-green hover:bg-forest-green/90 text-warm-white font-bold py-3 px-6 rounded-lg transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-3 px-6 rounded-lg transition-colors;
+}
+
+.section-heading {
+  @apply text-3xl md:text-4xl font-bold text-forest-green mb-4;
+}
+
+.gradient-green {
+  @apply bg-gradient-to-r from-forest-green to-forest-green/80;
+}
