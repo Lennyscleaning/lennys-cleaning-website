@@ -41,7 +41,7 @@ export default function PricingPage() {
           <div className="bg-warm-white border-2 border-forest-green rounded-lg p-8 hover:shadow-lg transition-shadow">
             <h3 className="text-2xl font-bold text-forest-green mb-4">Recurring Service</h3>
             <p className="text-charcoal/70 mb-6">Monthly maintenance plans</p>
-            <p className="text-3xl font-bold text-terracotta mb-6">Starting at<br />${150/mo</p>
+            <p className="text-3xl font-bold text-terracotta mb-6">Starting at<br />${150}/mo</p>
             <button className="w-full bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-2 px-4 rounded-lg transition-colors">
               Get Quote
             </button>

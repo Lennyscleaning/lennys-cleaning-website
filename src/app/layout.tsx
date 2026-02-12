@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/ui/Header';
@@ -6,11 +6,15 @@ import Footer from '@/components/ui/Footer';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1
+};
+
 export const metadata: Metadata = {
   title: "Lenny's Cleaning | Professional Residential Cleaning in Tacoma, WA",
   description: 'Expert residential cleaning services in Tacoma, Washington. Deep cleaning, move-out cleaning, and recurring maintenance plans.',
   keywords: 'cleaning services, Tacoma, residential cleaning, house cleaning, deep cleaning',
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
     type: 'website',

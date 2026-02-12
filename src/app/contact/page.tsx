@@ -16,7 +16,7 @@ export default function ContactPage() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-5xl font-bold text-forest-green mb-6">Contact Us</h1>
         <p className="text-xl text-charcoal/80 mb-12">
-          Have questions? We'd love to hear from you. Get in touch with us today.
+          Have questions? We&apos;d love to hear from you. Get in touch with us today.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -26,7 +26,7 @@ export default function ContactPage() {
             
             <div className="space-y-6">
               <div>
-                <h3 className="font-bold text-charcoal mb-2">📞 Phone</h3>
+                <h3 className="font-bold text-charcoal mb-2">Phone</h3>
                 <a
                   href="tel:+12531234567"
                   className="text-terracotta hover:text-terracotta/80 text-lg"
@@ -36,7 +36,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-charcoal mb-2">📧 Email</h3>
+                <h3 className="font-bold text-charcoal mb-2">Email</h3>
                 <a
                   href={`mailto:${COMPANY_INFO.contactEmail}`}
                   className="text-terracotta hover:text-terracotta/80 text-lg"
@@ -46,7 +46,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-charcoal mb-2">📍 Service Area</h3>
+                <h3 className="font-bold text-charcoal mb-2">Service Area</h3>
                 <p className="text-charcoal/80">
                   {COMPANY_INFO.location} and surrounding areas
                 </p>
@@ -54,11 +54,11 @@ export default function ContactPage() {
 
               <div>
                 <h3 className="font-bold text-charcoal mb-4">Hours</h3>
-                <p className="text-charcoal/80 text-sm space-y-1">
-                  <div>Monday - Friday: 8am - 6pm</div>
-                  <div>Saturday: 9am - 4pm</div>
-                  <div>Sunday: Closed</div>
-                </p>
+                <div className="text-charcoal/80 text-sm space-y-1">
+                  <span className="block">Monday - Friday: 8am - 6pm</span>
+                  <span className="block">Saturday: 9am - 4pm</span>
+                  <span className="block">Sunday: Closed</span>
+                </div>
               </div>
             </div>
           </div>
