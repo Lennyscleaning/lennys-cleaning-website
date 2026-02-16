@@ -393,9 +393,17 @@ export default function HomePage() {
             <div className="lg:col-span-3">
               <Reveal>
                 <span className="overline block mb-3">Why Lenny&apos;s</span>
-                <h2 className="font-display font-medium text-3xl md:text-[2.75rem] leading-[1.15] tracking-[-0.01em] mb-6">
+                <h2 className="font-display font-medium text-3xl md:text-[2.75rem] leading-[1.15] tracking-[-0.01em] mb-8">
                   Better for homeowners. Better for cleaners. Here&apos;s how.
                 </h2>
+              </Reveal>
+              <Reveal delay={100}>
+                <p className="font-display font-medium text-3xl md:text-5xl leading-[1.15] tracking-[-0.01em] text-charcoal-light">
+                  Lower prices for you. Higher pay for them.
+                </p>
+                <p className="font-display font-semibold text-3xl md:text-5xl leading-[1.15] tracking-[-0.01em] mt-3">
+                  = Better cleaners. Happier customers.
+                </p>
               </Reveal>
             </div>
 
