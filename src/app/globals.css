@@ -72,55 +72,97 @@
 }
 
 @layer components {
+  /* Primary button — terracotta CTA */
   .btn-primary {
-    @apply inline-block px-6 py-3 bg-terra text-warm-white rounded-sm font-body font-semibold text-base tracking-wide transition-all duration-200 ease-out;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--terra);
+    color: var(--warm-white);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
     letter-spacing: 0.03em;
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .btn-primary:hover {
-    @apply bg-terra-hover shadow-hover;
+    background-color: var(--terra-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
   }
 
   .btn-primary:active {
-    @apply bg-terra-dark;
+    background-color: var(--terra-dark);
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
   }
 
   .btn-primary:focus {
-    @apply outline-none ring-2 ring-terra ring-offset-2;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--terra);
   }
 
+  /* Secondary button — forest green */
   .btn-secondary {
-    @apply inline-block px-6 py-3 bg-forest text-warm-white rounded-sm font-body font-semibold text-base tracking-wide transition-all duration-200 ease-out;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--forest);
+    color: var(--warm-white);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
     letter-spacing: 0.03em;
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .btn-secondary:hover {
-    @apply bg-forest-light shadow-hover;
+    background-color: var(--forest-light);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
   }
 
   .btn-secondary:active {
-    @apply bg-forest-dark;
+    background-color: var(--forest-dark);
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
   }
 
   .btn-secondary:focus {
-    @apply outline-none ring-2 ring-forest ring-offset-2;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--forest);
   }
 
+  /* Outline button — forest green border */
   .btn-outline {
-    @apply inline-block px-6 py-3 bg-transparent border-2 border-forest text-forest rounded-sm font-body font-semibold text-base tracking-wide transition-all duration-200 ease-out;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: transparent;
+    border: 2px solid var(--forest);
+    color: var(--forest);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
     letter-spacing: 0.03em;
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .btn-outline:hover {
-    @apply bg-forest bg-opacity-5 shadow-md;
+    background-color: rgba(45, 90, 61, 0.05);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
 
   .btn-outline:active {
-    @apply bg-forest bg-opacity-10;
+    background-color: rgba(45, 90, 61, 0.1);
+    transform: translateY(0) scale(0.98);
   }
 
   .btn-outline:focus {
-    @apply outline-none ring-2 ring-forest ring-offset-2;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--forest);
   }
 
   .reveal {
