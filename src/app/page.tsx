@@ -191,9 +191,8 @@ export default function HomePage() {
               className="hero-animate font-body text-base md:text-lg leading-relaxed text-warm-white/90 max-w-[480px] mb-8"
               style={{ animationDelay: '500ms' }}
             >
-              Lenny&apos;s matches you with background-checked cleaning
-              professionals who take pride in their work. Flat-rate pricing, no
-              surprises, and a satisfaction guarantee on every visit.
+              Lenny&apos;s matches you with vetted, local cleaning
+              professionals — at a flat rate, with no surprises.
             </p>
 
             {/* CTAs */}
@@ -212,17 +211,6 @@ export default function HomePage() {
                 <span aria-hidden="true"> →</span>
               </Link>
             </div>
-
-            {/* Social proof line */}
-            <p
-              className="hero-animate flex items-center gap-2 text-sm text-warm-white/80"
-              style={{ animationDelay: '800ms' }}
-            >
-              <span className="text-terra" aria-label="5 stars">
-                ★★★★★
-              </span>
-              Trusted by South Sound homeowners
-            </p>
           </div>
         </div>
       </section>
