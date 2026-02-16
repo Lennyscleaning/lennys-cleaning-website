@@ -87,16 +87,19 @@ const services = [
 
 const valueCards = [
   {
+    category: 'THE PROBLEM',
     label: 'The old model is broken',
     description:
       'Traditional cleaning companies charge premium prices, then pay their workers $16–24 an hour. The difference? Layers of overhead — dispatchers, office managers, call centers, and margins that benefit the company, not you or the person cleaning your home.',
   },
   {
+    category: 'OUR APPROACH',
     label: 'Technology replaces overhead, not people',
     description:
       "Lenny's is built on automation and AI — from booking to dispatch to quality assurance. By eliminating the back-office bloat that drives up costs, we pass the savings in both directions: lower prices for you, higher pay for our professionals.",
   },
   {
+    category: 'THE RESULT',
     label: 'You pay less. They earn $28–48/hr. Everyone wins.',
     description:
       "Our cleaning professionals earn 2–3x the industry average — which means less turnover, more experience, and someone who actually takes pride in the work. And you get a better clean at a better price. That's not a trade-off. That's better engineering.",
@@ -386,42 +389,55 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════
           Section 6 — The Lenny's Difference
           ═══════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-warm-white">
-        <div className="mx-auto max-w-[1200px] px-5 xl:px-0">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
-            {/* Left — headline + body (3 cols) */}
-            <div className="lg:col-span-3">
-              <Reveal>
-                <span className="overline block mb-3">Why Lenny&apos;s</span>
-                <h2 className="font-display font-medium text-3xl md:text-[2.75rem] leading-[1.15] tracking-[-0.01em] mb-8">
-                  Better for homeowners. Better for cleaners. Here&apos;s how.
-                </h2>
-              </Reveal>
-              <Reveal delay={100}>
-                <p className="font-display font-medium text-3xl md:text-5xl leading-[1.15] tracking-[-0.01em] text-charcoal-light">
-                  Lower prices for you. Higher pay for them.
+      <section className="grid md:grid-cols-2">
+        {/* Left — Forest green statement */}
+        <div className="relative bg-forest overflow-hidden">
+          {/* Grain texture */}
+          <div
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+            }}
+          />
+          <div className="relative z-10 flex flex-col justify-center px-10 md:px-[60px] py-16 md:py-[80px] h-full">
+            <Reveal>
+              <span className="font-body font-semibold text-[0.6875rem] uppercase tracking-[0.1em] text-warm-white/50 block mb-6">
+                Why Lenny&apos;s
+              </span>
+              <p className="font-display font-normal text-[2.6rem] leading-[1.15] tracking-[-0.01em] text-warm-white">
+                Lower prices <em>for you.</em>
+                <br />
+                Higher pay <em>for them.</em>
+              </p>
+              <div className="border-t border-warm-white/15 mt-6 pt-6">
+                <p className="font-display font-medium text-[1.8rem] leading-[1.15] tracking-[-0.01em] text-terra">
+                  = Better cleaners.
+                  <br />
+                  Happier customers.
                 </p>
-                <p className="font-display font-semibold text-3xl md:text-5xl leading-[1.15] tracking-[-0.01em] mt-3">
-                  = Better cleaners. Happier customers.
-                </p>
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
 
-            {/* Right — value cards (2 cols) */}
-            <div className="lg:col-span-2 flex flex-col gap-5">
-              {valueCards.map((card, i) => (
-                <Reveal key={card.label} delay={i * 100}>
-                  <div className="bg-cream rounded-md p-6 shadow-sm hover:shadow-md transition-shadow duration-250">
-                    <h3 className="font-display font-medium text-lg md:text-xl mb-2">
-                      {card.label}
-                    </h3>
-                    <p className="text-charcoal-light leading-relaxed text-[0.9375rem]">
-                      {card.description}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+        {/* Right — Value cards */}
+        <div className="bg-warm-white flex flex-col justify-center px-10 md:px-[60px] py-16 md:py-[80px]">
+          <div className="flex flex-col">
+            {valueCards.map((card, i) => (
+              <Reveal key={card.label} delay={i * 100}>
+                <div className={`py-6 ${i < valueCards.length - 1 ? 'border-b border-cream-dark' : ''}`}>
+                  <span className="font-body font-semibold text-[0.6875rem] uppercase tracking-[0.1em] text-terra block mb-2">
+                    {card.category}
+                  </span>
+                  <h3 className="font-display font-medium text-[1.2rem] leading-tight mb-2">
+                    {card.label}
+                  </h3>
+                  <p className="font-body text-[0.88rem] text-charcoal-light leading-[1.65]">
+                    {card.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
