@@ -1,45 +1,64 @@
+'use client';
+
 import Link from 'next/link';
-import { NAVIGATION } from '@/lib/constants';
+import { useState } from 'react';
 
 export default function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <header className="bg-forest-green text-warm-white shadow-lg">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-between items-center">
-          {/* Logo/Brand */}
-          <Link
-            href="/"
-            className="text-2xl font-bold text-warm-white hover:text-soft-gold transition-colors"
-          >
-            Lenny's Cleaning
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div className="container-site px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="font-display font-bold text-2xl text-forest-green">
+          Lenny's
+        </Link>
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center gap-8">
+          <Link href="/about" className="font-body text-gray-700 hover:text-forest-green transition-colors">About</Link>
+          <Link href="/services" className="font-body text-gray-700 hover:text-forest-green transition-colors">Services</Link>
+          <Link href="/pricing" className="font-body text-gray-700 hover:text-forest-green transition-colors">Pricing</Link>
+          <Link href="/reviews" className="font-body text-gray-700 hover:text-forest-green transition-colors">Reviews</Link>
+          <Link href="/faq" className="font-body text-gray-700 hover:text-forest-green transition-colors">FAQ</Link>
+          <Link href="/book" className="px-6 py-2 bg-forest-green text-white font-display font-bold rounded-lg hover:bg-emerald-900 transition-colors">
+            Book
           </Link>
+        </nav>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex gap-8">
-            {NAVIGATION.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-warm-white hover:text-soft-gold transition-colors font-medium"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 text-gray-700 hover:text-forest-green"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
 
-          {/* CTA Button */}
-          <button className="bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-2 px-6 rounded-lg transition-colors hidden md:block">
-            Get Quote
-          </button>
-
-          {/* Mobile Menu Placeholder */}
-          <button className="md:hidden text-warm-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </nav>
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <nav className="md:hidden bg-warm-white border-t border-gray-200 p-6 space-y-4">
+          <Link href="/about" className="block font-body text-gray-700 hover:text-forest-green">
+            About
+          </Link>
+          <Link href="/services" className="block font-body text-gray-700 hover:text-forest-green">
+            Services
+          </Link>
+          <Link href="/pricing" className="block font-body text-gray-700 hover:text-forest-green">
+            Pricing
+          </Link>
+          <Link href="/reviews" className="block font-body text-gray-700 hover:text-forest-green">
+            Reviews
+          </Link>
+          <Link href="/faq" className="block font-body text-gray-700 hover:text-forest-green">
+            FAQ
+          </Link>
+          <Link href="/book" className="block px-6 py-2 bg-forest-green text-white font-display font-bold rounded-lg hover:bg-emerald-900 transition-colors text-center">
+            Book
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }

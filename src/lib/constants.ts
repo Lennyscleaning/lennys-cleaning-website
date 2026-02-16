@@ -1,46 +1,31 @@
-export const BRAND_COLORS = {
+export const SITE_NAME = "Lenny's Cleaning";
+export const SITE_URL = 'https://lennyscleaning.com';
+export const TAGLINE = 'Professional cleaning in Tacoma. Fair pricing. Reliability guaranteed.';
+
+export const COLORS = {
   forestGreen: '#2D5016',
-  terracotta: '#C45D3E',
-  warmWhite: '#FAF8F5',
-  charcoal: '#2C2C2C',
-  softGold: '#D4A84B'
+  terracotta: '#C4704B',
+  warmWhite: '#FAF7F2',
+  cream: '#FFFBF5'
 };
 
-export const COMPANY_INFO = {
-  name: "Lenny's Cleaning",
-  tagline: 'Professional Residential Cleaning in Tacoma, WA',
-  description: 'Expert cleaning services for homes in Tacoma and surrounding areas',
-  location: 'Tacoma, WA',
-  contactEmail: 'contact@lennyscleaning.com',
-  contactPhone: '(253) XXX-XXXX'
-};
-
-export const NAVIGATION = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Book Now', href: '/book' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' }
+export const NEIGHBORHOODS = [
+  'Stadium District',
+  'North End',
+  'Hilltop',
+  'Lincoln District',
+  'South Tacoma',
+  'Eastside',
+  'West End',
+  'McKinley Hill',
+  'Proctor',
+  'Old Town',
+  'Ruston',
+  'University Place',
+  'Lakewood',
+  'Fircrest',
+  'JBLM area'
 ];
 
-export const SERVICES = [
-  {
-    id: 'deep-cleaning',
-    name: 'Deep Cleaning',
-    path: '/services/deep-cleaning',
-    description: 'Comprehensive deep cleaning for your home'
-  },
-  {
-    id: 'move-out-cleaning',
-    name: 'Move-Out Cleaning',
-    path: '/services/move-out-cleaning',
-    description: 'Professional move-out cleaning services'
-  },
-  {
-    id: 'recurring-cleaning',
-    name: 'Recurring Cleaning',
-    path: '/services/recurring-cleaning',
-    description: 'Regular maintenance cleaning plans'
-  }
-];
+export const CONTACT_EMAIL = 'eric@flowbotics.xyz';
+export const CONTACT_PHONE = '(253) 555-1234';

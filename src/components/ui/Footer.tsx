@@ -1,68 +1,48 @@
 import Link from 'next/link';
-import { COMPANY_INFO, NAVIGATION } from '@/lib/constants';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-charcoal text-warm-white mt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-          {/* Company Info */}
+    <footer className="bg-forest-green text-white">
+      <div className="container-site px-6 py-16">
+        <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div>
-            <h3 className="text-2xl font-bold text-soft-gold mb-4">
-              {COMPANY_INFO.name}
-            </h3>
-            <p className="text-warm-white/80 mb-4">
-              {COMPANY_INFO.description}
-            </p>
-            <p className="text-warm-white/70">
-              📍 {COMPANY_INFO.location}
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-bold text-soft-gold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {NAVIGATION.slice(0, 3).map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-warm-white/80 hover:text-soft-gold transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+            <h4 className="font-display font-bold mb-4 text-lg">Company</h4>
+            <ul className="space-y-2 text-white text-opacity-80">
+              <li><Link href="/about" className="hover:text-white transition-colors">About us</Link></li>
+              <li><Link href="/join-our-team" className="hover:text-white transition-colors">Join our team</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>
-
-          {/* Contact */}
           <div>
-            <h4 className="text-lg font-bold text-soft-gold mb-4">Contact</h4>
-            <p className="text-warm-white/80 mb-2">
-              📧 {COMPANY_INFO.contactEmail}
-            </p>
-            <p className="text-warm-white/80 mb-6">
-              📞 {COMPANY_INFO.contactPhone}
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-soft-gold hover:text-terracotta transition-colors">
-                Facebook
-              </a>
-              <a href="#" className="text-soft-gold hover:text-terracotta transition-colors">
-                Instagram
-              </a>
-            </div>
+            <h4 className="font-display font-bold mb-4 text-lg">Services</h4>
+            <ul className="space-y-2 text-white text-opacity-80">
+              <li><Link href="/services/recurring-cleaning" className="hover:text-white transition-colors">Recurring</Link></li>
+              <li><Link href="/services/deep-cleaning" className="hover:text-white transition-colors">Deep Clean</Link></li>
+              <li><Link href="/services/move-out-cleaning" className="hover:text-white transition-colors">Move-out</Link></li>
+              <li><Link href="/services/airbnb-cleaning" className="hover:text-white transition-colors">Airbnb</Link></li>
+              <li><Link href="/services/eco-friendly" className="hover:text-white transition-colors">Eco-friendly</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-display font-bold mb-4 text-lg">Customer</h4>
+            <ul className="space-y-2 text-white text-opacity-80">
+              <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
+              <li><Link href="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link href="/book" className="hover:text-white transition-colors">Book now</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-display font-bold mb-4 text-lg">Contact</h4>
+            <ul className="space-y-2 text-white text-opacity-80">
+              <li><a href="mailto:eric@flowbotics.xyz" className="hover:text-white transition-colors">eric@flowbotics.xyz</a></li>
+              <li><a href="tel:+12535551234" className="hover:text-white transition-colors">(253) 555-1234</a></li>
+              <li className="pt-2">Based in Tacoma, WA</li>
+            </ul>
           </div>
         </div>
-
-        {/* Divider */}
-        <div className="border-t border-warm-white/20 pt-8">
-          <p className="text-center text-warm-white/60">
-            © {currentYear} {COMPANY_INFO.name}. All rights reserved.
-          </p>
+        <div className="border-t border-white border-opacity-20 pt-8">
+          <p className="text-center text-white text-opacity-70 text-sm">© 2025 Lenny's Cleaning. All rights reserved. | <Link href="#" className="hover:text-white transition-colors">Privacy</Link> | <Link href="#" className="hover:text-white transition-colors">Terms</Link></p>
         </div>
       </div>
     </footer>
