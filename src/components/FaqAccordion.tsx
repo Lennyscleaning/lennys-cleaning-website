@@ -1,96 +1,82 @@
-"use client";
+'use client';
 
-import { useState, ReactNode } from "react";
-import { tokens, fonts } from "./tokens";
+import { useState, useRef, useEffect } from 'react';
 
-const chevronIcon = (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="6 9 12 15 18 9" />
-  </svg>
-);
+interface FaqItem {
+  question: string;
+  answer: string;
+}
 
-function FaqItem({ q, children }: { q: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
+interface FaqAccordionProps {
+  items: FaqItem[];
+}
+
+function AccordionRow({
+  item,
+  isOpen,
+  onToggle,
+}: {
+  item: FaqItem;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(isOpen ? contentRef.current.scrollHeight : 0);
+    }
+  }, [isOpen]);
+
   return (
-    <div style={{ borderBottom: `1px solid ${tokens.grayLight}`, padding: "20px 0" }}>
+    <div className="border-b border-cream-dark">
       <button
-        onClick={() => setOpen(!open)}
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          textAlign: "left",
-          padding: 0,
-          fontFamily: fonts.body,
-          fontSize: "17px",
-          fontWeight: 500,
-          color: tokens.charcoal,
-          lineHeight: 1.5,
-        }}
-        aria-expanded={open}
+        onClick={onToggle}
+        className="flex items-center justify-between w-full py-5 text-left group"
+        aria-expanded={isOpen}
       >
-        <span style={{ paddingRight: "16px" }}>{q}</span>
-        <span
-          style={{
-            flexShrink: 0,
-            transform: open ? "rotate(180deg)" : "rotate(0)",
-            transition: "transform 250ms cubic-bezier(0.16,1,0.3,1)",
-            color: tokens.grayMid,
-          }}
-        >
-          {chevronIcon}
+        <span className="text-base font-semibold text-charcoal pr-4 group-hover:text-forest transition-colors duration-200">
+          {item.question}
+        </span>
+        <span className="shrink-0 w-6 h-6 flex items-center justify-center text-charcoal-light">
+          <svg
+            className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
         </span>
       </button>
       <div
-        style={{
-          maxHeight: open ? "300px" : "0",
-          overflow: "hidden",
-          transition: "max-height 350ms cubic-bezier(0.16,1,0.3,1)",
-        }}
+        style={{ height }}
+        className="overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
       >
-        <div
-          style={{
-            margin: 0,
-            paddingTop: "12px",
-            fontFamily: fonts.body,
-            fontSize: "16px",
-            fontWeight: 400,
-            color: tokens.charcoalLight,
-            lineHeight: 1.6,
-            letterSpacing: "0.01em",
-          }}
-        >
-          {children}
+        <div ref={contentRef} className="pb-5 pr-8">
+          <p className="text-[15px] leading-relaxed text-charcoal-light">
+            {item.answer}
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default function FaqAccordion({
-  items,
-}: {
-  items: { q: string; a: ReactNode }[];
-}) {
+export default function FaqAccordion({ items }: FaqAccordionProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
-    <div>
-      {items.map((faq, i) => (
-        <FaqItem key={i} q={faq.q}>
-          {typeof faq.a === "string" ? <p style={{ margin: 0 }}>{faq.a}</p> : faq.a}
-        </FaqItem>
+    <div className="divide-y-0">
+      {items.map((item, i) => (
+        <AccordionRow
+          key={i}
+          item={item}
+          isOpen={openIndex === i}
+          onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+        />
       ))}
     </div>
   );
