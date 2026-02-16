@@ -399,7 +399,7 @@ export default function HomePage() {
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
             }}
           />
-          <div className="relative z-10 px-12 md:px-[80px] lg:px-[100px] py-16 md:py-[80px]">
+          <div className="relative z-10 px-14 md:px-[100px] lg:px-[140px] py-16 md:py-[80px]">
             <Reveal>
               <span className="font-body font-semibold text-[0.6875rem] uppercase tracking-[0.1em] text-warm-white/50 block mb-6">
                 Why Lenny&apos;s
