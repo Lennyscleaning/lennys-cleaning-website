@@ -10,14 +10,6 @@ export const metadata: Metadata = {
   description: "Book a deep cleaning in Tacoma starting at $250. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.",
 };
 
-const standardInclusions = [
-  'Counters and stovetop wiped, sink scrubbed, appliance exteriors cleaned, floor swept and mopped (Kitchen)',
-  'Toilet, shower, and tub scrubbed, mirrors and fixtures polished, counters wiped, floor mopped (Bathrooms)',
-  'Bed made, surfaces dusted, floors vacuumed, mirrors and glass cleaned (Bedrooms)',
-  'Surfaces dusted, floors vacuumed and mopped, furniture wiped, trash emptied (Living areas)',
-  'Baseboards spot-wiped, light switches sanitized, cobwebs removed, doors wiped (Throughout)',
-];
-
 const deepAdditions = [
   {
     room: 'Kitchen',
