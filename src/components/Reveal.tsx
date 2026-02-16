@@ -4,42 +4,36 @@ import { useEffect, useRef } from 'react';
 
 interface RevealProps {
   children: React.ReactNode;
-  stagger?: boolean;
   delay?: number;
+  className?: string;
 }
 
-export default function Reveal({ children, stagger = false, delay = 0 }: RevealProps) {
+export default function Reveal({ children, delay = 0, className = '' }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          el.classList.add('visible');
+          observer.disconnect();
         }
       },
-      {
-        threshold: 0.1,
-      }
+      { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div
       ref={ref}
-      className={`reveal ${stagger ? 'reveal-stagger' : ''}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      className={`reveal ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
     </div>

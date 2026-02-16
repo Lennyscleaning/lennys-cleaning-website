@@ -1,30 +1,37 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
 };
 
 export const metadata: Metadata = {
-  title: "Lenny's Cleaning — Tacoma, WA",
+  title: {
+    template: "%s | Lenny's Cleaning — Tacoma, WA",
+    default: "Lenny's Cleaning — Tacoma, WA",
+  },
   description:
-    "Lenny's Cleaning matches you with vetted, local cleaning professionals in Tacoma. Flat-rate pricing, satisfaction guaranteed. Book your cleaning today.",
+    'Tacoma house cleaning you can count on. Vetted professionals, flat-rate pricing, satisfaction guaranteed. Book online in minutes.',
+  keywords:
+    'house cleaning tacoma, residential cleaning, maid service tacoma, cleaning service near me, professional house cleaning',
+  robots: 'index, follow',
   openGraph: {
-    title: "Lenny's Cleaning — Tacoma, WA",
-    description:
-      "Lenny's Cleaning matches you with vetted, local cleaning professionals in Tacoma. Flat-rate pricing, satisfaction guaranteed. Book your cleaning today.",
     type: 'website',
+    locale: 'en_US',
     url: 'https://lennyscleaning.com',
     siteName: "Lenny's Cleaning",
+    title: "Lenny's Cleaning — Tacoma, WA",
+    description:
+      'Vetted cleaning professionals, flat-rate pricing, satisfaction guaranteed. Book a cleaning in Tacoma today.',
   },
   twitter: {
     card: 'summary_large_image',
     title: "Lenny's Cleaning — Tacoma, WA",
     description:
-      "Lenny's Cleaning matches you with vetted, local cleaning professionals in Tacoma. Flat-rate pricing, satisfaction guaranteed. Book your cleaning today.",
+      'Vetted cleaning professionals, flat-rate pricing, satisfaction guaranteed. Book a cleaning in Tacoma today.',
   },
 };
 
@@ -35,8 +42,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-warm-white font-body">
+      <body className="bg-warm-white text-charcoal font-body antialiased">
+        <Header />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

@@ -1,95 +1,94 @@
 import Link from 'next/link';
 
+const quickLinks = [
+  { label: 'Standard clean', href: '/services/standard' },
+  { label: 'Deep clean', href: '/services/deep' },
+  { label: 'Move-in / move-out clean', href: '/services/move' },
+  { label: 'How it works', href: '/how-it-works' },
+  { label: 'About', href: '/about' },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-forest text-warm-white">
-      {/* Main Footer Content */}
-      <div className="mx-auto max-w-[1200px] px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {/* Column 1: Brand */}
+      <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          {/* Column 1 — Brand */}
           <div>
-            <h3 className="font-display text-2xl font-semibold mb-2">Lenny's</h3>
-            <p className="font-body text-base mb-1">A clean home, every time.</p>
-            <p className="font-body text-sm text-cream">
-              Tacoma's trusted cleaning marketplace.
+            <p className="font-display text-xl font-semibold text-warm-white mb-3">
+              Lenny&apos;s Cleaning
+            </p>
+            <p className="text-warm-white/80 text-[15px] leading-relaxed mb-1">
+              A clean home, every time.
+            </p>
+            <p className="text-warm-white/60 text-sm">
+              Tacoma&apos;s trusted cleaning marketplace.
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
+          {/* Column 2 — Quick links */}
           <div>
-            <h4 className="font-body font-semibold text-sm uppercase tracking-wide mb-4">
-              Services
-            </h4>
-            <ul className="space-y-2 font-body text-base">
-              <li>
-                <Link href="/services/standard" className="hover:text-cream transition-colors">
-                  Standard clean
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/deep" className="hover:text-cream transition-colors">
-                  Deep clean
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/move" className="hover:text-cream transition-colors">
-                  Move-in / move-out clean
-                </Link>
-              </li>
-              <li>
-                <Link href="/how-it-works" className="hover:text-cream transition-colors">
-                  How it works
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-cream transition-colors">
-                  About
-                </Link>
-              </li>
+            <p className="text-sm font-semibold uppercase tracking-wider text-warm-white/50 mb-4">
+              Quick links
+            </p>
+            <ul className="space-y-2.5">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-[15px] text-warm-white/80 hover:text-warm-white transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 3: Contact */}
+          {/* Column 3 — Contact */}
           <div>
-            <h4 className="font-body font-semibold text-sm uppercase tracking-wide mb-4">
+            <p className="text-sm font-semibold uppercase tracking-wider text-warm-white/50 mb-4">
               Contact
-            </h4>
-            <p className="font-body text-base mb-3">
-              <a
-                href="mailto:hello@lennyscleaning.com"
-                className="hover:text-cream transition-colors"
-              >
-                hello@lennyscleaning.com
-              </a>
             </p>
-            <p className="font-body text-base mb-4">
-              <a href="tel:+12535550100" className="hover:text-cream transition-colors">
-                (253) 555-0100
-              </a>
-            </p>
-            <p className="font-body text-sm text-cream">
-              Serving Tacoma and surrounding communities
-            </p>
+            <ul className="space-y-2.5">
+              <li>
+                <a
+                  href="mailto:hello@lennyscleaning.com"
+                  className="text-[15px] text-warm-white/80 hover:text-warm-white transition-colors duration-200"
+                >
+                  hello@lennyscleaning.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+12536003355"
+                  className="text-[15px] text-warm-white/80 hover:text-warm-white transition-colors duration-200"
+                >
+                  (253) 600-3355
+                </a>
+              </li>
+              <li className="pt-1">
+                <p className="text-sm text-warm-white/60">
+                  Serving Tacoma and surrounding communities
+                </p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-forest-light border-opacity-30">
-        <div className="mx-auto max-w-[1200px] px-6 py-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 font-body text-sm">
-            <p className="text-cream">
-              © 2026 Lenny's Cleaning, a Lenny's Home Services brand. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link href="#" className="hover:text-cream transition-colors">
-                Privacy policy
-              </Link>
-              <span className="text-cream">·</span>
-              <Link href="#" className="hover:text-cream transition-colors">
-                Terms of service
-              </Link>
-            </div>
+      {/* Bottom bar */}
+      <div className="border-t border-warm-white/10">
+        <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-warm-white/40">
+          <p>&copy; 2026 Lenny&apos;s Cleaning, a Lenny&apos;s Home Services brand. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link href="#" className="hover:text-warm-white/60 transition-colors duration-200">
+              Privacy policy
+            </Link>
+            <span className="text-warm-white/20">&middot;</span>
+            <Link href="#" className="hover:text-warm-white/60 transition-colors duration-200">
+              Terms of service
+            </Link>
           </div>
         </div>
       </div>

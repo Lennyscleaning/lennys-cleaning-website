@@ -1,3 +1,8 @@
+/* ============================================
+   Lenny's Cleaning — Global Styles
+   ============================================ */
+
+/* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
 
@@ -5,209 +10,251 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   CSS Custom Properties
+   ============================================ */
 :root {
-  /* Colors */
+  /* Colors — Primary */
   --forest: #2D5A3D;
   --forest-dark: #1E3F2B;
   --forest-light: #3A7350;
 
+  /* Colors — Accent */
   --terra: #C4704B;
-  --terra-dark: #A85C3A;
   --terra-hover: #B86340;
+  --terra-dark: #A85C3A;
   --terra-light: #D4876A;
 
+  /* Colors — Neutrals */
   --warm-white: #FDFAF6;
   --cream: #F5F0E8;
   --cream-dark: #EDE6DA;
-
-  --gray-l: #D4CFC7;
-  --gray-m: #8A8580;
-
+  --gray-light: #D4CFC7;
+  --gray-mid: #8A8580;
   --charcoal: #2C2C2C;
   --charcoal-light: #4A4A4A;
 
+  /* Colors — Functional */
   --success: #2D7A4F;
   --error: #C44B4B;
   --warning: #C4974B;
   --info: #4B7AC4;
 
-  /* Font families */
+  /* Typography */
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Border radius */
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+  --space-5xl: 128px;
+
+  /* Section padding */
+  --section-py-desktop: 96px;
+  --section-py-mobile: 64px;
+  --section-px-desktop: max(24px, calc((100vw - 1200px) / 2));
+  --section-px-mobile: 20px;
+
+  /* Max widths */
+  --max-width: 1200px;
+  --max-width-narrow: 800px;
+  --max-width-text: 640px;
+
+  /* Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-full: 9999px;
 
-  /* Box shadows */
+  /* Shadows */
   --shadow-sm: 0 1px 3px rgba(44, 44, 44, 0.06);
   --shadow-md: 0 4px 12px rgba(44, 44, 44, 0.08);
   --shadow-lg: 0 8px 30px rgba(44, 44, 44, 0.12);
   --shadow-hover: 0 8px 25px rgba(44, 44, 44, 0.15);
 
-  /* Easing curves */
+  /* Easing */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ============================================
+   Base Layer
+   ============================================ */
 @layer base {
   html {
     background-color: var(--warm-white);
     color: var(--charcoal);
     font-family: var(--font-body);
     scroll-behavior: smooth;
-  }
-
-  body {
-    background-color: var(--warm-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
     background-color: var(--forest);
     color: var(--warm-white);
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
 }
 
+/* ============================================
+   Component Layer
+   ============================================ */
 @layer components {
-  /* Primary button — terracotta CTA */
+  /* Primary CTA — Terracotta */
   .btn-primary {
-    display: inline-block;
-    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
     background-color: var(--terra);
     color: var(--warm-white);
     border-radius: var(--radius-sm);
     font-family: var(--font-body);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: 0.03em;
+    line-height: 1;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
     transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-
   .btn-primary:hover {
     background-color: var(--terra-hover);
     box-shadow: var(--shadow-hover);
     transform: translateY(-1px);
   }
-
   .btn-primary:active {
-    background-color: var(--terra-dark);
     transform: translateY(0) scale(0.98);
     box-shadow: var(--shadow-sm);
   }
-
-  .btn-primary:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--terra);
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--terra-light);
+    outline-offset: 2px;
   }
 
-  /* Secondary button — forest green */
+  /* Secondary — Forest Green */
   .btn-secondary {
-    display: inline-block;
-    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
     background-color: var(--forest);
     color: var(--warm-white);
     border-radius: var(--radius-sm);
     font-family: var(--font-body);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: 0.03em;
+    line-height: 1;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
     transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-
   .btn-secondary:hover {
-    background-color: var(--forest-light);
+    background-color: var(--forest-dark);
     box-shadow: var(--shadow-hover);
     transform: translateY(-1px);
   }
-
   .btn-secondary:active {
-    background-color: var(--forest-dark);
     transform: translateY(0) scale(0.98);
     box-shadow: var(--shadow-sm);
   }
-
-  .btn-secondary:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--forest);
+  .btn-secondary:focus-visible {
+    outline: 2px solid var(--forest-light);
+    outline-offset: 2px;
   }
 
-  /* Outline button — forest green border */
+  /* Outline — Forest Green border */
   .btn-outline {
-    display: inline-block;
-    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 26px;
     background-color: transparent;
-    border: 2px solid var(--forest);
     color: var(--forest);
+    border: 2px solid var(--forest);
     border-radius: var(--radius-sm);
     font-family: var(--font-body);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: 0.03em;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
     transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-
   .btn-outline:hover {
-    background-color: rgba(45, 90, 61, 0.05);
+    background-color: var(--forest);
+    color: var(--warm-white);
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
   }
-
   .btn-outline:active {
-    background-color: rgba(45, 90, 61, 0.1);
     transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-outline:focus-visible {
+    outline: 2px solid var(--forest-light);
+    outline-offset: 2px;
   }
 
-  .btn-outline:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--warm-white), 0 0 0 4px var(--forest);
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .reveal-stagger > *:nth-child(1) {
-    transition-delay: 100ms;
-  }
-
-  .reveal-stagger > *:nth-child(2) {
-    transition-delay: 200ms;
-  }
-
-  .reveal-stagger > *:nth-child(3) {
-    transition-delay: 300ms;
-  }
-
-  .reveal-stagger > *:nth-child(4) {
-    transition-delay: 400ms;
-  }
-
-  .reveal-stagger > *:nth-child(5) {
-    transition-delay: 500ms;
+  /* Overline label */
+  .overline {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--forest);
   }
 }
 
+/* ============================================
+   Scroll Reveal Animations
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal-stagger > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger > *:nth-child(2) { transition-delay: 100ms; }
+.reveal-stagger > *:nth-child(3) { transition-delay: 200ms; }
+.reveal-stagger > *:nth-child(4) { transition-delay: 300ms; }
+.reveal-stagger > *:nth-child(5) { transition-delay: 400ms; }
+.reveal-stagger > *:nth-child(6) { transition-delay: 500ms; }
+
+/* ============================================
+   Reduced Motion — Non-negotiable
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .reveal,
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: none;
+    scroll-behavior: auto !important;
   }
 }
