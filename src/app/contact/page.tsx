@@ -1,126 +1,42 @@
-import type { Metadata } from 'next';
-import { COMPANY_INFO } from '@/lib/constants';
-
-export const metadata: Metadata = {
-  title: 'Contact | Lenny\'s Cleaning',
-  description: 'Get in touch with Lenny\'s Cleaning. Contact us for cleaning services, quotes, or inquiries in Tacoma, WA.',
-  openGraph: {
-    title: 'Contact | Lenny\'s Cleaning',
-    description: 'Get in touch with Lenny\'s Cleaning in Tacoma, WA'
-  }
-};
+import Reveal from '@/components/ui/Reveal';
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen py-24 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-bold text-forest-green mb-6">Contact Us</h1>
-        <p className="text-xl text-charcoal/80 mb-12">
-          Have questions? We&apos;d love to hear from you. Get in touch with us today.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Contact Information */}
-          <div className="bg-warm-white border-2 border-forest-green rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest-green mb-6">Contact Information</h2>
-            
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-bold text-charcoal mb-2">Phone</h3>
-                <a
-                  href="tel:+12531234567"
-                  className="text-terracotta hover:text-terracotta/80 text-lg"
-                >
-                  {COMPANY_INFO.contactPhone}
-                </a>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-charcoal mb-2">Email</h3>
-                <a
-                  href={`mailto:${COMPANY_INFO.contactEmail}`}
-                  className="text-terracotta hover:text-terracotta/80 text-lg"
-                >
-                  {COMPANY_INFO.contactEmail}
-                </a>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-charcoal mb-2">Service Area</h3>
-                <p className="text-charcoal/80">
-                  {COMPANY_INFO.location} and surrounding areas
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-charcoal mb-4">Hours</h3>
-                <div className="text-charcoal/80 text-sm space-y-1">
-                  <span className="block">Monday - Friday: 8am - 6pm</span>
-                  <span className="block">Saturday: 9am - 4pm</span>
-                  <span className="block">Sunday: Closed</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="bg-warm-white border-2 border-forest-green rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest-green mb-6">Send us a Message</h2>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-charcoal mb-1">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  className="w-full border border-charcoal/30 rounded px-3 py-2 focus:outline-none focus:border-forest-green"
-                  placeholder="Your name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-charcoal mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  className="w-full border border-charcoal/30 rounded px-3 py-2 focus:outline-none focus:border-forest-green"
-                  placeholder="Your email"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-charcoal mb-1">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  className="w-full border border-charcoal/30 rounded px-3 py-2 focus:outline-none focus:border-forest-green"
-                  placeholder="How can we help?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-charcoal mb-1">
-                  Message *
-                </label>
-                <textarea
-                  className="w-full border border-charcoal/30 rounded px-3 py-2 focus:outline-none focus:border-forest-green"
-                  placeholder="Your message"
-                  rows={4}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-2 rounded-lg transition-colors"
-              >
-                Send Message
-              </button>
-            </form>
+    <>
+      {/* Hero */}
+      <section className="pt-32 pb-24 px-6 bg-warm-white relative">
+        <div className="absolute top-0 right-0 w-2/5 h-full bg-cream opacity-60" style={{ clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0% 100%)' }}></div>
+        <div className="container-site relative z-10">
+          <div className="max-w-2xl">
+            <Reveal delay={0.1}>
+              <h1 className="text-5xl md:text-6xl font-display font-bold leading-tight mb-6 text-forest-green">Get in touch</h1>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">Questions? Feedback? We\'d love to hear from you.</p>
+            </Reveal>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Contact Info */}
+      <section className="py-24 px-6 bg-white">
+        <div className="container-site">
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <Reveal delay={0.1}>
+              <div>
+                <h3 className="text-2xl font-display font-bold mb-4 text-forest-green">Email</h3>
+                <p className="text-lg text-gray-700"><a href="mailto:eric@flowbotics.xyz" className="text-terracotta hover:underline">eric@flowbotics.xyz</a></p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div>
+                <h3 className="text-2xl font-display font-bold mb-4 text-forest-green">Phone</h3>
+                <p className="text-lg text-gray-700"><a href="tel:+12535551234" className="text-terracotta hover:underline">(253) 555-1234</a></p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

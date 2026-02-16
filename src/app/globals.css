@@ -1,37 +1,46 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  --font-inter: 'Inter', sans-serif;
+  --color-forest-green: #2D5016;
+  --color-terracotta: #C4704B;
+  --color-warm-white: #FAF7F2;
+  --color-cream: #FFFBF5;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-700: #374151;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
+body {
+  font-family: var(--font-body);
+  @apply bg-white text-gray-900;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.container-site {
+  @apply max-w-6xl mx-auto;
+}
+
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Button styles */
+button {
+  @apply transition-colors;
 }
 
-/* Utility Classes */
-.container-custom {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-}
-
-.btn-primary {
-  @apply bg-forest-green hover:bg-forest-green/90 text-warm-white font-bold py-3 px-6 rounded-lg transition-colors;
-}
-
-.btn-secondary {
-  @apply bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-3 px-6 rounded-lg transition-colors;
-}
-
-.section-heading {
-  @apply text-3xl md:text-4xl font-bold text-forest-green mb-4;
-}
-
-.gradient-green {
-  @apply bg-gradient-to-r from-forest-green to-forest-green/80;
+/* Link styles */
+a {
+  @apply transition-colors;
 }

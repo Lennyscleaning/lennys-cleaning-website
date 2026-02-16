@@ -1,104 +1,33 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Book Now | Lenny\'s Cleaning',
-  description: 'Schedule your cleaning service with Lenny\'s Cleaning in Tacoma, WA. Quick and easy booking.',
-  openGraph: {
-    title: 'Book Now | Lenny\'s Cleaning',
-    description: 'Schedule your cleaning service with Lenny\'s Cleaning in Tacoma, WA'
-  }
+  title: 'Book a cleaning',
+  description: 'Schedule your next cleaning with Lenny\'s and experience the difference. Fair pricing, reliable service, satisfaction guaranteed.'
 };
 
 export default function BookPage() {
   return (
-    <div className="min-h-screen py-24 px-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-5xl font-bold text-forest-green mb-6">Book Your Cleaning</h1>
-        <p className="text-xl text-charcoal/80 mb-12">
-          Schedule a cleaning service or request a free quote. We'll get back to you within 24 hours.
-        </p>
-
-        <div className="bg-warm-white border-2 border-forest-green rounded-lg p-8 mb-8">
-          <form className="space-y-6">
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Full Name *
-              </label>
-              <input
-                type="text"
-                className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green"
-                placeholder="Your name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Email Address *
-              </label>
-              <input
-                type="email"
-                className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green"
-                placeholder="your@email.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green"
-                placeholder="(253) XXX-XXXX"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Service Type *
-              </label>
-              <select className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green">
-                <option>Select a service</option>
-                <option>Deep Cleaning</option>
-                <option>Move-Out Cleaning</option>
-                <option>Recurring Cleaning</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Preferred Date
-              </label>
-              <input
-                type="date"
-                className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-charcoal mb-2">
-                Additional Notes
-              </label>
-              <textarea
-                className="w-full border border-charcoal/30 rounded px-4 py-2 focus:outline-none focus:border-forest-green"
-                placeholder="Tell us about your cleaning needs"
-                rows={4}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-terracotta hover:bg-terracotta/90 text-warm-white font-bold py-3 px-6 rounded-lg transition-colors text-lg"
-            >
-              Request Quote
-            </button>
-          </form>
+    <>
+      {/* Hero */}
+      <section className="pt-32 pb-24 px-6 bg-warm-white relative">
+        <div className="absolute top-0 right-0 w-2/5 h-full bg-cream opacity-60" style={{ clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0% 100%)' }}></div>
+        <div className="container-site relative z-10">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl md:text-6xl font-display font-bold leading-tight mb-6 text-forest-green">Schedule your cleaning</h1>
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">Book in minutes. We\'ll confirm your operator within 24 hours.</p>
+          </div>
         </div>
+      </section>
 
-        <p className="text-center text-charcoal/70">
-          We'll review your request and contact you within 24 business hours.
-        </p>
-      </div>
-    </div>
+      {/* Cal.com Embed (Future) */}
+      <section className="py-24 px-6 bg-white">
+        <div className="container-site">
+          <div className="max-w-2xl mx-auto bg-warm-white p-12 rounded-xl border-2 border-dashed border-gray-300 text-center">
+            <p className="text-gray-600 mb-4">Booking widget coming soon</p>
+            <p className="text-sm text-gray-500">Cal.com integration in progress. Email eric@flowbotics.xyz to schedule early.</p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
