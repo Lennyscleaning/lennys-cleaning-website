@@ -39,7 +39,7 @@ const items = [
     ),
   },
   {
-    label: 'Proudly serving Tacoma',
+    label: 'Serving Tacoma and beyond',
     icon: (
       <svg className="w-5 h-5 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -58,7 +58,7 @@ export default function TrustBar() {
     <Reveal>
       <section className="bg-cream">
         <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6">
             {items.map((item) => (
               <div key={item.label} className="flex items-center gap-2.5">
                 {item.icon}
