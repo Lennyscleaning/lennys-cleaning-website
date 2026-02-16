@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import Reveal from '@/components/ui/Reveal';
 import TrustBar from '@/components/ui/TrustBar';
 
@@ -38,7 +37,7 @@ export default function HomePage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-terracotta opacity-10 rounded-2xl blur-xl"></div>
                 <div className="relative bg-gradient-to-br from-forest-green to-emerald-900 rounded-2xl p-12 text-white">
-                  <h3 className="text-2xl font-display font-bold mb-6">Why choose Lenny\'s?</h3>
+                  <h3 className="text-2xl font-display font-bold mb-6">Why choose Lenny's?</h3>
                   <ul className="space-y-4">
                     <li className="flex items-start gap-3">
                       <span className="text-terracotta font-bold">✓</span>
@@ -143,7 +142,7 @@ export default function HomePage() {
             ].map((testimonial, i) => (
               <Reveal key={i} delay={0.2 + i * 0.1}>
                 <div className="bg-warm-white p-8 rounded-lg border-l-4 border-terracotta">
-                  <p className="text-gray-700 mb-4 italic">\"{ testimonial.quote }\"</p>
+                  <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
                   <p className="font-display font-bold text-forest-green">{testimonial.name}</p>
                 </div>
               </Reveal>
