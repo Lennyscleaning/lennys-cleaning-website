@@ -391,7 +391,7 @@ export default function HomePage() {
           ═══════════════════════════════════════ */}
       <section className="grid md:grid-cols-2">
         {/* Left — Forest green statement */}
-        <div className="relative bg-forest overflow-hidden">
+        <div className="relative bg-forest overflow-hidden flex">
           {/* Grain texture */}
           <div
             className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -399,7 +399,7 @@ export default function HomePage() {
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
             }}
           />
-          <div className="relative z-10 flex flex-col justify-center px-10 md:px-[60px] py-16 md:py-[80px] h-full">
+          <div className="relative z-10 flex flex-col justify-center px-10 md:px-[60px] py-16 md:py-[80px] w-full">
             <Reveal>
               <span className="font-body font-semibold text-[0.6875rem] uppercase tracking-[0.1em] text-warm-white/50 block mb-6">
                 Why Lenny&apos;s
