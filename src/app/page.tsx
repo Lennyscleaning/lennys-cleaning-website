@@ -1,176 +1,313 @@
 import Link from 'next/link';
-import Reveal from '@/components/ui/Reveal';
-import TrustBar from '@/components/ui/TrustBar';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Reveal from '@/components/Reveal';
+import TrustBar from '@/components/TrustBar';
 
-export default function HomePage() {
+export const metadata = {
+  title: "Lenny's Cleaning — Professional House Cleaning in Tacoma, WA",
+  description:
+    "Lenny's Cleaning matches you with vetted, local cleaning professionals in Tacoma. Flat-rate pricing, satisfaction guaranteed. Book your cleaning today.",
+};
+
+export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="pt-32 pb-24 px-6 bg-warm-white relative overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-terracotta opacity-10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-forest-green opacity-5 rounded-full blur-3xl"></div>
-        <div className="container-site relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <Reveal delay={0.1}>
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6 text-forest-green">
-                  A cleaner home starts here
+      <Header />
+
+      {/* Section 1: Hero */}
+      <section className="bg-warm-white">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="flex flex-col md:flex-row md:items-center md:gap-12">
+              <div className="md:w-3/5">
+                <h1 className="font-display font-semibold text-4xl md:text-5xl mb-6 text-charcoal leading-tight">
+                  Tacoma house cleaning you can count on
                 </h1>
-              </Reveal>
-              <Reveal delay={0.2}>
-                <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
-                  Professional cleaning in Tacoma. Fair pricing. Reliable operators. Satisfaction guaranteed.
+                <p className="font-body font-normal text-lg md:text-xl mb-8 text-charcoal-light max-w-[480px] leading-relaxed">
+                  Lenny's matches you with vetted, local cleaning professionals — at a flat rate, with no surprises.
                 </p>
-              </Reveal>
-              <Reveal delay={0.3}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/book" className="inline-block px-8 py-4 bg-forest-green text-white font-display font-bold rounded-lg hover:bg-emerald-900 transition-colors text-center">
-                    Book now
-                  </Link>
-                  <Link href="/pricing" className="inline-block px-8 py-4 border-2 border-forest-green text-forest-green font-display font-bold rounded-lg hover:bg-forest-green hover:text-white transition-colors text-center">
-                    See pricing
-                  </Link>
-                </div>
-              </Reveal>
+                <Link href="/book" className="btn-primary inline-block">
+                  Book a cleaning
+                </Link>
+              </div>
+              <div className="hidden md:block md:w-2/5" />
             </div>
-            <Reveal delay={0.4}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-terracotta opacity-10 rounded-2xl blur-xl"></div>
-                <div className="relative bg-gradient-to-br from-forest-green to-emerald-900 rounded-2xl p-12 text-white">
-                  <h3 className="text-2xl font-display font-bold mb-6">Why choose Lenny's?</h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <span className="text-terracotta font-bold">✓</span>
-                      <span>Operators earn 75% commission</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-terracotta font-bold">✓</span>
-                      <span>Transparent pricing, no surprises</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-terracotta font-bold">✓</span>
-                      <span>Satisfaction guarantee on every job</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-terracotta font-bold">✓</span>
-                      <span>Serving Tacoma and surrounding areas</span>
-                    </li>
-                  </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Section 2: Trust Bar */}
+      <section className="bg-cream">
+        <TrustBar />
+      </section>
+
+      {/* Section 3: How It Works */}
+      <section className="bg-cream">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="text-center mb-12 md:mb-16">
+              <p className="font-body font-semibold text-xs md:text-sm uppercase tracking-[0.1em] text-forest mb-4">
+                How it works
+              </p>
+              <h2 className="font-display font-medium text-3xl md:text-4xl text-charcoal">
+                Three steps to a cleaner home
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+            {/* Step 1 */}
+            <Reveal>
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-forest text-warm-white font-display font-semibold text-xl mb-4">
+                  1
                 </div>
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                  Tell us about your home
+                </h3>
+                <p className="font-body font-normal text-base text-charcoal-light leading-relaxed">
+                  Answer a few quick questions — bedrooms, bathrooms, and how you'd like things cleaned. You'll see your flat-rate price instantly.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Step 2 */}
+            <Reveal delay={100}>
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-forest text-warm-white font-display font-semibold text-xl mb-4">
+                  2
+                </div>
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                  We match you with a specialist
+                </h3>
+                <p className="font-body font-normal text-base text-charcoal-light leading-relaxed">
+                  Lenny's pairs you with a vetted cleaning professional based on your home's needs, your location, and their track record.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Step 3 */}
+            <Reveal delay={200}>
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-forest text-warm-white font-display font-semibold text-xl mb-4">
+                  3
+                </div>
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                  Enjoy your clean home
+                </h3>
+                <p className="font-body font-normal text-base text-charcoal-light leading-relaxed">
+                  Your specialist arrives on time, cleans to our standards, and you only pay when the job is done. It's that simple.
+                </p>
               </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Trust Bar */}
-      <TrustBar />
-
-      {/* Services Preview */}
-      <section className="py-24 px-6 bg-white">
-        <div className="container-site">
-          <Reveal delay={0.1}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-12 text-forest-green">
-              Cleaning services for every need
-            </h2>
+      {/* Section 4: Services */}
+      <section className="bg-warm-white">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="mb-12 md:mb-16">
+              <h2 className="font-display font-medium text-3xl md:text-4xl text-charcoal">
+                Services tailored to your home
+              </h2>
+            </div>
           </Reveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: 'Recurring Cleaning', slug: 'recurring-cleaning', desc: 'Weekly or monthly cleanings to keep your home fresh.' },
-              { name: 'Deep Cleaning', slug: 'deep-cleaning', desc: 'Thorough top-to-bottom cleaning for every surface.' },
-              { name: 'Move-Out Cleaning', slug: 'move-out-cleaning', desc: 'Specialized cleaning for moves and transitions.' },
-              { name: 'Airbnb Cleaning', slug: 'airbnb-cleaning', desc: 'Quick turnover cleanings between guests.' },
-              { name: 'Eco-Friendly Cleaning', slug: 'eco-friendly', desc: 'Safe, plant-based products for families and pets.' },
-              { name: 'More Services', slug: 'services', desc: 'See all of our specialized cleaning options.' }
-            ].map((service, i) => (
-              <Reveal key={i} delay={0.2 + i * 0.1}>
-                <Link href={`/services/${service.slug}`}>
-                  <div className="bg-warm-white p-8 rounded-lg border-2 border-transparent hover:border-terracotta transition-all cursor-pointer h-full flex flex-col">
-                    <h3 className="text-xl font-display font-bold mb-2 text-forest-green">{service.name}</h3>
-                    <p className="text-gray-700 flex-grow">{service.desc}</p>
-                    <span className="text-terracotta font-bold mt-4">Learn more →</span>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Standard Clean Card */}
+            <Reveal>
+              <Link href="/services/standard">
+                <div className="bg-cream rounded-md p-6 md:p-8 transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1 h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                      Standard clean
+                    </h3>
+                    <p className="font-body font-normal text-base text-charcoal-light mb-6 leading-relaxed">
+                      Regular maintenance cleaning for homes that stay on top of things. Kitchens, bathrooms, floors, and living spaces — refreshed and ready.
+                    </p>
                   </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-24 px-6 bg-gradient-to-br from-forest-green to-emerald-900 text-white">
-        <div className="container-site">
-          <Reveal delay={0.1}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-12">
-              How it works
-            </h2>
-          </Reveal>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: '1', title: 'Book online', desc: 'Choose date, time, and service in our app.' },
-              { step: '2', title: 'Meet your operator', desc: 'We match you with a vetted professional.' },
-              { step: '3', title: 'Get cleaned', desc: 'Relax while your home gets spotless.' },
-              { step: '4', title: 'Rate & repeat', desc: 'Rate your experience. Book again anytime.' }
-            ].map((item, i) => (
-              <Reveal key={i} delay={0.2 + i * 0.1}>
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-terracotta rounded-full mb-4 font-display font-bold text-2xl">
-                    {item.step}
+                  <div>
+                    <p className="font-body font-semibold text-lg text-charcoal mb-3">
+                      Starting at $150
+                    </p>
+                    <p className="font-body font-medium text-base text-terra hover:text-terra-dark transition-colors">
+                      Learn more →
+                    </p>
                   </div>
-                  <h3 className="text-xl font-display font-bold mb-2">{item.title}</h3>
-                  <p className="text-white text-opacity-90">{item.desc}</p>
                 </div>
-              </Reveal>
-            ))}
+              </Link>
+            </Reveal>
+
+            {/* Deep Clean Card */}
+            <Reveal delay={100}>
+              <Link href="/services/deep">
+                <div className="bg-cream rounded-md p-6 md:p-8 transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1 h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                      Deep clean
+                    </h3>
+                    <p className="font-body font-normal text-base text-charcoal-light mb-6 leading-relaxed">
+                      A thorough, top-to-bottom clean for homes that need extra attention. Inside appliances, baseboards, light fixtures — every detail handled.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-body font-semibold text-lg text-charcoal mb-3">
+                      Starting at $250
+                    </p>
+                    <p className="font-body font-medium text-base text-terra hover:text-terra-dark transition-colors">
+                      Learn more →
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </Reveal>
+
+            {/* Move-in / Move-out Card */}
+            <Reveal delay={200}>
+              <Link href="/services/move">
+                <div className="bg-cream rounded-md p-6 md:p-8 transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1 h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-display font-medium text-2xl text-charcoal mb-3">
+                      Move-in / move-out clean
+                    </h3>
+                    <p className="font-body font-normal text-base text-charcoal-light mb-6 leading-relaxed">
+                      Transition cleaning for moves, lease turnovers, and fresh starts. We leave the space spotless for whoever comes next.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-body font-semibold text-lg text-charcoal mb-3">
+                      Starting at $300
+                    </p>
+                    <p className="font-body font-medium text-base text-terra hover:text-terra-dark transition-colors">
+                      Learn more →
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 px-6 bg-white">
-        <div className="container-site">
-          <Reveal delay={0.1}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-12 text-forest-green">
-              Loved by Tacoma
-            </h2>
+      {/* Section 5: The Lenny's Difference */}
+      <section className="bg-cream">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="mb-12 md:mb-16">
+              <h2 className="font-display font-medium text-3xl md:text-4xl text-charcoal">
+                Why Tacoma homeowners choose Lenny's
+              </h2>
+            </div>
           </Reveal>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: 'Sarah M.', quote: 'Best cleaning service I\'ve used. The operators are reliable and thorough. Highly recommend!' },
-              { name: 'John D.', quote: 'Finally a platform that treats cleaners fairly. The quality shows in the work.' },
-              { name: 'Lisa R.', quote: 'Love that they offer eco-friendly cleaning. My home is spotless and the planet is happy.' }
-            ].map((testimonial, i) => (
-              <Reveal key={i} delay={0.2 + i * 0.1}>
-                <div className="bg-warm-white p-8 rounded-lg border-l-4 border-terracotta">
-                  <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
-                  <p className="font-display font-bold text-forest-green">{testimonial.name}</p>
-                </div>
-              </Reveal>
-            ))}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* Prop 1 */}
+            <Reveal>
+              <div className="max-w-[640px]">
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-4">
+                  We pay our professionals more — and you can tell
+                </h3>
+                <p className="font-body font-normal text-base md:text-lg text-charcoal-light leading-relaxed">
+                  Most platforms pay cleaning professionals $16-24 per hour. Ours earn $30-48. Better pay attracts better talent, reduces turnover, and means the person cleaning your home actually wants to be there.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Prop 2 */}
+            <Reveal delay={100}>
+              <div className="max-w-[640px]">
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-4">
+                  Your price is your price
+                </h3>
+                <p className="font-body font-normal text-base md:text-lg text-charcoal-light leading-relaxed">
+                  No hourly estimates that balloon. No \"we'll let you know when we get there.\" Lenny's gives you a flat rate before you book, with a line-item breakdown of exactly what you're paying for.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Prop 3 */}
+            <Reveal delay={200}>
+              <div className="max-w-[640px]">
+                <h3 className="font-display font-medium text-2xl text-charcoal mb-4">
+                  If it's not right, we make it right
+                </h3>
+                <p className="font-body font-normal text-base md:text-lg text-charcoal-light leading-relaxed">
+                  Every cleaning is backed by our satisfaction guarantee. If something's missed, we'll send a specialist back — on us. No arguments, no fine print.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 px-6 bg-warm-white">
-        <div className="container-site text-center">
-          <Reveal delay={0.1}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-forest-green">
-              Ready to book?
-            </h2>
+      {/* Section 6: Service Area */}
+      <section className="bg-warm-white">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="mb-10 md:mb-12">
+              <h2 className="font-display font-medium text-3xl md:text-4xl text-charcoal mb-4">
+                Proudly serving Tacoma and surrounding communities
+              </h2>
+              <p className="font-body font-normal text-lg text-charcoal-light max-w-[640px]">
+                Lenny's Cleaning serves homes across Tacoma — from the Stadium District to South Tacoma, University Place to Lakewood, and everywhere in between.
+              </p>
+            </div>
           </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-              Your next clean is just a few clicks away.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <Link href="/book" className="inline-block px-8 py-4 bg-forest-green text-white font-display font-bold rounded-lg hover:bg-emerald-900 transition-colors">
-              Book a cleaning today
-            </Link>
+
+          <Reveal>
+            <div className="flex flex-wrap gap-3">
+              {[
+                'Stadium District',
+                'North End',
+                'Hilltop',
+                'Lincoln District',
+                'South Tacoma',
+                'Eastside',
+                'West End',
+                'McKinley Hill',
+                'Proctor',
+                'Old Town',
+                'Ruston',
+                'University Place',
+                'Lakewood',
+                'Fircrest',
+                'Joint Base Lewis-McChord area',
+              ].map((neighborhood) => (
+                <span
+                  key={neighborhood}
+                  className="inline-block px-4 py-2 bg-cream text-charcoal rounded-full font-body font-medium text-sm"
+                >
+                  {neighborhood}
+                </span>
+              ))}
+            </div>
           </Reveal>
         </div>
       </section>
+
+      {/* Section 7: Final CTA */}
+      <section className="bg-forest text-warm-white">
+        <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="text-center">
+              <h2 className="font-display font-medium text-3xl md:text-4xl mb-4">
+                Your home deserves Lenny's
+              </h2>
+              <p className="font-body font-normal text-lg md:text-xl mb-8 text-cream max-w-[640px] mx-auto leading-relaxed">
+                Book your first cleaning today and see the difference a vetted, well-paid professional makes.
+              </p>
+              <Link href="/book" className="btn-primary inline-block">
+                Book a cleaning
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <Footer />
     </>
   );
 }

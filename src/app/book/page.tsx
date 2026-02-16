@@ -1,33 +1,48 @@
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Book a cleaning',
-  description: 'Schedule your next cleaning with Lenny\'s and experience the difference. Fair pricing, reliable service, satisfaction guaranteed.'
+  title: "Book a Cleaning | Lenny's Cleaning — Tacoma, WA",
+  description: "Book your cleaning appointment with Lenny's Cleaning. Coming soon.",
 };
 
-export default function BookPage() {
+export default function BookingPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="pt-32 pb-24 px-6 bg-warm-white relative">
-        <div className="absolute top-0 right-0 w-2/5 h-full bg-cream opacity-60" style={{ clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0% 100%)' }}></div>
-        <div className="container-site relative z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-display font-bold leading-tight mb-6 text-forest-green">Schedule your cleaning</h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">Book in minutes. We\'ll confirm your operator within 24 hours.</p>
-          </div>
+      <Header />
+
+      <section className="bg-warm-white py-16 md:py-24 px-5 md:px-6 min-h-[60vh] flex items-center">
+        <div className="max-w-[1200px] mx-auto max-w-[640px]">
+          <Reveal>
+            <h1 className="font-display text-4xl md:text-5xl text-forest mb-6">
+              Book a cleaning
+            </h1>
+          </Reveal>
+          <Reveal delay={100}>
+            <p className="font-body text-lg text-charcoal mb-8">
+              Our booking system is coming soon. In the meantime, reach out to us at{' '}
+              <a
+                href="mailto:hello@lennyscleaning.com"
+                className="text-terra font-medium hover:opacity-80 transition"
+              >
+                hello@lennyscleaning.com
+              </a>
+              {' '}or call{' '}
+              <a
+                href="tel:+12535550100"
+                className="text-terra font-medium hover:opacity-80 transition"
+              >
+                (253) 555-0100
+              </a>
+              {' '}to book your cleaning.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* Cal.com Embed (Future) */}
-      <section className="py-24 px-6 bg-white">
-        <div className="container-site">
-          <div className="max-w-2xl mx-auto bg-warm-white p-12 rounded-xl border-2 border-dashed border-gray-300 text-center">
-            <p className="text-gray-600 mb-4">Booking widget coming soon</p>
-            <p className="text-sm text-gray-500">Cal.com integration in progress. Email eric@flowbotics.xyz to schedule early.</p>
-          </div>
-        </div>
-      </section>
+      <Footer />
     </>
   );
 }
