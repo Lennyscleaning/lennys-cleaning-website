@@ -1,7 +1,6 @@
 'use client';
 
 import Reveal from '@/components/ui/Reveal';
-import TrustBar from '@/components/ui/TrustBar';
 
 export function EcoHero() {
   return (
