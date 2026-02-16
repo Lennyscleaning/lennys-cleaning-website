@@ -87,19 +87,19 @@ const services = [
 
 const valueCards = [
   {
-    label: 'Higher pay, higher standards',
+    label: 'The old model is broken',
     description:
-      'Our operators earn 2–3× the industry average. That means experienced professionals who stay, not a revolving door of strangers.',
+      'Traditional cleaning companies charge premium prices, then pay their workers $16–24 an hour. The difference? Layers of overhead — dispatchers, office managers, call centers, and margins that benefit the company, not you or the person cleaning your home.',
   },
   {
-    label: 'Your price, confirmed upfront',
+    label: 'Technology replaces overhead, not people',
     description:
-      "Flat-rate pricing based on your home — not an hourly meter running while you watch. You'll see every line item before you book.",
+      "Lenny's is built on automation and AI — from booking to dispatch to quality assurance. By eliminating the back-office bloat that drives up costs, we pass the savings in both directions: lower prices for you, higher pay for our professionals.",
   },
   {
-    label: 'Locally operated, personally accountable',
+    label: 'You pay less. They earn $28–48/hr. Everyone wins.',
     description:
-      "Lenny's is family-operated right here in the South Sound. When something needs attention, you're talking to a person who cares — not a call center.",
+      "Our cleaning professionals earn 2–3x the industry average — which means less turnover, more experience, and someone who actually takes pride in the work. And you get a better clean at a better price. That's not a trade-off. That's better engineering.",
   },
 ];
 
@@ -394,15 +394,8 @@ export default function HomePage() {
               <Reveal>
                 <span className="overline block mb-3">Why Lenny&apos;s</span>
                 <h2 className="font-display font-medium text-3xl md:text-[2.75rem] leading-[1.15] tracking-[-0.01em] mb-6">
-                  We pay our professionals more. You can tell.
+                  Better for you. Better for them. Here&apos;s how.
                 </h2>
-                <p className="text-charcoal-light leading-relaxed text-base md:text-lg max-w-[600px]">
-                  Most cleaning platforms pay their workers $13–18 per hour and
-                  wonder why quality is inconsistent. Our professionals earn
-                  $28–48 per hour — because when people are compensated fairly,
-                  they do their best work. That&apos;s not a feel-good policy.
-                  It&apos;s our quality strategy.
-                </p>
               </Reveal>
             </div>
 
