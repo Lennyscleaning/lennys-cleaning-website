@@ -141,7 +141,7 @@ export default function HomePage() {
               animation: heroFadeUp 0.8s var(--ease-out) forwards;
             }
             .ken-burns {
-              animation: kenBurns 20s ease-in-out infinite alternate;
+              animation: kenBurns 12s ease-in-out infinite alternate;
             }
           `,
         }}
