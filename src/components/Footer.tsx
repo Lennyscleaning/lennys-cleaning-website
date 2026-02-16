@@ -22,7 +22,7 @@ export default function Footer() {
               A clean home, every time.
             </p>
             <p className="text-warm-white/60 text-sm">
-              Tacoma&apos;s trusted cleaning marketplace.
+              Washington&apos;s trusted cleaning marketplace.
             </p>
           </div>
 
