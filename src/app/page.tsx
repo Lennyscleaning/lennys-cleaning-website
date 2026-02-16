@@ -394,7 +394,7 @@ export default function HomePage() {
               <Reveal>
                 <span className="overline block mb-3">Why Lenny&apos;s</span>
                 <h2 className="font-display font-medium text-3xl md:text-[2.75rem] leading-[1.15] tracking-[-0.01em] mb-6">
-                  Better for you. Better for them. Here&apos;s how.
+                  Better for homeowners. Better for cleaners. Here&apos;s how.
                 </h2>
               </Reveal>
             </div>
