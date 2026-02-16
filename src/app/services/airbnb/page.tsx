@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
-import TrustBar from '@/components/TrustBar';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -192,7 +191,29 @@ export default function AirbnbCleaningPage() {
       </header>
 
       {/* ══════ TRUST BAR ══════ */}
-      <TrustBar />
+      <Reveal>
+        <section className="bg-cream">
+          <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-5">
+            <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6">
+              {[
+                'Same-day turnovers available',
+                'Consistent specialist for your property',
+                'Flat-rate pricing — no surprises',
+                'Calendar sync for recurring bookings',
+              ].map((label) => (
+                <div key={label} className="flex items-center gap-2.5">
+                  <svg className="w-5 h-5 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm font-medium text-charcoal-light leading-tight">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
       {/* ══════ WHAT'S INCLUDED ══════ */}
       <section className="py-24 px-6">
