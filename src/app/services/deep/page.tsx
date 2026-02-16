@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
+import TrustBar from '@/components/TrustBar';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -51,11 +52,6 @@ const icons = {
       <circle cx="11" cy="11" r="8" />
       <path d="M21 21l-4.35-4.35" />
       <path d="M11 8v6M8 11h6" />
-    </svg>
-  ),
-  check: (
-    <svg className="w-4 h-4 text-forest shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 6 9 17 4 12" />
     </svg>
   ),
 };
@@ -139,13 +135,6 @@ const faqs = [
   },
 ];
 
-const trustItems = [
-  'Background-checked professionals',
-  'Flat-rate pricing — no surprises',
-  'Satisfaction guaranteed',
-  'Proudly serving Tacoma',
-];
-
 /* ─── JSON-LD ─── */
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -201,16 +190,7 @@ export default function DeepCleaningPage() {
       </header>
 
       {/* ══════ TRUST BAR ══════ */}
-      <Reveal>
-        <div className="flex flex-wrap justify-center gap-8 py-7 px-6 border-t border-b border-gray-l">
-          {trustItems.map((t) => (
-            <div key={t} className="flex items-center gap-2 text-sm font-medium text-gray-m">
-              {icons.check}
-              <span>{t}</span>
-            </div>
-          ))}
-        </div>
-      </Reveal>
+      <TrustBar />
 
       {/* ══════ WHAT'S INCLUDED ══════ */}
       <section className="py-24 px-6">

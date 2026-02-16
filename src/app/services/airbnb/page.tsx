@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
+import TrustBar from '@/components/TrustBar';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -51,11 +52,6 @@ const icons = {
     <svg className="w-7 h-7 text-forest shrink-0" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M9 11l3 3L22 4" />
       <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-    </svg>
-  ),
-  check: (
-    <svg className="w-4 h-4 text-forest shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 6 9 17 4 12" />
     </svg>
   ),
 };
@@ -141,13 +137,6 @@ const faqs = [
   },
 ];
 
-const trustItems = [
-  'Same-day turnovers available',
-  'Consistent specialist for your property',
-  'Flat-rate pricing — no surprises',
-  'Calendar sync for recurring bookings',
-];
-
 /* ─── JSON-LD ─── */
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -203,16 +192,7 @@ export default function AirbnbCleaningPage() {
       </header>
 
       {/* ══════ TRUST BAR ══════ */}
-      <Reveal>
-        <div className="flex flex-wrap justify-center gap-8 py-7 px-6 border-t border-b border-gray-l">
-          {trustItems.map((t) => (
-            <div key={t} className="flex items-center gap-2 text-sm font-medium text-gray-m">
-              {icons.check}
-              <span>{t}</span>
-            </div>
-          ))}
-        </div>
-      </Reveal>
+      <TrustBar />
 
       {/* ══════ WHAT'S INCLUDED ══════ */}
       <section className="py-24 px-6">
