@@ -389,9 +389,9 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════
           Section 6 — The Lenny's Difference
           ═══════════════════════════════════════ */}
-      <section className="grid md:grid-cols-2 md:items-center">
+      <section className="grid md:grid-cols-2">
         {/* Left — Forest green statement */}
-        <div className="relative bg-forest overflow-hidden">
+        <div className="relative bg-forest overflow-hidden flex items-center">
           {/* Grain texture */}
           <div
             className="absolute inset-0 opacity-[0.04] pointer-events-none"
