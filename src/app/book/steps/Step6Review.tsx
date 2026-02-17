@@ -1,0 +1,114 @@
+import type { BookingFormData, ServiceType } from '../lib/types';
+import type { PriceBreakdown } from '../lib/pricing';
+
+const serviceLabels: Record<ServiceType, string> = {
+  standard: 'Standard cleaning',
+  deep: 'Deep cleaning',
+  move: 'Move-in / move-out',
+  airbnb: 'Airbnb turnover',
+  'post-construction': 'Post-construction',
+};
+
+interface Props {
+  data: BookingFormData;
+  price: PriceBreakdown | null;
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between py-2 border-b border-cream-dark last:border-0">
+      <span className="font-body text-sm text-charcoal-light">{label}</span>
+      <span className="font-body text-sm font-medium text-charcoal text-right">{value}</span>
+    </div>
+  );
+}
+
+export default function Step6Review({ data, price }: Props) {
+  return (
+    <div>
+      <h2 className="font-display font-semibold text-2xl text-charcoal mb-2">
+        Review your booking
+      </h2>
+      <p className="font-body text-[15px] text-charcoal-light mb-6">
+        Make sure everything looks right before submitting.
+      </p>
+
+      <div className="space-y-6">
+        {/* Service details */}
+        <div className="bg-cream/50 rounded-md p-5">
+          <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
+            Service details
+          </h3>
+          <Row label="Service" value={data.serviceType ? serviceLabels[data.serviceType as ServiceType] : ''} />
+          <Row label="Bedrooms" value={String(data.bedrooms)} />
+          <Row label="Bathrooms" value={String(data.bathrooms)} />
+          <Row label="Square footage" value={data.sqft} />
+          <Row label="Condition" value={data.condition} />
+          <Row label="Pets" value={data.pets ? 'Yes' : 'No'} />
+        </div>
+
+        {/* Add-ons */}
+        {data.addons.size > 0 && (
+          <div className="bg-cream/50 rounded-md p-5">
+            <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
+              Add-ons
+            </h3>
+            {price?.addonItems.map((item) => (
+              <Row key={item.label} label={item.label} value={`$${item.price}`} />
+            ))}
+          </div>
+        )}
+
+        {/* Schedule */}
+        <div className="bg-cream/50 rounded-md p-5">
+          <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
+            Schedule
+          </h3>
+          <Row label="Date" value={data.date} />
+          <Row label="Time" value={data.timeSlot} />
+        </div>
+
+        {/* Contact */}
+        <div className="bg-cream/50 rounded-md p-5">
+          <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
+            Contact info
+          </h3>
+          <Row label="Name" value={data.name} />
+          <Row label="Email" value={data.email} />
+          <Row label="Phone" value={data.phone} />
+          <Row label="Address" value={`${data.address}, ${data.city} ${data.zip}`} />
+          {data.instructions && <Row label="Instructions" value={data.instructions} />}
+        </div>
+
+        {/* Price breakdown */}
+        {price && (
+          <div className="bg-forest/5 rounded-md p-5">
+            <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
+              Price breakdown
+            </h3>
+            <Row label="Base price" value={`$${price.base}`} />
+            {price.bathroomSurcharge > 0 && (
+              <Row label="Extra bathroom surcharge" value={`$${price.bathroomSurcharge}`} />
+            )}
+            {price.conditionMultiplier !== 1 && (
+              <Row label={`Condition: ${price.conditionLabel}`} value={`×${price.conditionMultiplier}`} />
+            )}
+            {price.petsSurcharge > 0 && (
+              <Row label="Pets surcharge" value={`$${price.petsSurcharge}`} />
+            )}
+            {price.addonsTotal > 0 && (
+              <Row label="Add-ons total" value={`$${price.addonsTotal}`} />
+            )}
+            <div className="flex justify-between pt-3 mt-2 border-t-2 border-forest/20">
+              <span className="font-body font-semibold text-charcoal">Estimated total</span>
+              <span className="font-display font-semibold text-xl text-forest">${price.total}</span>
+            </div>
+            <p className="font-body text-xs text-charcoal-light mt-2">
+              Final price confirmed within 2 hours of booking.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
