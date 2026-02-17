@@ -13,14 +13,14 @@ const servicesLinks = [
 ];
 
 const areasLinks = [
-  { label: 'Tacoma', href: '/tacoma' },
-  { label: 'Lakewood', href: '/lakewood' },
-  { label: 'Puyallup', href: '/puyallup' },
-  { label: 'University Place', href: '/university-place' },
-  { label: 'Fife', href: '/fife' },
-  { label: 'Spanaway', href: '/spanaway' },
-  { label: 'Bonney Lake', href: '/bonney-lake' },
-  { label: 'Gig Harbor', href: '/gig-harbor' },
+  { label: 'Tacoma', href: '/house-cleaning-tacoma' },
+  { label: 'Lakewood', href: '/house-cleaning-lakewood' },
+  { label: 'Puyallup', href: '/house-cleaning-puyallup' },
+  { label: 'University Place', href: '/house-cleaning-university-place' },
+  { label: 'Fife', href: '/house-cleaning-fife' },
+  { label: 'Spanaway', href: '/house-cleaning-spanaway' },
+  { label: 'Bonney Lake', href: '/house-cleaning-bonney-lake' },
+  { label: 'Gig Harbor', href: '/house-cleaning-gig-harbor' },
 ];
 
 /* ─── Dropdown component ─── */

@@ -266,7 +266,7 @@ export default function RecurringCleaningPage() {
           <Reveal delay={200}>
             <p className="font-body text-sm text-gray-m text-center max-w-[600px] mx-auto leading-relaxed">
               Prices shown are for a 3BR/2BA home — Tacoma&apos;s most common configuration. Your exact rate depends on home size and condition.{' '}
-              <Link href="/house-cleaning-prices-tacoma-wa" className="text-forest underline">
+              <Link href="/pricing" className="text-forest underline">
                 See all prices
               </Link>
               .

@@ -100,7 +100,7 @@ export default function JoinOurTeamPage() {
             </p>
           </Reveal>
           <Reveal delay={300}>
-            <Link href="/apply" className="btn-primary text-base px-8 py-4">
+            <Link href="/contact" className="btn-primary text-base px-8 py-4">
               Apply now
             </Link>
             <p className="font-body text-sm text-warm-white/50 mt-4">
@@ -277,7 +277,7 @@ export default function JoinOurTeamPage() {
           </Reveal>
           <Reveal delay={200}>
             <Link
-              href="/apply"
+              href="/contact"
               className="btn-primary text-base px-8 py-4"
             >
               Apply now

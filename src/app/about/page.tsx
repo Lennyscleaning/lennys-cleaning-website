@@ -171,7 +171,7 @@ export default function AboutPage() {
               {serviceAreas.map((city) => (
                 <Link
                   key={city}
-                  href={`/areas/${city.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/house-cleaning-${city.toLowerCase().replace(/\s+/g, '-')}`}
                   className="font-body text-sm font-medium text-forest bg-cream rounded-full px-5 py-2.5 hover:bg-forest hover:text-warm-white transition-colors duration-200"
                 >
                   {city}
@@ -208,7 +208,7 @@ export default function AboutPage() {
                 Book a cleaning
               </Link>
               <Link
-                href="/join"
+                href="/join-our-team"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-warm-white/60 text-warm-white font-body font-semibold text-base tracking-wide rounded-sm hover:bg-warm-white/10 transition-all duration-200"
               >
                 Join our team
