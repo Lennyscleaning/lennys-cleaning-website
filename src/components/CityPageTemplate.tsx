@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import TrustBar from '@/components/TrustBar';
+import { cityServiceCards } from '@/lib/pricing-data';
 
 interface NearbyArea {
   name: string;
@@ -13,26 +14,7 @@ interface CityPageProps {
   nearbyAreas: NearbyArea[];
 }
 
-const services = [
-  {
-    title: 'Standard cleaning',
-    price: 'Starting at $125',
-    href: '/services/standard',
-    desc: 'Regular maintenance cleaning for your home — kitchens, bathrooms, floors, and surfaces.',
-  },
-  {
-    title: 'Deep cleaning',
-    price: 'Starting at $200',
-    href: '/services/deep',
-    desc: 'A thorough, top-to-bottom clean including inside appliances, baseboards, and detail work.',
-  },
-  {
-    title: 'Move-out cleaning',
-    price: 'Starting at $185',
-    href: '/services/move',
-    desc: 'Get your deposit back with a comprehensive clean designed for move-in and move-out transitions.',
-  },
-];
+const services = cityServiceCards;
 
 const valueProps = [
   {

@@ -3,12 +3,13 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
+import { serviceComparison, sizeRanges, addons as centralAddons } from '@/lib/pricing-data';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
   title: "House Cleaning Prices in Tacoma | Lenny's Cleaning",
   description:
-    'Transparent, flat-rate house cleaning prices in Tacoma. Standard from $125, deep cleaning from $200, move-out from $185. See your exact price before you book.',
+    'Transparent, flat-rate house cleaning prices in Tacoma. Standard from $85, deep cleaning from $150, move-out from $175. See your exact price before you book.',
   openGraph: {
     title: "House Cleaning Prices in Tacoma | Lenny's Cleaning — Tacoma, WA",
     description:
@@ -16,60 +17,14 @@ export const metadata: Metadata = {
   },
 };
 
-/* ─── Data ─── */
-const services = [
-  {
-    name: 'Standard cleaning',
-    price: '$125',
-    bestFor: 'Routine maintenance',
-    href: '/services/standard',
-  },
-  {
-    name: 'Deep cleaning',
-    price: '$200',
-    bestFor: 'First cleans, seasonal refresh',
-    href: '/services/deep',
-  },
-  {
-    name: 'Move-out cleaning',
-    price: '$185',
-    bestFor: 'End of lease, selling',
-    href: '/services/move',
-  },
-  {
-    name: 'Airbnb / rental turnover',
-    price: '$100–$250',
-    bestFor: 'Short-term rental hosts',
-    href: '/services/airbnb',
-  },
-  {
-    name: 'Recurring cleaning',
-    price: 'From $106/visit',
-    bestFor: 'Ongoing maintenance with savings',
-    href: '/services/recurring',
-  },
-];
-
-const sizeRanges = [
-  { size: '1 bedroom', range: '$85–$220' },
-  { size: '2 bedrooms', range: '$120–$280' },
-  { size: '3 bedrooms', range: '$150–$340' },
-  { size: '4+ bedrooms', range: '$175–$380' },
-];
-
-const addons = [
-  { name: 'Inside refrigerator', price: '$25' },
-  { name: 'Inside oven', price: '$25' },
-  { name: 'Interior windows', price: '$35' },
-  { name: 'Laundry (wash, dry, fold)', price: '$15' },
-  { name: 'Inside cabinets', price: '$30' },
-  { name: 'Garage sweep', price: '$20' },
-];
+/* ─── Data (from centralized pricing) ─── */
+const services = serviceComparison;
+const addons = centralAddons;
 
 const recurringDiscounts = [
-  { frequency: 'Weekly', discount: '15% off', note: 'Best value — lowest per-visit rate' },
-  { frequency: 'Biweekly', discount: '10% off', note: 'Most popular — great balance of savings and frequency' },
-  { frequency: 'Monthly', discount: '5% off', note: 'Light savings with consistent care' },
+  { frequency: 'Weekly', discount: '~15% off', note: 'Best value — lowest per-visit rate' },
+  { frequency: 'Biweekly', discount: '~5–8% off', note: 'Most popular — great balance of savings and frequency' },
+  { frequency: 'Monthly', discount: '~3–5% off', note: 'Light savings with consistent care' },
 ];
 
 const faqs = [
@@ -87,7 +42,7 @@ const faqs = [
   },
   {
     question: 'Do you offer discounts for recurring cleanings?',
-    answer: 'Yes. Weekly customers save 15% per visit, biweekly saves 10%, and monthly saves 5% — compared to one-time standard cleaning rates. Plus you get the same specialist every visit and priority scheduling.',
+    answer: 'Yes. Weekly customers save ~15% per visit, biweekly saves ~5–8%, and monthly saves ~3–5% — compared to one-time standard cleaning rates. Plus you get the same specialist every visit and priority scheduling.',
   },
   {
     question: 'What payment methods do you accept?',
@@ -183,7 +138,7 @@ export default function PricingPage() {
                 >
                   <span className="font-body text-base font-semibold text-charcoal">{service.name}</span>
                   <span className="font-display text-lg font-semibold text-forest">{service.price}</span>
-                  <span className="font-body text-[15px] text-charcoal-light">{service.bestFor}</span>
+                  <span className="font-body text-[15px] text-charcoal-light">{service.note}</span>
                   <span className="md:text-right">
                     <Link
                       href={service.href}

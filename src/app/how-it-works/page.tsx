@@ -154,7 +154,7 @@ export default function HowItWorksPage() {
               Simple, transparent pricing
             </h2>
             <p className="font-body text-[17px] text-charcoal-light leading-relaxed mb-8">
-              Starting at $125 for a standard clean. Your exact price depends on your home size and the service you choose — you&apos;ll always see it before you book.
+              Starting at $85 for a standard clean. Your exact price depends on your home size and the service you choose — you&apos;ll always see it before you book.
             </p>
           </Reveal>
           <Reveal delay={100}>

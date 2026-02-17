@@ -3,16 +3,17 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
+import { deepPricing, addons as allAddons } from '@/lib/pricing-data';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
   title: 'Deep Cleaning Service',
   description:
-    'Book a deep cleaning in Tacoma starting at $200. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
+    'Book a deep cleaning in Tacoma starting at $150. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
   openGraph: {
     title: "Deep Cleaning Service | Lenny's Cleaning — Tacoma, WA",
     description:
-      'Book a deep cleaning in Tacoma starting at $200. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
+      'Book a deep cleaning in Tacoma starting at $150. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
   },
 };
 
@@ -90,27 +91,9 @@ const inclusions = [
   },
 ];
 
-const pricing = [
-  { config: '1 bedroom / 1 bath', price: '$200' },
-  { config: '2 bedrooms / 1 bath', price: '$245' },
-  { config: '3 bedrooms / 2 baths', price: '$285' },
-  { config: '4 bedrooms / 2.5 baths', price: '$365' },
-  { config: '5 bedrooms / 3 baths', price: '$450' },
-];
+const pricing = deepPricing;
 
-const addons = [
-  { name: 'Interior windows', price: '$5/window' },
-  { name: 'Garage sweep', price: '$35' },
-  { name: 'Patio / balcony', price: '$20' },
-  { name: 'Laundry (wash, dry, fold)', price: '$30' },
-  { name: 'Inside cabinets', price: '$30' },
-  { name: 'Wall washing', price: '$40' },
-  { name: 'Organizing', price: '$50/hr' },
-  { name: 'Green / eco products', price: '$10' },
-  { name: 'Pet hair treatment', price: '$15' },
-  { name: 'Interior vehicle', price: '$30' },
-  { name: 'Exterior windows', price: '$8/window' },
-];
+const deepAddons = allAddons;
 
 const faqs = [
   {
@@ -151,7 +134,7 @@ const jsonLd = {
   offers: {
     '@type': 'Offer',
     priceCurrency: 'USD',
-    price: '200',
+    price: '150',
     priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
   },
 };
@@ -272,7 +255,7 @@ export default function DeepCleaningPage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-[900px] mx-auto">
-            {addons.map((a, i) => (
+            {deepAddons.map((a, i) => (
               <Reveal key={a.name} delay={i * 50}>
                 <div className="bg-cream rounded-lg px-5 py-[18px] flex justify-between items-center">
                   <span className="font-body text-[15px] font-medium text-charcoal">{a.name}</span>

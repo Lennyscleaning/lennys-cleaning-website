@@ -2,16 +2,17 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
+import { airbnbPricing, addons as allAddons } from '@/lib/pricing-data';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
   title: 'Airbnb Turnover Cleaning',
   description:
-    'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $100. Fresh linens, spotless spaces, and five-star guest readiness.',
+    'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $125. Fresh linens, spotless spaces, and five-star guest readiness.',
   openGraph: {
     title: "Airbnb Turnover Cleaning | Lenny's Cleaning — Tacoma, WA",
     description:
-      'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $100. Fresh linens, spotless spaces, and five-star guest readiness.',
+      'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $125. Fresh linens, spotless spaces, and five-star guest readiness.',
   },
 };
 
@@ -89,30 +90,14 @@ const inclusions = [
   },
 ];
 
-const pricing = [
-  { config: 'Studio / 1 bath', price: '$100' },
-  { config: '1 bedroom / 1 bath', price: '$125' },
-  { config: '2 bedrooms / 1 bath', price: '$155' },
-  { config: '3 bedrooms / 2 baths', price: '$195' },
-  { config: '4 bedrooms / 2.5 baths', price: '$250' },
-];
+const pricing = airbnbPricing;
 
-const addons = [
-  { name: 'Laundry (wash, dry, fold)', price: '$30' },
-  { name: 'Inside oven', price: '$35' },
-  { name: 'Inside refrigerator', price: '$30' },
-  { name: 'Patio / balcony', price: '$20' },
-  { name: 'Restocking supplies', price: '$15' },
-  { name: 'Interior windows', price: '$5/window' },
-  { name: 'Pet hair treatment', price: '$15' },
-  { name: 'Green / eco products', price: '$10' },
-  { name: 'Garage sweep', price: '$35' },
-];
+const airbnbAddons = allAddons;
 
 const faqs = [
   {
     question: 'How fast can you turn around between guests?',
-    answer: "Most turnovers take 2–3 hours depending on property size. We can work within tight same-day windows — just let us know your checkout and check-in times when you book. For same-day turnovers, a $25 priority fee applies.",
+    answer: "Most turnovers take 2–3 hours depending on property size. We can work within tight same-day windows — just let us know your checkout and check-in times when you book. For same-day turnovers, a $50 same-day service fee applies.",
   },
   {
     question: 'Can I set up recurring turnovers automatically?',
@@ -152,7 +137,7 @@ const jsonLd = {
   offers: {
     '@type': 'Offer',
     priceCurrency: 'USD',
-    price: '100',
+    price: '125',
     priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
   },
 };
@@ -276,7 +261,7 @@ export default function AirbnbCleaningPage() {
           </Reveal>
           <Reveal delay={200}>
             <p className="font-body text-sm text-gray-m text-center mt-5 max-w-[560px] mx-auto">
-              Prices shown are per-turnover rates. Same-day priority turnovers include a $25 scheduling fee. Add-ons like laundry and restocking are priced separately.
+              Prices shown are per-turnover rates. Same-day priority turnovers include a $50 same-day service fee. Add-ons like laundry and restocking are priced separately.
             </p>
           </Reveal>
         </div>
@@ -295,7 +280,7 @@ export default function AirbnbCleaningPage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-[900px] mx-auto">
-            {addons.map((a, i) => (
+            {airbnbAddons.map((a, i) => (
               <Reveal key={a.name} delay={i * 50}>
                 <div className="bg-cream rounded-lg px-5 py-[18px] flex justify-between items-center">
                   <span className="font-body text-[15px] font-medium text-charcoal">{a.name}</span>

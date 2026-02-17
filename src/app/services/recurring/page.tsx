@@ -53,7 +53,7 @@ const faqs = [
   {
     question: 'How do I skip or reschedule a visit?',
     answer:
-      "You can skip or reschedule via text or through your booking dashboard. Free with 24+ hours' notice. Changes made within 24 hours of your scheduled cleaning may be subject to a $25 late change fee.",
+      "You can skip or reschedule via text or through your booking dashboard. Free with 24+ hours' notice. Changes made within 24 hours of your scheduled cleaning may be subject to a late change fee.",
   },
   {
     question: 'Can I add extras to individual visits?',
@@ -200,11 +200,11 @@ export default function RecurringCleaningPage() {
                 <div className="font-display font-medium text-2xl text-charcoal mb-1">Monthly</div>
                 <div className="text-sm text-gray-m mb-6">Once every 4 weeks</div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$149</span>
+                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$157</span>
                   <span className="text-[15px] text-gray-m font-medium">/visit</span>
                 </div>
                 <div className="text-[13px] text-gray-m mb-6 line-through">$165 one-time</div>
-                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save 10% per visit</div>
+                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save ~3–5% per visit</div>
                 <ul className="list-none flex-1 mb-7 p-0 space-y-3">
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Same specialist each visit</li>
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Full standard clean included</li>
@@ -224,11 +224,11 @@ export default function RecurringCleaningPage() {
                 <div className="font-display font-medium text-2xl text-charcoal mb-1">Biweekly</div>
                 <div className="text-sm text-gray-m mb-6">Every 2 weeks</div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$157</span>
+                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$152</span>
                   <span className="text-[15px] text-gray-m font-medium">/visit</span>
                 </div>
                 <div className="text-[13px] text-gray-m mb-6 line-through">$165 one-time</div>
-                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save 5% per visit</div>
+                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save ~5–8% per visit</div>
                 <ul className="list-none flex-1 mb-7 p-0 space-y-3">
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Same specialist each visit</li>
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Full standard clean included</li>
@@ -245,11 +245,11 @@ export default function RecurringCleaningPage() {
                 <div className="font-display font-medium text-2xl text-charcoal mb-1">Weekly</div>
                 <div className="text-sm text-gray-m mb-6">Every week</div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$138</span>
+                  <span className="font-display font-semibold text-[42px] text-forest tracking-tight leading-none">$140</span>
                   <span className="text-[15px] text-gray-m font-medium">/visit</span>
                 </div>
                 <div className="text-[13px] text-gray-m mb-6 line-through">$165 one-time</div>
-                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save 16% per visit</div>
+                <div className="inline-block bg-forest/10 text-forest text-[13px] font-semibold px-2.5 py-1 rounded-full mb-7 w-fit">Save ~15% per visit</div>
                 <ul className="list-none flex-1 mb-7 p-0 space-y-3">
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Same specialist each visit</li>
                   <li className="flex items-start gap-2.5 text-[15px] text-charcoal-light leading-relaxed">{checkCircle}Full standard clean included</li>

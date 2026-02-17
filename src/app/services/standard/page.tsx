@@ -3,16 +3,17 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
+import { standardPricing, addons } from '@/lib/pricing-data';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
   title: "Standard House Cleaning in Tacoma | Lenny's Cleaning",
   description:
-    'Book routine residential cleaning in Tacoma starting at $125. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.',
+    'Book routine residential cleaning in Tacoma starting at $85. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.',
   openGraph: {
     title: "Standard House Cleaning in Tacoma | Lenny's Cleaning — Tacoma, WA",
     description:
-      'Book routine residential cleaning in Tacoma starting at $125. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit.',
+      'Book routine residential cleaning in Tacoma starting at $85. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit.',
   },
 };
 
@@ -77,21 +78,9 @@ const inclusions = [
   },
 ];
 
-const pricing = [
-  { config: '1 bedroom / 1 bath', price: '$125' },
-  { config: '2 bedrooms / 1 bath', price: '$150' },
-  { config: '3 bedrooms / 2 baths', price: '$175' },
-  { config: '4+ bedrooms / 2.5+ baths', price: '$200' },
-];
+const pricing = standardPricing;
 
-const addons = [
-  { name: 'Inside refrigerator', price: '$25' },
-  { name: 'Inside oven', price: '$25' },
-  { name: 'Interior windows', price: '$35' },
-  { name: 'Laundry (wash, dry, fold)', price: '$15' },
-  { name: 'Inside cabinets', price: '$30' },
-  { name: 'Garage sweep', price: '$20' },
-];
+const standardAddons = addons;
 
 const faqs = [
   {
@@ -132,7 +121,7 @@ const jsonLd = {
   offers: {
     '@type': 'Offer',
     priceCurrency: 'USD',
-    price: '125',
+    price: '85',
     priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
   },
 };
@@ -273,7 +262,7 @@ export default function StandardCleaningPage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-[700px] mx-auto">
-            {addons.map((a, i) => (
+            {standardAddons.map((a, i) => (
               <Reveal key={a.name} delay={i * 50}>
                 <div className="bg-cream rounded-lg px-5 py-[18px] flex justify-between items-center">
                   <span className="font-body text-[15px] font-medium text-charcoal">{a.name}</span>

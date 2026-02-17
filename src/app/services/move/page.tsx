@@ -3,16 +3,17 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
+import { movePricing, addons as allAddons } from '@/lib/pricing-data';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
   title: 'Move-In/Out Cleaning',
   description:
-    'Book move-in or move-out cleaning in Tacoma starting at $185. Get your deposit back or start fresh with vetted cleaning professionals.',
+    'Book move-in or move-out cleaning in Tacoma starting at $175. Get your deposit back or start fresh with vetted cleaning professionals.',
   openGraph: {
     title: "Move-In/Out Cleaning | Lenny's Cleaning — Tacoma, WA",
     description:
-      'Book move-in or move-out cleaning in Tacoma starting at $185. Get your deposit back or start fresh with vetted cleaning professionals.',
+      'Book move-in or move-out cleaning in Tacoma starting at $175. Get your deposit back or start fresh with vetted cleaning professionals.',
   },
 };
 
@@ -90,25 +91,9 @@ const inclusions = [
   },
 ];
 
-const pricing = [
-  { config: '1 bedroom / 1 bath', price: '$185' },
-  { config: '2 bedrooms / 1 bath', price: '$230' },
-  { config: '3 bedrooms / 2 baths', price: '$275' },
-  { config: '4 bedrooms / 2.5 baths', price: '$350' },
-  { config: '5 bedrooms / 3 baths', price: '$425' },
-];
+const pricing = movePricing;
 
-const addons = [
-  { name: 'Interior windows', price: '$5/window' },
-  { name: 'Exterior windows', price: '$8/window' },
-  { name: 'Garage sweep', price: '$35' },
-  { name: 'Patio / balcony', price: '$20' },
-  { name: 'Inside cabinets', price: '$30' },
-  { name: 'Wall washing', price: '$40' },
-  { name: 'Green / eco products', price: '$10' },
-  { name: 'Pet hair treatment', price: '$15' },
-  { name: 'Interior vehicle', price: '$30' },
-];
+const moveAddons = allAddons;
 
 const faqs = [
   {
@@ -153,7 +138,7 @@ const jsonLd = {
   offers: {
     '@type': 'Offer',
     priceCurrency: 'USD',
-    price: '185',
+    price: '175',
     priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
   },
 };
@@ -274,7 +259,7 @@ export default function MoveOutCleaningPage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-[900px] mx-auto">
-            {addons.map((a, i) => (
+            {moveAddons.map((a, i) => (
               <Reveal key={a.name} delay={i * 50}>
                 <div className="bg-cream rounded-lg px-5 py-[18px] flex justify-between items-center">
                   <span className="font-body text-[15px] font-medium text-charcoal">{a.name}</span>
