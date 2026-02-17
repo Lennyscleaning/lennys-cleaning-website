@@ -16,8 +16,8 @@ const STEP_LABELS = [
   'Home',
   'Extras',
   'Schedule',
-  'Contact',
   'Review',
+  'Contact',
 ];
 
 const initialData: BookingFormData = {
@@ -47,7 +47,6 @@ function isStepValid(step: number, data: BookingFormData): boolean {
       return (
         data.bedrooms !== null &&
         data.bathrooms !== null &&
-        data.sqft !== '' &&
         data.condition !== '' &&
         data.pets !== null
       );
@@ -56,6 +55,8 @@ function isStepValid(step: number, data: BookingFormData): boolean {
     case 4:
       return data.date !== '' && data.timeSlot !== '';
     case 5:
+      return true;
+    case 6:
       return (
         data.name.trim() !== '' &&
         data.email.trim() !== '' &&
@@ -63,8 +64,6 @@ function isStepValid(step: number, data: BookingFormData): boolean {
         data.address.trim() !== '' &&
         data.zip.trim() !== ''
       );
-    case 6:
-      return true;
     default:
       return false;
   }
@@ -150,8 +149,8 @@ export default function BookingForm() {
       {step === 2 && <Step2HomeDetails data={data} onChange={handleChange} />}
       {step === 3 && <Step3Addons data={data} onChange={handleChange} />}
       {step === 4 && <Step4Schedule data={data} onChange={handleChange} />}
-      {step === 5 && <Step5ContactInfo data={data} onChange={handleChange} />}
-      {step === 6 && <Step6Review data={data} price={price} />}
+      {step === 5 && <Step6Review data={data} price={price} />}
+      {step === 6 && <Step5ContactInfo data={data} onChange={handleChange} />}
       {step === 7 && <Step7Confirmation data={data} />}
 
       {/* Navigation buttons — hidden on confirmation */}
