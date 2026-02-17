@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Recurring House Cleaning | Lenny's Cleaning — Tacoma, WA",
+  title: "Recurring Cleaning in Tacoma | Lenny's Cleaning",
   description:
-    'Save up to 30% with recurring house cleaning in Tacoma. Weekly, biweekly, or monthly plans with the same vetted professional every visit. Cancel or change anytime.',
+    "Save up to 15% with recurring cleaning plans from Lenny's Cleaning. Same professional every visit, priority scheduling, flexible plans.",
   openGraph: {
-    title: "Recurring House Cleaning | Lenny's Cleaning — Tacoma, WA",
+    title: "Recurring Cleaning in Tacoma | Lenny's Cleaning",
     description:
-      'Save up to 30% with recurring house cleaning in Tacoma. Weekly, biweekly, or monthly plans with the same vetted professional every visit. Cancel or change anytime.',
+      "Save up to 15% with recurring cleaning plans from Lenny's Cleaning. Same professional every visit, priority scheduling, flexible plans.",
   },
 };
 
