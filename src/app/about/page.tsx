@@ -43,7 +43,7 @@ const serviceAreas = [
   'Lakewood',
   'Puyallup',
   'University Place',
-  'Federal Way',
+  'Fife',
   'Bonney Lake',
   'Gig Harbor',
   'Spanaway',
