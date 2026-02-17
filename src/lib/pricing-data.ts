@@ -3,85 +3,89 @@
    Import from here — never hardcode prices in page files.
    ─────────────────────────────────────────────────────── */
 
-/* ─── Base prices (one-time) ─── */
-export const standardPricing = [
-  { config: '1 bedroom / 1 bath', price: '$85' },
-  { config: '2 bedrooms / 1 bath', price: '$120' },
-  { config: '3 bedrooms / 2 baths', price: '$165' },
-  { config: '4 bedrooms / 2.5 baths', price: '$210' },
-  { config: '5 bedrooms / 3 baths', price: '$255' },
-  { config: '6 bedrooms / 3.5 baths', price: '$300' },
+/* ─── Raw price matrices (numeric, used by booking form calculator) ─── */
+export const basePriceMatrix: Record<string, Record<number, number>> = {
+  standard:            { 1: 85,  2: 120, 3: 165, 4: 210, 5: 255, 6: 300 },
+  deep:                { 1: 150, 2: 220, 3: 295, 4: 380, 5: 460, 6: 540 },
+  move:                { 1: 175, 2: 225, 3: 325, 4: 400, 5: 475, 6: 550 },
+  airbnb:              { 1: 125, 2: 155, 3: 195, 4: 250, 5: 300, 6: 350 },
+  'post-construction': { 1: 250, 2: 320, 3: 390, 4: 480, 5: 570, 6: 660 },
+};
+
+export const addonPriceMap: Record<string, number> = {
+  oven: 35,
+  fridge: 30,
+  cabinets: 30,
+  windows: 35,
+  laundry: 15,
+  dishes: 10,
+  baseboards: 20,
+  'wall-spot': 15,
+  garage: 25,
+  patio: 30,
+  'green-products': 10,
+  'same-day': 50,
+  'early-morning': 15,
+  weekend: 20,
+};
+
+/* ─── Bedroom config labels ─── */
+const bedroomConfigs: [number, string][] = [
+  [1, '1 bedroom / 1 bath'],
+  [2, '2 bedrooms / 1 bath'],
+  [3, '3 bedrooms / 2 baths'],
+  [4, '4 bedrooms / 2.5 baths'],
+  [5, '5 bedrooms / 3 baths'],
+  [6, '6 bedrooms / 3.5 baths'],
 ];
 
-export const deepPricing = [
-  { config: '1 bedroom / 1 bath', price: '$150' },
-  { config: '2 bedrooms / 1 bath', price: '$220' },
-  { config: '3 bedrooms / 2 baths', price: '$295' },
-  { config: '4 bedrooms / 2.5 baths', price: '$380' },
-  { config: '5 bedrooms / 3 baths', price: '$460' },
-  { config: '6 bedrooms / 3.5 baths', price: '$540' },
-];
+function formatPricingTable(serviceKey: string) {
+  return bedroomConfigs.map(([beds, config]) => ({
+    config,
+    price: `$${basePriceMatrix[serviceKey][beds]}`,
+  }));
+}
 
-export const movePricing = [
-  { config: '1 bedroom / 1 bath', price: '$175' },
-  { config: '2 bedrooms / 1 bath', price: '$225' },
-  { config: '3 bedrooms / 2 baths', price: '$325' },
-  { config: '4 bedrooms / 2.5 baths', price: '$400' },
-  { config: '5 bedrooms / 3 baths', price: '$475' },
-  { config: '6 bedrooms / 3.5 baths', price: '$550' },
-];
-
-export const airbnbPricing = [
-  { config: '1 bedroom / 1 bath', price: '$125' },
-  { config: '2 bedrooms / 1 bath', price: '$155' },
-  { config: '3 bedrooms / 2 baths', price: '$195' },
-  { config: '4 bedrooms / 2.5 baths', price: '$250' },
-  { config: '5 bedrooms / 3 baths', price: '$300' },
-  { config: '6 bedrooms / 3.5 baths', price: '$350' },
-];
-
-export const postConstructionPricing = [
-  { config: '1 bedroom / 1 bath', price: '$250' },
-  { config: '2 bedrooms / 1 bath', price: '$320' },
-  { config: '3 bedrooms / 2 baths', price: '$390' },
-  { config: '4 bedrooms / 2.5 baths', price: '$480' },
-  { config: '5 bedrooms / 3 baths', price: '$570' },
-  { config: '6 bedrooms / 3.5 baths', price: '$660' },
-];
+/* ─── Base prices (formatted for display pages) ─── */
+export const standardPricing = formatPricingTable('standard');
+export const deepPricing = formatPricingTable('deep');
+export const movePricing = formatPricingTable('move');
+export const airbnbPricing = formatPricingTable('airbnb');
+export const postConstructionPricing = formatPricingTable('post-construction');
 
 /* ─── Starting-at prices (for cards, heroes, SEO) ─── */
 export const startingPrices = {
-  standard: '$85',
-  deep: '$150',
-  move: '$175',
-  airbnb: '$125',
-  postConstruction: '$250',
+  standard: `$${basePriceMatrix.standard[1]}`,
+  deep: `$${basePriceMatrix.deep[1]}`,
+  move: `$${basePriceMatrix.move[1]}`,
+  airbnb: `$${basePriceMatrix.airbnb[1]}`,
+  postConstruction: `$${basePriceMatrix['post-construction'][1]}`,
 };
 
 /* ─── Recurring pricing (3BR base as display example) ─── */
 export const recurringPricing = {
-  base: 165, // 3BR standard one-time
+  base: basePriceMatrix.standard[3],
   weekly: { price: '$140', savings: '~15%' },
   biweekly: { price: '$152', savings: '~8%' },
   monthly: { price: '$157', savings: '~5%' },
 };
 
-/* ─── Add-ons ─── */
+/* ─── Add-ons (formatted for display pages) ─── */
 export const addons = [
-  { name: 'Inside oven', price: '$35' },
-  { name: 'Inside fridge', price: '$30' },
-  { name: 'Inside cabinets', price: '$30' },
-  { name: 'Windows interior', price: '$35' },
-  { name: 'Laundry (wash, dry, fold)', price: '$15' },
-  { name: 'Dishes', price: '$10' },
-  { name: 'Baseboards', price: '$20' },
-  { name: 'Wall spot clean', price: '$15' },
-  { name: 'Garage sweep', price: '$25' },
-  { name: 'Patio / deck', price: '$30' },
-  { name: 'Green cleaning products', price: '$10' },
-  { name: 'Same-day service', price: '$50' },
-  { name: 'Early morning', price: '$15' },
-  { name: 'Weekend', price: '$20' },
+  { name: 'Inside oven', price: `$${addonPriceMap.oven}` },
+  { name: 'Inside fridge', price: `$${addonPriceMap.fridge}` },
+  { name: 'Inside cabinets', price: `$${addonPriceMap.cabinets}` },
+  { name: 'Windows interior', price: `$${addonPriceMap.windows}` },
+  { name: 'Laundry (wash, dry, fold)', price: `$${addonPriceMap.laundry}` },
+  { name: 'Dishes', price: `$${addonPriceMap.dishes}` },
+  { name: 'Baseboards', price: `$${addonPriceMap.baseboards}` },
+  { name: 'Wall spot clean', price: `$${addonPriceMap['wall-spot']}` },
+  { name: 'Garage sweep', price: `$${addonPriceMap.garage}` },
+  { name: 'Patio / deck', price: `$${addonPriceMap.patio}` },
+  { name: 'Green cleaning products', price: `$${addonPriceMap['green-products']}` },
+  { name: 'Same-day service', price: `$${addonPriceMap['same-day']}` },
+  { name: 'Early morning', price: `$${addonPriceMap['early-morning']}` },
+  { name: 'Weekend', price: `$${addonPriceMap.weekend}` },
 ];
 
 /* ─── Pricing page: service comparison ─── */
@@ -120,12 +124,12 @@ export const serviceComparison = [
 
 /* ─── Pricing page: size ranges ─── */
 export const sizeRanges = [
-  { size: '1 bedroom', range: '$85–$175' },
-  { size: '2 bedrooms', range: '$120–$225' },
-  { size: '3 bedrooms', range: '$165–$325' },
-  { size: '4 bedrooms', range: '$210–$400' },
-  { size: '5 bedrooms', range: '$255–$570' },
-  { size: '6 bedrooms', range: '$300–$660' },
+  { size: '1 bedroom', range: '$85\u2013$175' },
+  { size: '2 bedrooms', range: '$120\u2013$225' },
+  { size: '3 bedrooms', range: '$165\u2013$325' },
+  { size: '4 bedrooms', range: '$210\u2013$400' },
+  { size: '5 bedrooms', range: '$255\u2013$570' },
+  { size: '6 bedrooms', range: '$300\u2013$660' },
 ];
 
 /* ─── City page: service cards ─── */
@@ -134,7 +138,7 @@ export const cityServiceCards = [
     title: 'Standard cleaning',
     price: `Starting at ${startingPrices.standard}`,
     href: '/services/standard',
-    desc: 'Regular maintenance cleaning for your home — kitchens, bathrooms, floors, and surfaces.',
+    desc: 'Regular maintenance cleaning for your home \u2014 kitchens, bathrooms, floors, and surfaces.',
   },
   {
     title: 'Deep cleaning',

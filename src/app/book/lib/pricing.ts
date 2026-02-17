@@ -1,29 +1,7 @@
+import { basePriceMatrix, addonPriceMap } from '@/lib/pricing-data';
 import type { ServiceType, Bedrooms, AddonKey, Condition, Bathrooms } from './types';
 
-const basePrices: Record<ServiceType, Record<Bedrooms, number>> = {
-  standard:          { 1: 85,  2: 120, 3: 165, 4: 210, 5: 255, 6: 300 },
-  deep:              { 1: 150, 2: 220, 3: 295, 4: 380, 5: 460, 6: 540 },
-  move:              { 1: 175, 2: 225, 3: 325, 4: 400, 5: 475, 6: 550 },
-  airbnb:            { 1: 125, 2: 155, 3: 195, 4: 250, 5: 300, 6: 350 },
-  'post-construction': { 1: 250, 2: 320, 3: 390, 4: 480, 5: 570, 6: 660 },
-};
-
-export const addonPrices: Record<AddonKey, number> = {
-  oven: 35,
-  fridge: 30,
-  cabinets: 30,
-  windows: 35,
-  laundry: 15,
-  dishes: 10,
-  baseboards: 20,
-  'wall-spot': 15,
-  garage: 25,
-  patio: 30,
-  'green-products': 10,
-  'same-day': 50,
-  'early-morning': 15,
-  weekend: 20,
-};
+export const addonPrices = addonPriceMap as Record<AddonKey, number>;
 
 export const addonLabels: Record<AddonKey, string> = {
   oven: 'Inside oven',
@@ -67,7 +45,7 @@ export function calculatePrice(opts: {
   pets: boolean;
   addons: Set<AddonKey>;
 }): PriceBreakdown {
-  const base = basePrices[opts.serviceType][opts.bedrooms];
+  const base = basePriceMatrix[opts.serviceType][opts.bedrooms];
 
   // Extra bathroom surcharge: $20 per half-bath beyond 1
   const halfBaths = opts.bathrooms * 2; // convert to half-bath units
