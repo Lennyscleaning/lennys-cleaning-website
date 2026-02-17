@@ -82,11 +82,11 @@ export default function Footer() {
         <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-warm-white/40">
           <p>&copy; 2026 Lenny&apos;s Cleaning, a Lenny&apos;s Home Services brand. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-warm-white/60 transition-colors duration-200">
+            <Link href="/privacy-policy" className="hover:text-warm-white/60 transition-colors duration-200">
               Privacy policy
             </Link>
             <span className="text-warm-white/20">&middot;</span>
-            <Link href="#" className="hover:text-warm-white/60 transition-colors duration-200">
+            <Link href="/terms-of-service" className="hover:text-warm-white/60 transition-colors duration-200">
               Terms of service
             </Link>
           </div>
