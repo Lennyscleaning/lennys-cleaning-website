@@ -20,6 +20,8 @@ export const addonLabels: Record<AddonKey, string> = {
   weekend: 'Weekend service',
 };
 
+const BATHROOM_SURCHARGE = 20; // per full bathroom beyond the first
+
 const conditionMultipliers: Record<Condition, number> = {
   normal: 1.0,
   'lived-in': 1.1,
@@ -47,10 +49,8 @@ export function calculatePrice(opts: {
 }): PriceBreakdown {
   const base = basePriceMatrix[opts.serviceType][opts.bedrooms];
 
-  // Extra bathroom surcharge: $20 per half-bath beyond 1
-  const halfBaths = opts.bathrooms * 2; // convert to half-bath units
-  const extraHalfBaths = Math.max(0, halfBaths - 2); // beyond 1 full bath (2 half-baths)
-  const bathroomSurcharge = extraHalfBaths * 20;
+  const extraBathrooms = Math.max(0, Math.floor(opts.bathrooms) - 1);
+  const bathroomSurcharge = extraBathrooms * BATHROOM_SURCHARGE;
 
   const conditionMultiplier = conditionMultipliers[opts.condition];
   const conditionLabel =
