@@ -9,6 +9,8 @@ export const standardPricing = [
   { config: '2 bedrooms / 1 bath', price: '$120' },
   { config: '3 bedrooms / 2 baths', price: '$165' },
   { config: '4 bedrooms / 2.5 baths', price: '$210' },
+  { config: '5 bedrooms / 3 baths', price: '$255' },
+  { config: '6 bedrooms / 3.5 baths', price: '$300' },
 ];
 
 export const deepPricing = [
@@ -16,6 +18,8 @@ export const deepPricing = [
   { config: '2 bedrooms / 1 bath', price: '$220' },
   { config: '3 bedrooms / 2 baths', price: '$295' },
   { config: '4 bedrooms / 2.5 baths', price: '$380' },
+  { config: '5 bedrooms / 3 baths', price: '$460' },
+  { config: '6 bedrooms / 3.5 baths', price: '$540' },
 ];
 
 export const movePricing = [
@@ -23,6 +27,8 @@ export const movePricing = [
   { config: '2 bedrooms / 1 bath', price: '$225' },
   { config: '3 bedrooms / 2 baths', price: '$325' },
   { config: '4 bedrooms / 2.5 baths', price: '$400' },
+  { config: '5 bedrooms / 3 baths', price: '$475' },
+  { config: '6 bedrooms / 3.5 baths', price: '$550' },
 ];
 
 export const airbnbPricing = [
@@ -30,6 +36,8 @@ export const airbnbPricing = [
   { config: '2 bedrooms / 1 bath', price: '$155' },
   { config: '3 bedrooms / 2 baths', price: '$195' },
   { config: '4 bedrooms / 2.5 baths', price: '$250' },
+  { config: '5 bedrooms / 3 baths', price: '$300' },
+  { config: '6 bedrooms / 3.5 baths', price: '$350' },
 ];
 
 export const postConstructionPricing = [
@@ -37,6 +45,8 @@ export const postConstructionPricing = [
   { config: '2 bedrooms / 1 bath', price: '$320' },
   { config: '3 bedrooms / 2 baths', price: '$390' },
   { config: '4 bedrooms / 2.5 baths', price: '$480' },
+  { config: '5 bedrooms / 3 baths', price: '$570' },
+  { config: '6 bedrooms / 3.5 baths', price: '$660' },
 ];
 
 /* ─── Starting-at prices (for cards, heroes, SEO) ─── */
@@ -114,6 +124,8 @@ export const sizeRanges = [
   { size: '2 bedrooms', range: '$120–$225' },
   { size: '3 bedrooms', range: '$165–$325' },
   { size: '4 bedrooms', range: '$210–$400' },
+  { size: '5 bedrooms', range: '$255–$570' },
+  { size: '6 bedrooms', range: '$300–$660' },
 ];
 
 /* ─── City page: service cards ─── */
