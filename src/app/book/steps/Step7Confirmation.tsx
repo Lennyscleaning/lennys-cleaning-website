@@ -33,10 +33,11 @@ export default function Step7Confirmation({ data, price }: Props) {
       </div>
 
       <h2 className="font-display font-semibold text-2xl text-charcoal mb-3">
-        Booking submitted
+        Booking request submitted
       </h2>
       <p className="font-body text-[15px] text-charcoal-light mb-8 max-w-sm mx-auto">
-        We&apos;ll confirm your booking and final price within 2 hours during business hours.
+        We&apos;ll confirm your booking within 2 hours. You&apos;ll receive a text
+        at {data.phone || 'your number on file'}.
       </p>
 
       {/* Summary card */}
@@ -65,15 +66,24 @@ export default function Step7Confirmation({ data, price }: Props) {
         </div>
       </div>
 
-      <p className="font-body text-[15px] text-charcoal-light mb-2">
-        Questions? Give us a call:
+      <p className="font-body text-[15px] text-charcoal-light mb-1">
+        Questions? Call{' '}
+        <a
+          href="tel:+12536003355"
+          className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
+        >
+          (253) 600-3355
+        </a>
       </p>
-      <a
-        href="tel:+12536003355"
-        className="font-body text-lg font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
-      >
-        (253) 600-3355
-      </a>
+      <p className="font-body text-[15px] text-charcoal-light">
+        or email{' '}
+        <a
+          href="mailto:hello@lennyscleaning.com"
+          className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
+        >
+          hello@lennyscleaning.com
+        </a>
+      </p>
     </div>
   );
 }

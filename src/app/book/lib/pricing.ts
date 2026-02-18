@@ -28,6 +28,15 @@ const conditionMultipliers: Record<Condition, number> = {
   heavy: 1.25,
 };
 
+export interface PricingConfig {
+  basePrices: Record<string, Record<number, number>>;
+  addonPrices: Record<string, number>;
+  addonNames: Record<string, string>;
+  conditionMultipliers: Record<string, number>;
+  taxRate?: number;
+  bathroomSurcharge?: number;
+}
+
 export interface PriceBreakdown {
   base: number;
   bathroomSurcharge: number;
@@ -42,38 +51,46 @@ export interface PriceBreakdown {
   total: number;
 }
 
-export function calculatePrice(opts: {
-  serviceType: ServiceType;
-  bedrooms: Bedrooms;
-  bathrooms: Bathrooms;
-  condition: Condition;
-  pets: boolean;
-  addons: Set<AddonKey>;
-}): PriceBreakdown {
-  const base = basePriceMatrix[opts.serviceType][opts.bedrooms];
+export function calculatePrice(
+  opts: {
+    serviceType: ServiceType;
+    bedrooms: Bedrooms;
+    bathrooms: Bathrooms;
+    condition: Condition;
+    pets: boolean;
+    addons: Set<AddonKey>;
+  },
+  config?: PricingConfig,
+): PriceBreakdown {
+  const prices = config?.basePrices ?? basePriceMatrix;
+  const addonMap = config?.addonPrices ?? (addonPriceMap as Record<string, number>);
+  const addonNameMap = config?.addonNames ?? (addonLabels as Record<string, string>);
+  const condMults = config?.conditionMultipliers ?? (conditionMultipliers as Record<string, number>);
+  const taxRate = config?.taxRate ?? TAX_RATE;
+  const bathSurcharge = config?.bathroomSurcharge ?? BATHROOM_SURCHARGE;
+
+  const base = prices[opts.serviceType][opts.bedrooms];
 
   const extraBathrooms = Math.max(0, Math.floor(opts.bathrooms) - 1);
-  const bathroomSurcharge = extraBathrooms * BATHROOM_SURCHARGE;
+  const bathroomSurcharge = extraBathrooms * bathSurcharge;
 
-  const conditionMultiplier = conditionMultipliers[opts.condition];
+  const conditionMultiplier = condMults[opts.condition] ?? 1.0;
   const conditionLabel =
-    opts.condition === 'normal'
+    conditionMultiplier === 1.0
       ? 'Normal'
-      : opts.condition === 'lived-in'
-        ? 'Lived-in (1.10x)'
-        : 'Heavy (1.25x)';
+      : `${opts.condition === 'lived-in' ? 'Lived-in' : 'Heavy'} (${conditionMultiplier.toFixed(2)}x)`;
 
   const petsSurcharge = opts.pets ? 15 : 0;
 
   const addonItems: { label: string; price: number }[] = [];
   let addonsTotal = 0;
   for (const key of opts.addons) {
-    addonItems.push({ label: addonLabels[key], price: addonPrices[key] });
-    addonsTotal += addonPrices[key];
+    addonItems.push({ label: addonNameMap[key] ?? key, price: addonMap[key] ?? 0 });
+    addonsTotal += addonMap[key] ?? 0;
   }
 
   const subtotal = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge + addonsTotal);
-  const taxAmount = Math.round(subtotal * TAX_RATE * 100) / 100;
+  const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
   const total = subtotal + taxAmount;
 
   return {
@@ -85,7 +102,7 @@ export function calculatePrice(opts: {
     addonsTotal,
     addonItems,
     subtotal,
-    taxRate: TAX_RATE,
+    taxRate,
     taxAmount,
     total,
   };

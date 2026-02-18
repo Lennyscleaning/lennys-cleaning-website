@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { BookingFormData, ServiceType, Bedrooms, Bathrooms, Condition } from './lib/types';
-import { calculatePrice } from './lib/pricing';
+import { calculatePrice, type PricingConfig } from './lib/pricing';
 import Step1ServiceType from './steps/Step1ServiceType';
 import Step2HomeDetails from './steps/Step2HomeDetails';
 import Step3Addons from './steps/Step3Addons';
@@ -72,6 +72,46 @@ function isStepValid(step: number, data: BookingFormData): boolean {
 export default function BookingForm() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<BookingFormData>(initialData);
+  const [pricingConfig, setPricingConfig] = useState<PricingConfig | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  // Fetch live pricing on mount — static data is used until this resolves
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((apiData: {
+        basePrices: Record<string, Record<number, number>>;
+        addOns: { key: string; name: string; price: number }[];
+        conditions: { key: string; name: string; multiplier: number }[];
+        platformConfig: {
+          defaultSalesTaxRate: number | null;
+          extraBathroomSurcharge: number | null;
+        };
+      }) => {
+        const addonPrices: Record<string, number> = {};
+        const addonNames: Record<string, string> = {};
+        for (const addon of apiData.addOns) {
+          addonPrices[addon.key] = addon.price;
+          addonNames[addon.key] = addon.name;
+        }
+        const condMults: Record<string, number> = {};
+        for (const cond of apiData.conditions) {
+          condMults[cond.key] = cond.multiplier;
+        }
+        setPricingConfig({
+          basePrices: apiData.basePrices,
+          addonPrices,
+          addonNames,
+          conditionMultipliers: condMults,
+          taxRate: apiData.platformConfig.defaultSalesTaxRate ?? undefined,
+          bathroomSurcharge: apiData.platformConfig.extraBathroomSurcharge ?? undefined,
+        });
+      })
+      .catch(() => {
+        // Static fallback — no action needed
+      });
+  }, []);
 
   const handleChange = (updates: Partial<BookingFormData>) => {
     setData((prev) => ({ ...prev, ...updates }));
@@ -84,38 +124,54 @@ export default function BookingForm() {
       data.bathrooms &&
       data.condition
     ) {
-      return calculatePrice({
-        serviceType: data.serviceType as ServiceType,
-        bedrooms: data.bedrooms as Bedrooms,
-        bathrooms: data.bathrooms as Bathrooms,
-        condition: data.condition as Condition,
-        pets: data.pets ?? false,
-        addons: data.addons,
-      });
+      return calculatePrice(
+        {
+          serviceType: data.serviceType as ServiceType,
+          bedrooms: data.bedrooms as Bedrooms,
+          bathrooms: data.bathrooms as Bathrooms,
+          condition: data.condition as Condition,
+          pets: data.pets ?? false,
+          addons: data.addons,
+        },
+        pricingConfig ?? undefined,
+      );
     }
     return null;
-  }, [data.serviceType, data.bedrooms, data.bathrooms, data.condition, data.pets, data.addons]);
+  }, [data.serviceType, data.bedrooms, data.bathrooms, data.condition, data.pets, data.addons, pricingConfig]);
 
   const canContinue = isStepValid(step, data);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 6) {
-      // Submit
-      console.log('Booking submitted:', {
-        ...data,
-        addons: Array.from(data.addons),
-        subtotal: price?.subtotal ?? null,
-        taxRate: price?.taxRate ?? null,
-        taxAmount: price?.taxAmount ?? null,
-        total: price?.total ?? null,
-      });
-      setStep(7);
+      setSubmitting(true);
+      setSubmitError('');
+      try {
+        const res = await fetch('/api/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...data,
+            addons: Array.from(data.addons),
+            subtotal: price?.subtotal ?? null,
+            taxRate: price?.taxRate ?? null,
+            taxAmount: price?.taxAmount ?? null,
+            total: price?.total ?? null,
+          }),
+        });
+        if (!res.ok) throw new Error();
+        setStep(7);
+      } catch {
+        setSubmitError('Something went wrong. Please call us at (253) 600-3355.');
+      } finally {
+        setSubmitting(false);
+      }
       return;
     }
     setStep((s) => Math.min(s + 1, 7));
   };
 
   const handleBack = () => {
+    setSubmitError('');
     setStep((s) => Math.max(s - 1, 1));
   };
 
@@ -156,6 +212,13 @@ export default function BookingForm() {
       {step === 6 && <Step5ContactInfo data={data} onChange={handleChange} />}
       {step === 7 && <Step7Confirmation data={data} price={price} />}
 
+      {/* Error message */}
+      {submitError && (
+        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="font-body text-sm text-red-700">{submitError}</p>
+        </div>
+      )}
+
       {/* Navigation buttons — hidden on confirmation */}
       {step <= 6 && (
         <div className="flex justify-between mt-8">
@@ -173,10 +236,10 @@ export default function BookingForm() {
           <button
             type="button"
             onClick={handleNext}
-            disabled={!canContinue}
+            disabled={!canContinue || submitting}
             className="btn-primary text-sm px-8 py-3 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
           >
-            {step === 6 ? 'Submit booking' : 'Continue'}
+            {submitting ? 'Submitting...' : step === 6 ? 'Submit booking' : 'Continue'}
           </button>
         </div>
       )}
