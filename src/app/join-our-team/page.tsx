@@ -162,6 +162,17 @@ export default function JoinOurTeamPage() {
               </Reveal>
             ))}
           </div>
+          <Reveal delay={300}>
+            <p className="font-body text-[15px] text-charcoal-light text-center mt-10">
+              Already on the team?{' '}
+              <Link
+                href="/pro/availability"
+                className="text-forest font-medium underline underline-offset-4 hover:text-forest-dark transition-colors"
+              >
+                Set your availability
+              </Link>
+            </p>
+          </Reveal>
         </div>
       </section>
 

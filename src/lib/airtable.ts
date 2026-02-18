@@ -154,6 +154,54 @@ export async function createRecord<T = AirtableFieldSet>(
 }
 
 /**
+ * POST multiple records to an Airtable table (batch, max 10 per request).
+ */
+export async function createRecords<T = AirtableFieldSet>(
+  tableName: string,
+  records: Partial<T>[],
+): Promise<AirtableRecord<T>[]> {
+  const results: AirtableRecord<T>[] = [];
+
+  for (let i = 0; i < records.length; i += 10) {
+    const chunk = records.slice(i, i + 10);
+    const response = await airtableFetch<{ records: AirtableRecord<T>[] }>(
+      encodeURIComponent(tableName),
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          records: chunk.map((fields) => ({ fields })),
+        }),
+      },
+    );
+    results.push(...response.records);
+  }
+
+  return results;
+}
+
+/**
+ * DELETE records from an Airtable table (batch, max 10 per request).
+ */
+export async function deleteRecords(
+  tableName: string,
+  recordIds: string[],
+): Promise<void> {
+  if (recordIds.length === 0) return;
+
+  for (let i = 0; i < recordIds.length; i += 10) {
+    const chunk = recordIds.slice(i, i + 10);
+    const params = new URLSearchParams();
+    for (const id of chunk) {
+      params.append('records[]', id);
+    }
+    await airtableFetch<{ records: { id: string; deleted: boolean }[] }>(
+      `${encodeURIComponent(tableName)}?${params.toString()}`,
+      { method: 'DELETE' },
+    );
+  }
+}
+
+/**
  * PATCH an existing record in an Airtable table.
  */
 export async function updateRecord<T = AirtableFieldSet>(
