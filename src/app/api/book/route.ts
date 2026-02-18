@@ -34,6 +34,7 @@ interface BookingPayload {
   city: string;
   zip: string;
   instructions?: string;
+  smsConsent?: boolean;
 }
 
 export async function POST(request: Request) {
@@ -84,6 +85,7 @@ export async function POST(request: Request) {
       status: 'Lead',
       source: 'Website',
       is_active: true,
+      sms_consent: body.smsConsent ?? false,
       service_vertical: 'CLEANING',
       created_at: new Date().toISOString(),
     });

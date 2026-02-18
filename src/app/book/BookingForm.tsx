@@ -37,6 +37,7 @@ const initialData: BookingFormData = {
   city: '',
   zip: '',
   instructions: '',
+  smsConsent: false,
 };
 
 function isStepValid(step: number, data: BookingFormData): boolean {

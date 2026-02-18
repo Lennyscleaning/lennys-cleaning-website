@@ -59,6 +59,7 @@ export interface BookingFormData {
   city: string;
   zip: string;
   instructions: string;
+  smsConsent: boolean;
 }
 
 export const inputBase =

@@ -115,6 +115,23 @@ export default function Step5ContactInfo({ data, onChange }: Props) {
             placeholder="Gate code, parking info, focus areas, etc."
           />
         </div>
+
+        <div className="pt-2">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={data.smsConsent}
+              onChange={(e) => onChange({ smsConsent: e.target.checked })}
+              className="mt-1 h-4 w-4 rounded border-cream-dark text-forest focus:ring-forest/30 shrink-0"
+            />
+            <span className="font-body text-xs text-charcoal-light leading-relaxed">
+              I consent to receive SMS text messages from Lenny&apos;s Cleaning at the number
+              provided, including booking confirmations, appointment reminders, and service
+              updates. Consent is not a condition of purchase. Msg &amp; data rates may apply.
+              Msg frequency varies. Unsubscribe at any time by replying STOP.
+            </span>
+          </label>
+        </div>
       </div>
     </div>
   );
