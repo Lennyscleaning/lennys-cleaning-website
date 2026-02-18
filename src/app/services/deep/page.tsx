@@ -6,16 +6,18 @@ import TrustBar from '@/components/TrustBar';
 import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
-export const metadata: Metadata = {
-  title: 'Deep Cleaning Service',
-  description:
-    'Book a deep cleaning in Tacoma starting at $150. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
-  openGraph: {
-    title: "Deep Cleaning Service | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Book a deep cleaning in Tacoma starting at $150. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const deepPrice = pricing.startingPrices.deep;
+  return {
+    title: 'Deep Cleaning Service',
+    description: `Book a deep cleaning in Tacoma starting at ${deepPrice}. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.`,
+    openGraph: {
+      title: "Deep Cleaning Service | Lenny's Cleaning — Tacoma, WA",
+      description: `Book a deep cleaning in Tacoma starting at ${deepPrice}. Inside appliances, baseboards, light fixtures — every detail handled by vetted professionals.`,
+    },
+  };
+}
 
 /* ─── Inline SVG icons ─── */
 const icons = {
@@ -114,30 +116,30 @@ const faqs = [
   },
 ];
 
-/* ─── JSON-LD ─── */
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Deep Cleaning Service',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: "Lenny's Cleaning",
-    telephone: '+12536003355',
-    areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
-  },
-  description:
-    'A thorough, top-to-bottom deep clean for homes in Tacoma. Inside appliances, baseboards, light fixtures, and every detail — handled by vetted professionals.',
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'USD',
-    price: '150',
-    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
-  },
-};
-
 /* ─── PAGE ─── */
 export default async function DeepCleaningPage() {
   const pricingData = await fetchPricingData();
+
+  /* ─── JSON-LD (built from Airtable data) ─── */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Deep Cleaning Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: "Lenny's Cleaning",
+      telephone: '+12536003355',
+      areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
+    },
+    description:
+      'A thorough, top-to-bottom deep clean for homes in Tacoma. Inside appliances, baseboards, light fixtures, and every detail — handled by vetted professionals.',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: String(pricingData.basePriceMatrix.deep?.[1] ?? 0),
+      priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
+    },
+  };
   const pricing = pricingData.deepPricing;
   const deepAddons = pricingData.addons;
 

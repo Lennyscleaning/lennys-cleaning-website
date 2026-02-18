@@ -15,8 +15,10 @@ Residential cleaning marketplace launching in Tacoma, WA. Built with Next.js 14+
 ## Key Data
 - Phone: (253) 600-3355
 - Email: hello@lennyscleaning.com
-- Pricing: Standard from $85, Deep from $150, Move-in/out from $175, Airbnb from $125
-- All pricing data centralized in src/lib/pricing-data.ts — never hardcode prices in pages
+- Pricing: All prices come from Airtable price_book table — never hardcode prices in pages
+- Server components use fetchPricingData() from src/lib/fetch-pricing.ts (cached 5min)
+- Client components fetch from /api/pricing endpoint
+- No static pricing fallback — Airtable is the single source of truth
 - Operator pay: $34-56/hr, 30/70 base split. Preferred 25/75. Elite 22/78. Founding operators locked at 75%.
 
 ## Copy Rules

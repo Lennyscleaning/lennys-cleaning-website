@@ -3,28 +3,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import TrustBar from '@/components/TrustBar';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO Metadata ─── */
-export const metadata: Metadata = {
-  title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
-  description:
-    'Book professional house cleaning in Tacoma starting at $85. Vetted professionals, flat-rate pricing, satisfaction guaranteed. See your price instantly.',
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const stdPrice = pricing.startingPrices.standard;
+  const desc = `Book professional house cleaning in Tacoma starting at ${stdPrice}. Vetted professionals, flat-rate pricing, satisfaction guaranteed. See your price instantly.`;
+  const shortDesc = `Book professional house cleaning in Tacoma starting at ${stdPrice}. Vetted professionals, flat-rate pricing, satisfaction guaranteed.`;
+
+  return {
     title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Book professional house cleaning in Tacoma starting at $85. Vetted professionals, flat-rate pricing, satisfaction guaranteed.',
-    url: 'https://lennyscleaning.com',
-    siteName: "Lenny's Cleaning",
-    type: 'website',
-    locale: 'en_US',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Book professional house cleaning in Tacoma starting at $85. Vetted professionals, flat-rate pricing, satisfaction guaranteed.',
-  },
-};
+    description: desc,
+    openGraph: {
+      title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
+      description: shortDesc,
+      url: 'https://lennyscleaning.com',
+      siteName: "Lenny's Cleaning",
+      type: 'website',
+      locale: 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
+      description: shortDesc,
+    },
+  };
+}
 
 /* ─── JSON-LD Structured Data ─── */
 const jsonLd = {
@@ -53,37 +58,39 @@ const jsonLd = {
   ],
 };
 
-/* ─── Static Data ─── */
-const services = [
-  {
-    title: 'Standard cleaning',
-    description:
-      'Regular maintenance for homes that need consistent care. We handle kitchens, bathrooms, bedrooms, and living areas — every visit, every room.',
-    price: '$85',
-    image: '/images/lennys-website-images/img-open.webp',
-    alt: 'Open-concept living room and kitchen in a Tacoma home, freshly cleaned',
-    href: '/services/standard',
-  },
-  {
-    title: 'Deep cleaning',
-    description:
-      "A thorough, top-to-bottom clean for homes that need extra attention. Ideal for first-time customers, seasonal refreshes, or when it's been a while.",
-    price: '$150',
-    image: '/images/lennys-website-images/img-bath.webp',
-    alt: 'Clean bathroom with terracotta towels in a Tacoma home',
-    href: '/services/deep',
-    badge: 'Popular',
-  },
-  {
-    title: 'Move-in / move-out cleaning',
-    description:
-      "Get every room, closet, and appliance move-ready. Whether you're welcoming new tenants or handing back the keys, we'll leave it spotless.",
-    price: '$175',
-    image: '/images/lennys-website-images/img-bed.webp',
-    alt: 'Tidy bedroom with sage pillows in a Tacoma home ready for move-in',
-    href: '/services/move',
-  },
-];
+/* ─── Static Data (prices injected from Airtable at render time) ─── */
+function getServices(startingPrices: Record<string, string>) {
+  return [
+    {
+      title: 'Standard cleaning',
+      description:
+        'Regular maintenance for homes that need consistent care. We handle kitchens, bathrooms, bedrooms, and living areas — every visit, every room.',
+      price: startingPrices.standard,
+      image: '/images/lennys-website-images/img-open.webp',
+      alt: 'Open-concept living room and kitchen in a Tacoma home, freshly cleaned',
+      href: '/services/standard',
+    },
+    {
+      title: 'Deep cleaning',
+      description:
+        "A thorough, top-to-bottom clean for homes that need extra attention. Ideal for first-time customers, seasonal refreshes, or when it's been a while.",
+      price: startingPrices.deep,
+      image: '/images/lennys-website-images/img-bath.webp',
+      alt: 'Clean bathroom with terracotta towels in a Tacoma home',
+      href: '/services/deep',
+      badge: 'Popular',
+    },
+    {
+      title: 'Move-in / move-out cleaning',
+      description:
+        "Get every room, closet, and appliance move-ready. Whether you're welcoming new tenants or handing back the keys, we'll leave it spotless.",
+      price: startingPrices.move,
+      image: '/images/lennys-website-images/img-bed.webp',
+      alt: 'Tidy bedroom with sage pillows in a Tacoma home ready for move-in',
+      href: '/services/move',
+    },
+  ];
+}
 
 const valueCards = [
   {
@@ -118,7 +125,10 @@ const cityPills = [
 ];
 
 /* ─── Page Component ─── */
-export default function HomePage() {
+export default async function HomePage() {
+  const pricingData = await fetchPricingData();
+  const services = getServices(pricingData.startingPrices);
+
   return (
     <>
       {/* JSON-LD */}

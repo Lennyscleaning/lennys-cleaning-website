@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createRecord, fetchRecords, AirtableError } from '@/lib/airtable';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 import { addonLabels, calculatePrice } from '@/app/book/lib/pricing';
 import type { ServiceType, Bedrooms, Bathrooms, AddonKey, IntakeAnswers } from '@/app/book/lib/types';
 import {
@@ -124,11 +125,9 @@ export async function POST(request: Request) {
       isFirstVisit = true;
     }
 
-    // Calculate quote amount (subtotal before tax)
+    // Fetch live pricing from Airtable and calculate quote
     const addonSet = new Set(body.addons as AddonKey[]);
-    const pricingConfig: Partial<import('@/app/book/lib/pricing').PricingConfig> = {};
-    if (firstCleanPremium != null) pricingConfig.firstCleanPremium = firstCleanPremium;
-    if (foundingDiscountPercent > 0) pricingConfig.foundingDiscountPercent = foundingDiscountPercent;
+    const livePricing = await fetchPricingData();
 
     const price = calculatePrice(
       {
@@ -140,7 +139,13 @@ export async function POST(request: Request) {
         isFirstVisit,
         foundingDiscountEligible,
       },
-      Object.keys(pricingConfig).length > 0 ? pricingConfig : undefined,
+      {
+        basePrices: livePricing.basePriceMatrix,
+        addonPrices: livePricing.addonPriceMap,
+        taxRate: livePricing.TAX_RATE,
+        firstCleanPremium: firstCleanPremium ?? undefined,
+        foundingDiscountPercent: foundingDiscountPercent > 0 ? foundingDiscountPercent : undefined,
+      },
     );
 
     // Compute intake score and tier for Airtable

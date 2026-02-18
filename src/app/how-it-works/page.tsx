@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import TrustBar from '@/components/TrustBar';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -68,7 +69,10 @@ const differentiators = [
 const grainSvg = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`;
 
 /* ─── PAGE ─── */
-export default function HowItWorksPage() {
+export default async function HowItWorksPage() {
+  const pricingData = await fetchPricingData();
+  const stdPrice = pricingData.startingPrices.standard;
+
   return (
     <>
       {/* ══════ HERO ══════ */}
@@ -154,7 +158,7 @@ export default function HowItWorksPage() {
               Simple, transparent pricing
             </h2>
             <p className="font-body text-[17px] text-charcoal-light leading-relaxed mb-8">
-              Starting at $85 for a standard clean. Your exact price depends on your home size and the service you choose — you&apos;ll always see it before you book.
+              Starting at {stdPrice} for a standard clean. Your exact price depends on your home size and the service you choose — you&apos;ll always see it before you book.
             </p>
           </Reveal>
           <Reveal delay={100}>

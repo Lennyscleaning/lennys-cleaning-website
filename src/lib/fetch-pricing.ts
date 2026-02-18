@@ -1,12 +1,10 @@
 /* ─── Server-side Airtable Pricing Fetcher ───
    Fetches live pricing from Airtable for server components.
-   Falls back to static values from pricing-data.ts on failure.
    Cached for 5 minutes via unstable_cache.
    ──────────────────────────────────────────────── */
 
 import { unstable_cache } from 'next/cache';
 import { fetchRecords } from '@/lib/airtable';
-import * as staticData from '@/lib/pricing-data';
 
 /* ─── Airtable field interfaces ─── */
 
@@ -107,6 +105,8 @@ export interface PricingData {
   serviceComparison: { name: string; price: string; note: string; href: string }[];
   sizeRanges: { size: string; range: string }[];
   cityServiceCards: { title: string; price: string; href: string; desc: string }[];
+  recurringPrices: Record<string, Record<number, number>>;
+  recurringDisplayBedrooms: number;
   foundingDiscount?: {
     eligible: boolean;
     percent: number;
@@ -140,11 +140,11 @@ function buildDerivedData(
   const postConstructionPricing = formatPricingTable(basePriceMatrix, 'post-construction');
 
   const startingPrices: Record<string, string> = {
-    standard: `$${basePriceMatrix.standard?.[1] ?? 85}`,
-    deep: `$${basePriceMatrix.deep?.[1] ?? 150}`,
-    move: `$${basePriceMatrix.move?.[1] ?? 175}`,
-    airbnb: `$${basePriceMatrix.airbnb?.[1] ?? 125}`,
-    postConstruction: `$${basePriceMatrix['post-construction']?.[1] ?? 250}`,
+    standard: `$${basePriceMatrix.standard?.[1] ?? 0}`,
+    deep: `$${basePriceMatrix.deep?.[1] ?? 0}`,
+    move: `$${basePriceMatrix.move?.[1] ?? 0}`,
+    airbnb: `$${basePriceMatrix.airbnb?.[1] ?? 0}`,
+    postConstruction: `$${basePriceMatrix['post-construction']?.[1] ?? 0}`,
   };
 
   // Build addons list for display
@@ -153,9 +153,25 @@ function buildDerivedData(
     price: `$${price}`,
   }));
 
-  // Recurring pricing uses 3BR standard as base
-  const recurringBase = basePriceMatrix.standard?.[3] ?? 165;
-  const weeklyPrice = Math.round(recurringBase * 0.85);
+  // Recurring pricing: derive from standard base prices with discount multipliers
+  const RECURRING_DISCOUNTS: Record<string, number> = {
+    weekly: 0.85,   // ~15% off
+    biweekly: 0.92, // ~8% off
+    monthly: 0.97,  // ~3% off
+  };
+  const recurringPrices: Record<string, Record<number, number>> = { onetime: {} };
+  const standardPrices = basePriceMatrix.standard ?? {};
+  for (const beds of Object.keys(standardPrices).map(Number)) {
+    recurringPrices.onetime[beds] = standardPrices[beds];
+    for (const [freq, mult] of Object.entries(RECURRING_DISCOUNTS)) {
+      if (!recurringPrices[freq]) recurringPrices[freq] = {};
+      recurringPrices[freq][beds] = Math.round(standardPrices[beds] * mult);
+    }
+  }
+  // Display bedroom count for plan cards (3BR = most common Tacoma config)
+  const recurringDisplayBedrooms = 3;
+  const recurringBase = standardPrices[recurringDisplayBedrooms] ?? 0;
+  const weeklyPrice = Math.round(recurringBase * RECURRING_DISCOUNTS.weekly);
 
   const serviceComparison = [
     { name: 'Standard cleaning', price: startingPrices.standard, note: 'Regular maintenance', href: '/services/standard' },
@@ -211,17 +227,9 @@ function buildDerivedData(
     serviceComparison,
     sizeRanges,
     cityServiceCards,
+    recurringPrices,
+    recurringDisplayBedrooms,
   };
-}
-
-/* ─── Static fallback ─── */
-
-function getStaticFallback(): PricingData {
-  return buildDerivedData(
-    staticData.basePriceMatrix,
-    staticData.addonPriceMap,
-    staticData.TAX_RATE,
-  );
 }
 
 /* ─── Airtable fetch (uncached) ─── */
@@ -269,7 +277,7 @@ async function fetchFromAirtable(): Promise<PricingData> {
   }
   const taxRate = configMap.default_sales_tax_rate != null
     ? configMap.default_sales_tax_rate / 100
-    : staticData.TAX_RATE;
+    : 0.102; // Tacoma default — should always come from Airtable platform_config
 
   const result = buildDerivedData(basePriceMatrix, addonPriceMap, taxRate);
 
@@ -295,11 +303,7 @@ async function fetchFromAirtable(): Promise<PricingData> {
 
 const getCachedPricing = unstable_cache(
   async (): Promise<PricingData> => {
-    try {
-      return await fetchFromAirtable();
-    } catch {
-      return getStaticFallback();
-    }
+    return await fetchFromAirtable();
   },
   ['pricing-data'],
   { revalidate: 300 },

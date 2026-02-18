@@ -1,4 +1,3 @@
-import { basePriceMatrix, addonPriceMap, TAX_RATE } from '@/lib/pricing-data';
 import type { ServiceType, Bedrooms, AddonKey, Bathrooms, IntakeAnswers } from './types';
 import {
   calculateIntakeScore,
@@ -7,8 +6,6 @@ import {
   DEFAULT_TIER_CONFIG,
   type TierConfig,
 } from './intake-scoring';
-
-export const addonPrices = addonPriceMap as Record<AddonKey, number>;
 
 export const addonLabels: Record<AddonKey, string> = {
   oven: 'Inside oven',
@@ -29,11 +26,12 @@ export const addonLabels: Record<AddonKey, string> = {
 
 const BATHROOM_SURCHARGE = 20; // per full bathroom beyond the first
 const DEFAULT_PET_SURCHARGE = 15;
+const DEFAULT_TAX_RATE = 0.102; // Tacoma default — should come from Airtable
 
 export interface PricingConfig {
   basePrices: Record<string, Record<number, number>>;
   addonPrices: Record<string, number>;
-  addonNames: Record<string, string>;
+  addonNames?: Record<string, string>;
   tierConfig?: TierConfig[];
   petSurcharge?: number;
   taxRate?: number;
@@ -73,17 +71,17 @@ export function calculatePrice(
     isFirstVisit?: boolean;
     foundingDiscountEligible?: boolean;
   },
-  config?: Partial<PricingConfig>,
+  config: PricingConfig,
 ): PriceBreakdown {
-  const prices = config?.basePrices ?? basePriceMatrix;
-  const addonMap = config?.addonPrices ?? (addonPriceMap as Record<string, number>);
-  const addonNameMap = config?.addonNames ?? (addonLabels as Record<string, string>);
-  const tierConfig = config?.tierConfig ?? DEFAULT_TIER_CONFIG;
-  const petSurchargeAmount = config?.petSurcharge ?? DEFAULT_PET_SURCHARGE;
-  const taxRate = config?.taxRate ?? TAX_RATE;
-  const bathSurcharge = config?.bathroomSurcharge ?? BATHROOM_SURCHARGE;
-  const premiumPercent = config?.firstCleanPremium ?? DEFAULT_FIRST_CLEAN_PREMIUM;
-  const foundingPercent = config?.foundingDiscountPercent ?? 0;
+  const prices = config.basePrices;
+  const addonMap = config.addonPrices;
+  const addonNameMap = config.addonNames ?? (addonLabels as Record<string, string>);
+  const tierConfig = config.tierConfig ?? DEFAULT_TIER_CONFIG;
+  const petSurchargeAmount = config.petSurcharge ?? DEFAULT_PET_SURCHARGE;
+  const taxRate = config.taxRate ?? DEFAULT_TAX_RATE;
+  const bathSurcharge = config.bathroomSurcharge ?? BATHROOM_SURCHARGE;
+  const premiumPercent = config.firstCleanPremium ?? DEFAULT_FIRST_CLEAN_PREMIUM;
+  const foundingPercent = config.foundingDiscountPercent ?? 0;
 
   const base = prices[opts.serviceType][opts.bedrooms];
 

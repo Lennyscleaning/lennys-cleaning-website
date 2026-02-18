@@ -6,16 +6,19 @@ import TrustBar from '@/components/TrustBar';
 import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
-export const metadata: Metadata = {
-  title: "House Cleaning Prices in Tacoma | Lenny's Cleaning",
-  description:
-    'Transparent, flat-rate house cleaning prices in Tacoma. Standard from $85, deep cleaning from $150, move-out from $175. See your exact price before you book.',
-  openGraph: {
-    title: "House Cleaning Prices in Tacoma | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Transparent, flat-rate house cleaning prices in Tacoma. Know exactly what you\'ll pay before we arrive.',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const s = pricing.startingPrices;
+  return {
+    title: "House Cleaning Prices in Tacoma | Lenny's Cleaning",
+    description: `Transparent, flat-rate house cleaning prices in Tacoma. Standard from ${s.standard}, deep cleaning from ${s.deep}, move-out from ${s.move}. See your exact price before you book.`,
+    openGraph: {
+      title: "House Cleaning Prices in Tacoma | Lenny's Cleaning — Tacoma, WA",
+      description:
+        'Transparent, flat-rate house cleaning prices in Tacoma. Know exactly what you\'ll pay before we arrive.',
+    },
+  };
+}
 
 const recurringDiscounts = [
   { frequency: 'Weekly', discount: '~15% off', note: 'Best value — lowest per-visit rate' },
@@ -46,30 +49,34 @@ const faqs = [
   },
 ];
 
-/* ─── JSON-LD ─── */
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'House Cleaning Services',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: "Lenny's Cleaning",
-    telephone: '+12536003355',
-    areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
-  },
-  description:
-    'Transparent, flat-rate house cleaning prices in Tacoma. Standard, deep, move-out, Airbnb turnover, and recurring plans.',
-  offers: {
-    '@type': 'AggregateOffer',
-    priceCurrency: 'USD',
-    lowPrice: '85',
-    highPrice: '450',
-  },
-};
-
 /* ─── PAGE ─── */
 export default async function PricingPage() {
   const pricingData = await fetchPricingData();
+
+  /* ─── JSON-LD (built from Airtable data) ─── */
+  const lowPrice = pricingData.basePriceMatrix.standard?.[1] ?? 0;
+  const highPrice = Math.max(
+    ...Object.values(pricingData.basePriceMatrix).flatMap((m) => Object.values(m)),
+  );
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'House Cleaning Services',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: "Lenny's Cleaning",
+      telephone: '+12536003355',
+      areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
+    },
+    description:
+      'Transparent, flat-rate house cleaning prices in Tacoma. Standard, deep, move-out, Airbnb turnover, and recurring plans.',
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: String(lowPrice),
+      highPrice: String(highPrice),
+    },
+  };
   const services = pricingData.serviceComparison;
   const sizeRanges = pricingData.sizeRanges;
   const addons = pricingData.addons;

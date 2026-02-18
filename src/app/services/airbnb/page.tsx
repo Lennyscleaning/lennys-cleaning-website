@@ -5,16 +5,18 @@ import FaqAccordion from '@/components/FaqAccordion';
 import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
-export const metadata: Metadata = {
-  title: 'Airbnb Turnover Cleaning',
-  description:
-    'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $125. Fresh linens, spotless spaces, and five-star guest readiness.',
-  openGraph: {
-    title: "Airbnb Turnover Cleaning | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at $125. Fresh linens, spotless spaces, and five-star guest readiness.',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const airbnbPrice = pricing.startingPrices.airbnb;
+  return {
+    title: 'Airbnb Turnover Cleaning',
+    description: `Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at ${airbnbPrice}. Fresh linens, spotless spaces, and five-star guest readiness.`,
+    openGraph: {
+      title: "Airbnb Turnover Cleaning | Lenny's Cleaning — Tacoma, WA",
+      description: `Reliable Airbnb and short-term rental turnover cleaning in Tacoma starting at ${airbnbPrice}. Fresh linens, spotless spaces, and five-star guest readiness.`,
+    },
+  };
+}
 
 /* ─── Inline SVG icons ─── */
 const icons = {
@@ -117,30 +119,30 @@ const faqs = [
   },
 ];
 
-/* ─── JSON-LD ─── */
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Airbnb Turnover Cleaning Service',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: "Lenny's Cleaning",
-    telephone: '+12536003355',
-    areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
-  },
-  description:
-    'Fast, reliable turnover cleaning for Airbnb and short-term rental hosts in Tacoma. Fresh linens, spotless spaces, five-star guest readiness.',
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'USD',
-    price: '125',
-    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
-  },
-};
-
 /* ─── PAGE ─── */
 export default async function AirbnbCleaningPage() {
   const pricingData = await fetchPricingData();
+
+  /* ─── JSON-LD (built from Airtable data) ─── */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Airbnb Turnover Cleaning Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: "Lenny's Cleaning",
+      telephone: '+12536003355',
+      areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
+    },
+    description:
+      'Fast, reliable turnover cleaning for Airbnb and short-term rental hosts in Tacoma. Fresh linens, spotless spaces, five-star guest readiness.',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: String(pricingData.basePriceMatrix.airbnb?.[1] ?? 0),
+      priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
+    },
+  };
   const pricing = pricingData.airbnbPricing;
   const airbnbAddons = pricingData.addons;
 

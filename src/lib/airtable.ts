@@ -74,6 +74,9 @@ async function waitForRateLimit(): Promise<void> {
 
 /* ─── Internal fetch wrapper ─── */
 
+const MAX_RETRIES = 3;
+const RETRY_BASE_MS = 1500;
+
 async function airtableFetch<T>(
   path: string,
   options: RequestInit = {},
@@ -81,29 +84,38 @@ async function airtableFetch<T>(
   if (!API_KEY) throw new AirtableError('AIRTABLE_API_KEY is not set', 0, 'CONFIG_ERROR');
   if (!BASE_ID) throw new AirtableError('AIRTABLE_BASE_ID is not set', 0, 'CONFIG_ERROR');
 
-  await waitForRateLimit();
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    await waitForRateLimit();
 
-  const url = `${BASE_URL}/${BASE_ID}/${path}`;
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+    const url = `${BASE_URL}/${BASE_ID}/${path}`;
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
 
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    const error = body?.error ?? {};
-    throw new AirtableError(
-      error.message ?? `Airtable request failed with status ${res.status}`,
-      res.status,
-      error.type ?? 'UNKNOWN_ERROR',
-    );
+    if (res.status === 429 && attempt < MAX_RETRIES) {
+      await new Promise((resolve) => setTimeout(resolve, RETRY_BASE_MS * (attempt + 1)));
+      continue;
+    }
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const error = body?.error ?? {};
+      throw new AirtableError(
+        error.message ?? `Airtable request failed with status ${res.status}`,
+        res.status,
+        error.type ?? 'UNKNOWN_ERROR',
+      );
+    }
+
+    return res.json() as Promise<T>;
   }
 
-  return res.json() as Promise<T>;
+  throw new AirtableError('Max retries exceeded', 429, 'RATE_LIMIT_ERROR');
 }
 
 /* ─── Public API ─── */

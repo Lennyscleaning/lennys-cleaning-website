@@ -1,5 +1,5 @@
 import type { BookingFormData, AddonKey } from '../lib/types';
-import { addonLabels, addonPrices } from '../lib/pricing';
+import { addonLabels } from '../lib/pricing';
 
 const addonKeys: AddonKey[] = [
   'oven',
@@ -21,9 +21,11 @@ const addonKeys: AddonKey[] = [
 interface Props {
   data: BookingFormData;
   onChange: (updates: Partial<BookingFormData>) => void;
+  addonPrices?: Record<string, number>;
+  addonNames?: Record<string, string>;
 }
 
-export default function Step3Addons({ data, onChange }: Props) {
+export default function Step3Addons({ data, onChange, addonPrices, addonNames }: Props) {
   const toggle = (key: AddonKey) => {
     const next = new Set(data.addons);
     if (next.has(key)) {
@@ -45,6 +47,8 @@ export default function Step3Addons({ data, onChange }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {addonKeys.map((key) => {
           const checked = data.addons.has(key);
+          const price = addonPrices?.[key];
+          const label = addonNames?.[key] ?? addonLabels[key];
           return (
             <button
               key={key}
@@ -57,11 +61,13 @@ export default function Step3Addons({ data, onChange }: Props) {
               }`}
             >
               <span className="font-body text-sm font-medium text-charcoal">
-                {addonLabels[key]}
+                {label}
               </span>
-              <span className="font-body text-sm text-charcoal-light ml-3 shrink-0">
-                +${addonPrices[key]}
-              </span>
+              {price != null && (
+                <span className="font-body text-sm text-charcoal-light ml-3 shrink-0">
+                  +${price}
+                </span>
+              )}
             </button>
           );
         })}

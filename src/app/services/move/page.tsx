@@ -6,16 +6,18 @@ import TrustBar from '@/components/TrustBar';
 import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
-export const metadata: Metadata = {
-  title: 'Move-In/Out Cleaning',
-  description:
-    'Book move-in or move-out cleaning in Tacoma starting at $175. Get your deposit back or start fresh with vetted cleaning professionals.',
-  openGraph: {
-    title: "Move-In/Out Cleaning | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Book move-in or move-out cleaning in Tacoma starting at $175. Get your deposit back or start fresh with vetted cleaning professionals.',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const movePrice = pricing.startingPrices.move;
+  return {
+    title: 'Move-In/Out Cleaning',
+    description: `Book move-in or move-out cleaning in Tacoma starting at ${movePrice}. Get your deposit back or start fresh with vetted cleaning professionals.`,
+    openGraph: {
+      title: "Move-In/Out Cleaning | Lenny's Cleaning — Tacoma, WA",
+      description: `Book move-in or move-out cleaning in Tacoma starting at ${movePrice}. Get your deposit back or start fresh with vetted cleaning professionals.`,
+    },
+  };
+}
 
 /* ─── Inline SVG icons ─── */
 const icons = {
@@ -118,30 +120,30 @@ const faqs = [
   },
 ];
 
-/* ─── JSON-LD ─── */
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Move-In/Out Cleaning Service',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: "Lenny's Cleaning",
-    telephone: '+12536003355',
-    areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
-  },
-  description:
-    'Transition cleaning for moves, lease turnovers, and fresh starts in Tacoma. Inside appliances, closets, baseboards — every surface inspected and cleaned.',
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'USD',
-    price: '175',
-    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
-  },
-};
-
 /* ─── PAGE ─── */
 export default async function MoveOutCleaningPage() {
   const pricingData = await fetchPricingData();
+
+  /* ─── JSON-LD (built from Airtable data) ─── */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Move-In/Out Cleaning Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: "Lenny's Cleaning",
+      telephone: '+12536003355',
+      areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
+    },
+    description:
+      'Transition cleaning for moves, lease turnovers, and fresh starts in Tacoma. Inside appliances, closets, baseboards — every surface inspected and cleaned.',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: String(pricingData.basePriceMatrix.move?.[1] ?? 0),
+      priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
+    },
+  };
   const pricing = pricingData.movePricing;
   const moveAddons = pricingData.addons;
 

@@ -89,7 +89,7 @@ export default function BookingForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  // Fetch live pricing on mount — static data is used until this resolves
+  // Fetch live pricing from Airtable on mount
   useEffect(() => {
     fetch('/api/pricing')
       .then((res) => (res.ok ? res.json() : Promise.reject()))
@@ -128,7 +128,7 @@ export default function BookingForm() {
         setFoundingDiscountEligible(apiData.platformConfig.foundingDiscountEligible ?? false);
       })
       .catch(() => {
-        // Static fallback — no action needed
+        // Pricing will remain null — user sees loading state until retry
       });
   }, []);
 
@@ -141,6 +141,7 @@ export default function BookingForm() {
       data.serviceType &&
       data.bedrooms &&
       data.bathrooms &&
+      pricingConfig &&
       calculateIntakeScore(data.intake) !== null
     ) {
       return calculatePrice(
@@ -153,7 +154,7 @@ export default function BookingForm() {
           isFirstVisit: true, // Booking form is for new bookings — backend verifies
           foundingDiscountEligible,
         },
-        pricingConfig ?? undefined,
+        pricingConfig,
       );
     }
     return null;
@@ -226,7 +227,14 @@ export default function BookingForm() {
       {/* Step content */}
       {step === 1 && <Step1ServiceType data={data} onChange={handleChange} />}
       {step === 2 && <Step2HomeDetails data={data} onChange={handleChange} />}
-      {step === 3 && <Step3Addons data={data} onChange={handleChange} />}
+      {step === 3 && (
+        <Step3Addons
+          data={data}
+          onChange={handleChange}
+          addonPrices={pricingConfig?.addonPrices}
+          addonNames={pricingConfig?.addonNames}
+        />
+      )}
       {step === 4 && <Step4Schedule data={data} onChange={handleChange} />}
       {step === 5 && <Step6Review data={data} price={price} />}
       {step === 6 && <Step5ContactInfo data={data} onChange={handleChange} />}

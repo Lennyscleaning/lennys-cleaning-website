@@ -6,16 +6,18 @@ import TrustBar from '@/components/TrustBar';
 import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
-export const metadata: Metadata = {
-  title: "Standard House Cleaning in Tacoma | Lenny's Cleaning",
-  description:
-    'Book routine residential cleaning in Tacoma starting at $85. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.',
-  openGraph: {
-    title: "Standard House Cleaning in Tacoma | Lenny's Cleaning — Tacoma, WA",
-    description:
-      'Book routine residential cleaning in Tacoma starting at $85. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit.',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await fetchPricingData();
+  const stdPrice = pricing.startingPrices.standard;
+  return {
+    title: "Standard House Cleaning in Tacoma | Lenny's Cleaning",
+    description: `Book routine residential cleaning in Tacoma starting at ${stdPrice}. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.`,
+    openGraph: {
+      title: "Standard House Cleaning in Tacoma | Lenny's Cleaning — Tacoma, WA",
+      description: `Book routine residential cleaning in Tacoma starting at ${stdPrice}. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit.`,
+    },
+  };
+}
 
 /* ─── Inline SVG icons ─── */
 const icons = {
@@ -101,30 +103,30 @@ const faqs = [
   },
 ];
 
-/* ─── JSON-LD ─── */
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Standard House Cleaning Service',
-  provider: {
-    '@type': 'LocalBusiness',
-    name: "Lenny's Cleaning",
-    telephone: '+12536003355',
-    areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
-  },
-  description:
-    'Routine residential cleaning for homes in Tacoma. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.',
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'USD',
-    price: '85',
-    priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
-  },
-};
-
 /* ─── PAGE ─── */
 export default async function StandardCleaningPage() {
   const pricingData = await fetchPricingData();
+
+  /* ─── JSON-LD (built from Airtable data) ─── */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Standard House Cleaning Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: "Lenny's Cleaning",
+      telephone: '+12536003355',
+      areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
+    },
+    description:
+      'Routine residential cleaning for homes in Tacoma. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: String(pricingData.basePriceMatrix.standard?.[1] ?? 0),
+      priceSpecification: { '@type': 'UnitPriceSpecification', unitText: 'starting at' },
+    },
+  };
   const pricing = pricingData.standardPricing;
   const standardAddons = pricingData.addons;
 
