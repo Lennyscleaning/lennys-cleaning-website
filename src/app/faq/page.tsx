@@ -103,7 +103,7 @@ const categories = [
       {
         question: 'How much do your cleaning professionals earn?',
         answer:
-          'Our professionals earn $28–48/hr — 2–3x the industry average. We believe better pay attracts better talent, which means a better clean for you.',
+          'Our professionals earn $34–56/hr — 2–3x the industry average. We believe better pay attracts better talent, which means a better clean for you.',
       },
     ],
   },

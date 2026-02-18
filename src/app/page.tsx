@@ -100,7 +100,7 @@ const valueCards = [
   },
   {
     category: 'THE RESULT',
-    label: 'You pay less. They earn $28–48/hr. Everyone wins.',
+    label: 'You pay less. They earn $34–56/hr. Everyone wins.',
     description:
       "Our cleaning professionals earn 2–3x the industry average — which means less turnover, more experience, and someone who actually takes pride in the work. And you get a better clean at a better price. That's not a trade-off. That's better engineering.",
   },
@@ -454,7 +454,7 @@ export default function HomePage() {
               </p>
               <p className="text-warm-white/80 text-sm md:text-[0.9375rem] leading-relaxed">
                 Join Tacoma&apos;s highest-paying cleaning platform. Earn
-                $28–48/hr, set your own schedule, and keep 75% of every job.
+                $34–56/hr, set your own schedule, and keep 70–75% of every job.
               </p>
             </div>
             <Link

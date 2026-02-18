@@ -6,23 +6,23 @@ import Reveal from '@/components/Reveal';
 export const metadata: Metadata = {
   title: "Join Our Team | Lenny's Cleaning — Tacoma, WA",
   description:
-    "Earn $28-48/hr as an independent cleaning professional with Lenny's Cleaning in Tacoma. Keep 75% of every job. Set your own schedule. Apply today.",
+    "Earn $34-56/hr as an independent cleaning professional with Lenny's Cleaning in Tacoma. Keep 70-75% of every job. Set your own schedule. Apply today.",
   openGraph: {
     title: "Join Our Team | Lenny's Cleaning — Tacoma, WA",
     description:
-      "Earn $28-48/hr as an independent cleaning professional with Lenny's Cleaning in Tacoma. Keep 75% of every job. Set your own schedule. Apply today.",
+      "Earn $34-56/hr as an independent cleaning professional with Lenny's Cleaning in Tacoma. Keep 70-75% of every job. Set your own schedule. Apply today.",
   },
 };
 
 /* ─── Data ─── */
 const benefits = [
   {
-    title: 'Earn $28–48/hr',
+    title: 'Earn $34–56/hr',
     body: 'Traditional cleaning companies pay $13–18/hr. We pay 2–3x that because our tech eliminates the overhead they spend on dispatchers, office managers, and call centers.',
   },
   {
-    title: 'Keep 75% of every job',
-    body: 'Our 75/25 split is transparent and consistent. No hidden fees, no deductions, no surprises. You earn, we deposit — every week.',
+    title: 'Keep 70–75% of every job',
+    body: 'New operators keep 70%. Hit Preferred status and earn 73%. Reach Elite and keep 75%. Transparent, consistent, no hidden fees — you earn, we deposit every week.',
   },
   {
     title: 'Set your own schedule',
@@ -50,9 +50,9 @@ const steps = [
 
 const earnings = [
   { label: 'Customer pays', value: '$150' },
-  { label: 'Your share (75%)', value: '$112.50' },
+  { label: 'Your share (70%)', value: '$105' },
   { label: 'Estimated time', value: '2–2.5 hours' },
-  { label: 'Your effective rate', value: '$45–56/hr' },
+  { label: 'Your effective rate', value: '$42–52/hr' },
 ];
 
 const requirements = [
@@ -66,9 +66,9 @@ const requirements = [
 
 const tiers = [
   { name: 'Onboarding', desc: 'First 5 jobs — learn the ropes' },
-  { name: 'Standard', desc: 'Full access to available bookings' },
-  { name: 'Preferred', desc: 'Priority bookings and repeat clients' },
-  { name: 'Elite', desc: 'Highest-value jobs and on-call premiums' },
+  { name: 'Standard', desc: 'Keep 70% — full access to bookings' },
+  { name: 'Preferred', desc: 'Keep 73% — priority bookings and repeat clients' },
+  { name: 'Elite', desc: 'Keep 75% — highest-value jobs and on-call premiums' },
 ];
 
 const grainSvg = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`;
@@ -96,7 +96,7 @@ export default function JoinOurTeamPage() {
           </Reveal>
           <Reveal delay={200}>
             <p className="font-body text-[19px] text-warm-white/80 leading-relaxed max-w-[560px] mx-auto mb-9">
-              Lenny&apos;s cleaning professionals earn $28–48/hr — 2–3x the industry average. Keep 75% of every job, set your own schedule, and work with a platform that actually has your back.
+              Lenny&apos;s cleaning professionals earn $34–56/hr — 2–3x the industry average. Keep 70–75% of every job, set your own schedule, and work with a platform that actually has your back.
             </p>
           </Reveal>
           <Reveal delay={300}>

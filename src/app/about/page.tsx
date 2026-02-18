@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const beliefs = [
   {
     title: 'Operators are partners, not commodities',
-    body: 'Our cleaning professionals earn $28–48/hr — 2–3x the industry average. We pay weekly, we pay transparently, and we never cut corners on the people doing the work.',
+    body: 'Our cleaning professionals earn $34–56/hr — 2–3x the industry average. We pay weekly, we pay transparently, and we never cut corners on the people doing the work.',
   },
   {
     title: 'Technology replaces overhead, not people',
@@ -32,8 +32,8 @@ const beliefs = [
 ];
 
 const stats = [
-  { value: '$28–48/hr', label: 'operator earnings' },
-  { value: '75%', label: 'of every job goes to the professional' },
+  { value: '$34–56/hr', label: 'operator earnings' },
+  { value: '70–75%', label: 'of every job goes to the professional' },
   { value: '100%', label: 'background-checked team' },
   { value: 'Flat rate', label: 'no hourly surprises' },
 ];

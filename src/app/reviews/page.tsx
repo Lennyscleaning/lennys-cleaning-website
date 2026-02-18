@@ -46,7 +46,7 @@ const trustCards = [
   {
     icon: icons.dollar,
     title: 'You pay less, they earn more',
-    body: 'Our professionals earn $28–48/hr because better pay means better work.',
+    body: 'Our professionals earn $34–56/hr because better pay means better work.',
   },
   {
     icon: icons.thumbsUp,
