@@ -96,6 +96,15 @@ export default function Step6Review({ data, price }: Props) {
             {price.petsSurcharge > 0 && (
               <Row label="Pets surcharge" value={`$${price.petsSurcharge.toFixed(2)}`} />
             )}
+            {price.firstVisitPremium > 0 && (
+              <div className="flex justify-between py-2 border-b border-cream-dark">
+                <span className="font-body text-sm text-charcoal-light group relative">
+                  First Visit Assessment
+                  <span className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full bg-charcoal-light/15 text-[10px] font-semibold text-charcoal-light cursor-help" title="One-time fee for your first cleaning. This covers extra time for your cleaner to learn your home's layout and preferences. It won't apply to future bookings.">?</span>
+                </span>
+                <span className="font-body text-sm font-medium text-charcoal text-right">${price.firstVisitPremium.toFixed(2)}</span>
+              </div>
+            )}
             {price.addonsTotal > 0 && (
               <Row label="Add-ons total" value={`$${price.addonsTotal.toFixed(2)}`} />
             )}

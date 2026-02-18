@@ -238,6 +238,9 @@ export default async function DeepCleaningPage() {
             <p className="font-body text-sm text-gray-m text-center mt-5 max-w-[560px] mx-auto">
               Prices shown are base rates for homes in typical condition. Your final price may include adjustments for condition, pets, or add-on services — all shown transparently before you confirm.
             </p>
+            <p className="font-body text-sm text-charcoal-light text-center mt-3 max-w-[560px] mx-auto">
+              First-time customers: a one-time First Visit Assessment (15%) applies to your first booking. This gives your cleaning specialist extra time to learn your home. All future bookings are at the listed rate.
+            </p>
           </Reveal>
         </div>
       </section>

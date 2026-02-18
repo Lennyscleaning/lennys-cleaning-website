@@ -58,10 +58,23 @@ export default function Step7Confirmation({ data, price }: Props) {
             <span className="font-body text-sm font-medium text-charcoal">{data.timeSlot}</span>
           </div>
           {price && (
-            <div className="flex justify-between pt-2 mt-2 border-t border-cream-dark">
-              <span className="font-body text-sm font-semibold text-charcoal">Estimated total</span>
-              <span className="font-body text-sm font-semibold text-forest">${price.total.toFixed(2)}</span>
-            </div>
+            <>
+              {price.firstVisitPremium > 0 && (
+                <div className="flex justify-between pt-2 mt-2 border-t border-cream-dark">
+                  <span className="font-body text-sm text-charcoal-light">First Visit Assessment</span>
+                  <span className="font-body text-sm font-medium text-charcoal">${price.firstVisitPremium.toFixed(2)}</span>
+                </div>
+              )}
+              <div className={`flex justify-between ${price.firstVisitPremium > 0 ? 'pt-1' : 'pt-2 mt-2 border-t border-cream-dark'}`}>
+                <span className="font-body text-sm font-semibold text-charcoal">Estimated total</span>
+                <span className="font-body text-sm font-semibold text-forest">${price.total.toFixed(2)}</span>
+              </div>
+              {price.firstVisitPremium > 0 && (
+                <p className="font-body text-xs text-charcoal-light mt-2">
+                  Your cleaning specialist earns more on first visits to give your home the extra attention it deserves.
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>

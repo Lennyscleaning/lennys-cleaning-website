@@ -263,6 +263,9 @@ export default async function AirbnbCleaningPage() {
             <p className="font-body text-sm text-gray-m text-center mt-5 max-w-[560px] mx-auto">
               Prices shown are per-turnover rates. Same-day priority turnovers include a $50 same-day service fee. Add-ons like laundry and restocking are priced separately.
             </p>
+            <p className="font-body text-sm text-charcoal-light text-center mt-3 max-w-[560px] mx-auto">
+              First-time customers: a one-time First Visit Assessment (15%) applies to your first booking. This gives your cleaning specialist extra time to learn your home. All future bookings are at the listed rate.
+            </p>
           </Reveal>
         </div>
       </section>

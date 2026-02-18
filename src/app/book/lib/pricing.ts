@@ -35,6 +35,7 @@ export interface PricingConfig {
   conditionMultipliers: Record<string, number>;
   taxRate?: number;
   bathroomSurcharge?: number;
+  firstCleanPremium?: number; // percentage, e.g. 15 for 15%
 }
 
 export interface PriceBreakdown {
@@ -43,6 +44,7 @@ export interface PriceBreakdown {
   conditionLabel: string;
   conditionMultiplier: number;
   petsSurcharge: number;
+  firstVisitPremium: number;
   addonsTotal: number;
   addonItems: { label: string; price: number }[];
   subtotal: number;
@@ -50,6 +52,8 @@ export interface PriceBreakdown {
   taxAmount: number;
   total: number;
 }
+
+const DEFAULT_FIRST_CLEAN_PREMIUM = 15; // percentage
 
 export function calculatePrice(
   opts: {
@@ -59,8 +63,9 @@ export function calculatePrice(
     condition: Condition;
     pets: boolean;
     addons: Set<AddonKey>;
+    isFirstVisit?: boolean;
   },
-  config?: PricingConfig,
+  config?: Partial<PricingConfig>,
 ): PriceBreakdown {
   const prices = config?.basePrices ?? basePriceMatrix;
   const addonMap = config?.addonPrices ?? (addonPriceMap as Record<string, number>);
@@ -68,6 +73,7 @@ export function calculatePrice(
   const condMults = config?.conditionMultipliers ?? (conditionMultipliers as Record<string, number>);
   const taxRate = config?.taxRate ?? TAX_RATE;
   const bathSurcharge = config?.bathroomSurcharge ?? BATHROOM_SURCHARGE;
+  const premiumPercent = config?.firstCleanPremium ?? DEFAULT_FIRST_CLEAN_PREMIUM;
 
   const base = prices[opts.serviceType][opts.bedrooms];
 
@@ -82,6 +88,14 @@ export function calculatePrice(
 
   const petsSurcharge = opts.pets ? 15 : 0;
 
+  // Adjusted base price: base + bathroom surcharge, scaled by condition, plus pets
+  const adjustedBase = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge);
+
+  // First Visit Assessment: applied AFTER all adjustments, to base price only (not add-ons)
+  const firstVisitPremium = opts.isFirstVisit
+    ? Math.round(adjustedBase * premiumPercent / 100)
+    : 0;
+
   const addonItems: { label: string; price: number }[] = [];
   let addonsTotal = 0;
   for (const key of opts.addons) {
@@ -89,7 +103,7 @@ export function calculatePrice(
     addonsTotal += addonMap[key] ?? 0;
   }
 
-  const subtotal = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge + addonsTotal);
+  const subtotal = adjustedBase + firstVisitPremium + addonsTotal;
   const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
   const total = subtotal + taxAmount;
 
@@ -99,6 +113,7 @@ export function calculatePrice(
     conditionLabel,
     conditionMultiplier,
     petsSurcharge,
+    firstVisitPremium,
     addonsTotal,
     addonItems,
     subtotal,

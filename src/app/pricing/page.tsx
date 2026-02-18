@@ -213,6 +213,15 @@ export default async function PricingPage() {
         </div>
       </section>
 
+      {/* ══════ FIRST VISIT NOTE ══════ */}
+      <div className="max-w-[800px] mx-auto px-6 -mt-14 mb-14">
+        <Reveal>
+          <p className="font-body text-sm text-charcoal-light leading-relaxed text-center">
+            First-time customers: a one-time First Visit Assessment (15%) applies to your first booking. This gives your cleaning specialist extra time to learn your home. All future bookings are at the listed rate.
+          </p>
+        </Reveal>
+      </div>
+
       {/* ══════ HOW PRICING WORKS ══════ */}
       <section className="py-24 px-6 bg-cream">
         <div className="max-w-[1200px] mx-auto">

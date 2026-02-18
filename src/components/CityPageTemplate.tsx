@@ -143,6 +143,11 @@ export default async function CityPageTemplate({ cityName, citySlug, nearbyAreas
               </Reveal>
             ))}
           </div>
+          <Reveal delay={300}>
+            <p className="font-body text-sm text-charcoal-light text-center mt-8 max-w-[560px] mx-auto">
+              First-time customers: a one-time First Visit Assessment (15%) applies to your first booking. This gives your cleaning specialist extra time to learn your home. All future bookings are at the listed rate.
+            </p>
+          </Reveal>
         </div>
       </section>
 

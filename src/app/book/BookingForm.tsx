@@ -88,6 +88,7 @@ export default function BookingForm() {
         platformConfig: {
           defaultSalesTaxRate: number | null;
           extraBathroomSurcharge: number | null;
+          firstCleanPremium: number | null;
         };
       }) => {
         const addonPrices: Record<string, number> = {};
@@ -107,6 +108,7 @@ export default function BookingForm() {
           conditionMultipliers: condMults,
           taxRate: apiData.platformConfig.defaultSalesTaxRate ?? undefined,
           bathroomSurcharge: apiData.platformConfig.extraBathroomSurcharge ?? undefined,
+          firstCleanPremium: apiData.platformConfig.firstCleanPremium ?? undefined,
         });
       })
       .catch(() => {
@@ -133,6 +135,7 @@ export default function BookingForm() {
           condition: data.condition as Condition,
           pets: data.pets ?? false,
           addons: data.addons,
+          isFirstVisit: true, // Booking form is for new bookings — backend verifies
         },
         pricingConfig ?? undefined,
       );

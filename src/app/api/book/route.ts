@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createRecord, AirtableError } from '@/lib/airtable';
+import { createRecord, fetchRecords, AirtableError } from '@/lib/airtable';
 import { addonLabels, calculatePrice } from '@/app/book/lib/pricing';
 import type { ServiceType, Bedrooms, Bathrooms, Condition, AddonKey } from '@/app/book/lib/types';
 
@@ -55,16 +55,44 @@ export async function POST(request: Request) {
       }
     }
 
+    // Check if this is a first-time customer (no completed appointments)
+    let isFirstVisit = true;
+    let firstCleanPremium: number | undefined;
+    try {
+      const [appointments, platformConfig] = await Promise.all([
+        fetchRecords<{ status: string }>('appointments', {
+          filterByFormula: `AND({customer_email}='${body.email.replace(/'/g, "\\'")}',{status}='completed')`,
+          maxRecords: 1,
+          fields: ['status'],
+        }),
+        fetchRecords<{ config_key: string; config_value: string }>('platform_config', {
+          filterByFormula: "config_key='first_clean_premium'",
+          maxRecords: 1,
+        }),
+      ]);
+      isFirstVisit = appointments.records.length === 0;
+      if (platformConfig.records.length > 0) {
+        firstCleanPremium = parseFloat(platformConfig.records[0].fields.config_value);
+      }
+    } catch {
+      // If appointments table doesn't exist or query fails, default to first visit
+      isFirstVisit = true;
+    }
+
     // Calculate quote amount (subtotal before tax)
     const addonSet = new Set(body.addons as AddonKey[]);
-    const price = calculatePrice({
-      serviceType: body.serviceType as ServiceType,
-      bedrooms: body.bedrooms as Bedrooms,
-      bathrooms: body.bathrooms as Bathrooms,
-      condition: body.condition as Condition,
-      pets: body.pets ?? false,
-      addons: addonSet,
-    });
+    const price = calculatePrice(
+      {
+        serviceType: body.serviceType as ServiceType,
+        bedrooms: body.bedrooms as Bedrooms,
+        bathrooms: body.bathrooms as Bathrooms,
+        condition: body.condition as Condition,
+        pets: body.pets ?? false,
+        addons: addonSet,
+        isFirstVisit,
+      },
+      firstCleanPremium != null ? { firstCleanPremium } : undefined,
+    );
 
     // Build add-on display names
     const addonNames = body.addons
@@ -113,6 +141,8 @@ export async function POST(request: Request) {
       pets: body.pets ?? false,
       notes: notesParts.join('\n'),
       quote_amount: price.subtotal,
+      first_visit_premium: price.firstVisitPremium > 0 ? price.firstVisitPremium : null,
+      is_first_visit: isFirstVisit,
       is_urgent: false,
       service_vertical: 'CLEANING',
     });

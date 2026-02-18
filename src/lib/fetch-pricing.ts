@@ -234,7 +234,7 @@ async function fetchFromAirtable(): Promise<PricingData> {
     }),
     fetchRecords<PlatformConfigFields>('platform_config', {
       filterByFormula:
-        "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent')",
+        "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium')",
     }),
   ]);
 

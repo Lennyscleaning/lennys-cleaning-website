@@ -78,7 +78,7 @@ export async function GET() {
       }),
       fetchRecords<PlatformConfigFields>('platform_config', {
         filterByFormula:
-          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent')",
+          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium')",
       }),
     ]);
 
@@ -122,6 +122,8 @@ export async function GET() {
           : null,
         extraBathroomSurcharge: config.extra_bathroom_surcharge ?? null,
         platformSplitPercent: config.platform_split_percent ?? null,
+        // Stored as percentage (15) — passed through as-is
+        firstCleanPremium: config.first_clean_premium ?? null,
       },
     });
   } catch (err) {
