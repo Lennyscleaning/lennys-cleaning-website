@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
-import { airbnbPricing, addons as allAddons } from '@/lib/pricing-data';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -90,10 +90,6 @@ const inclusions = [
   },
 ];
 
-const pricing = airbnbPricing;
-
-const airbnbAddons = allAddons;
-
 const faqs = [
   {
     question: 'How fast can you turn around between guests?',
@@ -143,7 +139,11 @@ const jsonLd = {
 };
 
 /* ─── PAGE ─── */
-export default function AirbnbCleaningPage() {
+export default async function AirbnbCleaningPage() {
+  const pricingData = await fetchPricingData();
+  const pricing = pricingData.airbnbPricing;
+  const airbnbAddons = pricingData.addons;
+
   return (
     <>
       <script

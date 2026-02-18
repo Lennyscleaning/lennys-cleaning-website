@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
-import { standardPricing, addons } from '@/lib/pricing-data';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -78,10 +78,6 @@ const inclusions = [
   },
 ];
 
-const pricing = standardPricing;
-
-const standardAddons = addons;
-
 const faqs = [
   {
     question: 'What does a standard cleaning include?',
@@ -127,7 +123,11 @@ const jsonLd = {
 };
 
 /* ─── PAGE ─── */
-export default function StandardCleaningPage() {
+export default async function StandardCleaningPage() {
+  const pricingData = await fetchPricingData();
+  const pricing = pricingData.standardPricing;
+  const standardAddons = pricingData.addons;
+
   return (
     <>
       <script

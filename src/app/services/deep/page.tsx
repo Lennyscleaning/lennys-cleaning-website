@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
-import { deepPricing, addons as allAddons } from '@/lib/pricing-data';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -91,10 +91,6 @@ const inclusions = [
   },
 ];
 
-const pricing = deepPricing;
-
-const deepAddons = allAddons;
-
 const faqs = [
   {
     question: "What's the difference between a deep clean and a standard clean?",
@@ -140,7 +136,11 @@ const jsonLd = {
 };
 
 /* ─── PAGE ─── */
-export default function DeepCleaningPage() {
+export default async function DeepCleaningPage() {
+  const pricingData = await fetchPricingData();
+  const pricing = pricingData.deepPricing;
+  const deepAddons = pricingData.addons;
+
   return (
     <>
       <script

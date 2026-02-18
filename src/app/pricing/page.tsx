@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
-import { serviceComparison, sizeRanges, addons as centralAddons } from '@/lib/pricing-data';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -16,10 +16,6 @@ export const metadata: Metadata = {
       'Transparent, flat-rate house cleaning prices in Tacoma. Know exactly what you\'ll pay before we arrive.',
   },
 };
-
-/* ─── Data (from centralized pricing) ─── */
-const services = serviceComparison;
-const addons = centralAddons;
 
 const recurringDiscounts = [
   { frequency: 'Weekly', discount: '~15% off', note: 'Best value — lowest per-visit rate' },
@@ -72,7 +68,12 @@ const jsonLd = {
 };
 
 /* ─── PAGE ─── */
-export default function PricingPage() {
+export default async function PricingPage() {
+  const pricingData = await fetchPricingData();
+  const services = pricingData.serviceComparison;
+  const sizeRanges = pricingData.sizeRanges;
+  const addons = pricingData.addons;
+
   return (
     <>
       <script

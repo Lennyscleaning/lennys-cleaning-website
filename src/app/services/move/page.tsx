@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import FaqAccordion from '@/components/FaqAccordion';
 import TrustBar from '@/components/TrustBar';
-import { movePricing, addons as allAddons } from '@/lib/pricing-data';
+import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -91,10 +91,6 @@ const inclusions = [
   },
 ];
 
-const pricing = movePricing;
-
-const moveAddons = allAddons;
-
 const faqs = [
   {
     question: 'Will this help me get my security deposit back?',
@@ -144,7 +140,11 @@ const jsonLd = {
 };
 
 /* ─── PAGE ─── */
-export default function MoveOutCleaningPage() {
+export default async function MoveOutCleaningPage() {
+  const pricingData = await fetchPricingData();
+  const pricing = pricingData.movePricing;
+  const moveAddons = pricingData.addons;
+
   return (
     <>
       <script
