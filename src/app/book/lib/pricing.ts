@@ -39,6 +39,7 @@ export interface PricingConfig {
   taxRate?: number;
   bathroomSurcharge?: number;
   firstCleanPremium?: number; // percentage, e.g. 15 for 15%
+  foundingDiscountPercent?: number; // percentage, e.g. 10 for 10%
 }
 
 export interface PriceBreakdown {
@@ -51,6 +52,7 @@ export interface PriceBreakdown {
   conditionMultiplier: number;
   petsSurcharge: number;
   firstVisitPremium: number;
+  foundingDiscount: number;
   addonsTotal: number;
   addonItems: { label: string; price: number }[];
   subtotal: number;
@@ -69,6 +71,7 @@ export function calculatePrice(
     intake: IntakeAnswers;
     addons: Set<AddonKey>;
     isFirstVisit?: boolean;
+    foundingDiscountEligible?: boolean;
   },
   config?: Partial<PricingConfig>,
 ): PriceBreakdown {
@@ -80,6 +83,7 @@ export function calculatePrice(
   const taxRate = config?.taxRate ?? TAX_RATE;
   const bathSurcharge = config?.bathroomSurcharge ?? BATHROOM_SURCHARGE;
   const premiumPercent = config?.firstCleanPremium ?? DEFAULT_FIRST_CLEAN_PREMIUM;
+  const foundingPercent = config?.foundingDiscountPercent ?? 0;
 
   const base = prices[opts.serviceType][opts.bedrooms];
 
@@ -107,7 +111,13 @@ export function calculatePrice(
     addonsTotal += addonMap[key] ?? 0;
   }
 
-  const subtotal = adjustedBase + firstVisitPremium + addonsTotal;
+  // Founding customer discount: applied to subtotal before tax
+  const preDiscountSubtotal = adjustedBase + firstVisitPremium + addonsTotal;
+  const foundingDiscount = opts.foundingDiscountEligible && foundingPercent > 0
+    ? Math.round(preDiscountSubtotal * foundingPercent / 100)
+    : 0;
+
+  const subtotal = preDiscountSubtotal - foundingDiscount;
   const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
   const total = subtotal + taxAmount;
 
@@ -121,6 +131,7 @@ export function calculatePrice(
     conditionMultiplier,
     petsSurcharge,
     firstVisitPremium,
+    foundingDiscount,
     addonsTotal,
     addonItems,
     subtotal,

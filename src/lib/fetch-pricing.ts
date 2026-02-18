@@ -107,6 +107,11 @@ export interface PricingData {
   serviceComparison: { name: string; price: string; note: string; href: string }[];
   sizeRanges: { size: string; range: string }[];
   cityServiceCards: { title: string; price: string; href: string; desc: string }[];
+  foundingDiscount?: {
+    eligible: boolean;
+    percent: number;
+    slotsRemaining: number;
+  };
 }
 
 /* ─── Build derived data from raw matrices ─── */
@@ -222,7 +227,7 @@ function getStaticFallback(): PricingData {
 /* ─── Airtable fetch (uncached) ─── */
 
 async function fetchFromAirtable(): Promise<PricingData> {
-  const [priceBook, addOns, _conditions, platformConfig] = await Promise.all([
+  const [priceBook, addOns, _conditions, platformConfig, customerCount] = await Promise.all([
     fetchRecords<PriceBookFields>('price_book', {
       sort: [{ field: 'service_type' }, { field: 'bedrooms', direction: 'asc' }],
     }),
@@ -234,8 +239,11 @@ async function fetchFromAirtable(): Promise<PricingData> {
     }),
     fetchRecords<PlatformConfigFields>('platform_config', {
       filterByFormula:
-        "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium')",
+        "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium',config_key='founding_discount_percent',config_key='founding_discount_max_customers',config_key='founding_discount_active')",
     }),
+    fetchRecords<{ email: string }>('customers', {
+      fields: ['email'],
+    }).catch(() => ({ records: [] as { id: string; createdTime: string; fields: { email: string } }[] })),
   ]);
 
   // Build base price matrix
@@ -263,7 +271,24 @@ async function fetchFromAirtable(): Promise<PricingData> {
     ? configMap.default_sales_tax_rate / 100
     : staticData.TAX_RATE;
 
-  return buildDerivedData(basePriceMatrix, addonPriceMap, taxRate);
+  const result = buildDerivedData(basePriceMatrix, addonPriceMap, taxRate);
+
+  // Founding discount info
+  const foundingActive = configMap.founding_discount_active === 1;
+  const foundingPercent = configMap.founding_discount_percent ?? 10;
+  const foundingMaxCustomers = configMap.founding_discount_max_customers ?? 20;
+  const totalCustomers = customerCount.records.length;
+  const slotsRemaining = Math.max(0, foundingMaxCustomers - totalCustomers);
+
+  if (foundingActive && slotsRemaining > 0) {
+    result.foundingDiscount = {
+      eligible: true,
+      percent: foundingPercent,
+      slotsRemaining,
+    };
+  }
+
+  return result;
 }
 
 /* ─── Cached public API ─── */

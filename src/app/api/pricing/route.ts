@@ -66,7 +66,7 @@ interface PlatformConfigFields {
 
 export async function GET() {
   try {
-    const [priceBook, addOns, conditions, platformConfig] = await Promise.all([
+    const [priceBook, addOns, conditions, platformConfig, customerCount] = await Promise.all([
       fetchRecords<PriceBookFields>('price_book', {
         sort: [{ field: 'service_type' }, { field: 'bedrooms', direction: 'asc' }],
       }),
@@ -78,8 +78,12 @@ export async function GET() {
       }),
       fetchRecords<PlatformConfigFields>('platform_config', {
         filterByFormula:
-          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium',config_key='condition_tier_standard_max',config_key='condition_tier_moderate_max',config_key='condition_tier_heavy_max',config_key='condition_moderate_multiplier',config_key='condition_heavy_multiplier',config_key='condition_extreme_multiplier',config_key='pet_surcharge')",
+          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium',config_key='condition_tier_standard_max',config_key='condition_tier_moderate_max',config_key='condition_tier_heavy_max',config_key='condition_moderate_multiplier',config_key='condition_heavy_multiplier',config_key='condition_extreme_multiplier',config_key='pet_surcharge',config_key='founding_discount_percent',config_key='founding_discount_max_customers',config_key='founding_discount_active')",
       }),
+      // Count unique customers for founding discount eligibility
+      fetchRecords<{ email: string }>('customers', {
+        fields: ['email'],
+      }).catch(() => ({ records: [] as { id: string; createdTime: string; fields: { email: string } }[] })),
     ]);
 
     // Build price matrix: { standard: { 1: 85, 2: 120, ... }, ... }
@@ -166,6 +170,14 @@ export async function GET() {
       ];
     }
 
+    // Founding discount: check if active and slots remain
+    const foundingActive = config.founding_discount_active === 1;
+    const foundingPercent = config.founding_discount_percent ?? 10;
+    const foundingMaxCustomers = config.founding_discount_max_customers ?? 20;
+    const totalCustomers = customerCount.records.length;
+    const foundingSlotsRemaining = Math.max(0, foundingMaxCustomers - totalCustomers);
+    const foundingDiscountEligible = foundingActive && foundingSlotsRemaining > 0;
+
     return NextResponse.json({
       basePrices,
       addOns: addOnsList,
@@ -181,6 +193,9 @@ export async function GET() {
         firstCleanPremium: config.first_clean_premium ?? null,
         tierConfig: tierConfig ?? null,
         petSurcharge: config.pet_surcharge ?? null,
+        foundingDiscountEligible,
+        foundingDiscountPercent: foundingDiscountEligible ? foundingPercent : 0,
+        foundingSlotsRemaining: foundingDiscountEligible ? foundingSlotsRemaining : 0,
       },
     });
   } catch (err) {

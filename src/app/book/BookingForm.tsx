@@ -85,6 +85,7 @@ export default function BookingForm() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<BookingFormData>(initialData);
   const [pricingConfig, setPricingConfig] = useState<PricingConfig | null>(null);
+  const [foundingDiscountEligible, setFoundingDiscountEligible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -102,6 +103,9 @@ export default function BookingForm() {
           firstCleanPremium: number | null;
           tierConfig?: TierConfig[];
           petSurcharge?: number | null;
+          foundingDiscountEligible?: boolean;
+          foundingDiscountPercent?: number;
+          foundingSlotsRemaining?: number;
         };
       }) => {
         const addonPrices: Record<string, number> = {};
@@ -119,7 +123,9 @@ export default function BookingForm() {
           taxRate: apiData.platformConfig.defaultSalesTaxRate ?? undefined,
           bathroomSurcharge: apiData.platformConfig.extraBathroomSurcharge ?? undefined,
           firstCleanPremium: apiData.platformConfig.firstCleanPremium ?? undefined,
+          foundingDiscountPercent: apiData.platformConfig.foundingDiscountPercent ?? undefined,
         });
+        setFoundingDiscountEligible(apiData.platformConfig.foundingDiscountEligible ?? false);
       })
       .catch(() => {
         // Static fallback — no action needed
@@ -145,12 +151,13 @@ export default function BookingForm() {
           intake: data.intake,
           addons: data.addons,
           isFirstVisit: true, // Booking form is for new bookings — backend verifies
+          foundingDiscountEligible,
         },
         pricingConfig ?? undefined,
       );
     }
     return null;
-  }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.addons, pricingConfig]);
+  }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.addons, pricingConfig, foundingDiscountEligible]);
 
   const canContinue = isStepValid(step, data);
 

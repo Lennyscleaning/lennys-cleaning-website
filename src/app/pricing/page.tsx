@@ -73,6 +73,7 @@ export default async function PricingPage() {
   const services = pricingData.serviceComparison;
   const sizeRanges = pricingData.sizeRanges;
   const addons = pricingData.addons;
+  const founding = pricingData.foundingDiscount;
 
   return (
     <>
@@ -104,6 +105,24 @@ export default async function PricingPage() {
           </Reveal>
         </div>
       </header>
+
+      {/* ══════ FOUNDING DISCOUNT BANNER ══════ */}
+      {founding?.eligible && (
+        <div className="bg-forest text-warm-white">
+          <div className="max-w-[800px] mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center sm:text-left">
+            <span className="font-body text-[15px] font-medium">
+              Founding customer special: {founding.percent}% off your first booking — only {founding.slotsRemaining} {founding.slotsRemaining === 1 ? 'spot' : 'spots'} left.
+            </span>
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-1 text-warm-white/90 font-semibold text-sm underline underline-offset-2 hover:text-warm-white transition-colors whitespace-nowrap"
+            >
+              Claim your spot
+              <span aria-hidden="true"> &rarr;</span>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* ══════ TRUST BAR ══════ */}
       <TrustBar />

@@ -70,32 +70,66 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if this is a first-time customer (no completed appointments)
+    // Check if this is a first-time customer + founding discount eligibility
     let isFirstVisit = true;
     let firstCleanPremium: number | undefined;
+    let foundingDiscountEligible = false;
+    let foundingDiscountPercent = 0;
     try {
-      const [appointments, platformConfig] = await Promise.all([
+      const safeEmail = body.email.replace(/'/g, "\\'");
+      const [appointments, platformConfig, customerCount] = await Promise.all([
         fetchRecords<{ status: string }>('appointments', {
-          filterByFormula: `AND({customer_email}='${body.email.replace(/'/g, "\\'")}',{status}='completed')`,
+          filterByFormula: `AND({customer_email}='${safeEmail}',{status}='completed')`,
           maxRecords: 1,
           fields: ['status'],
         }),
         fetchRecords<{ config_key: string; config_value: string }>('platform_config', {
-          filterByFormula: "config_key='first_clean_premium'",
+          filterByFormula: "OR(config_key='first_clean_premium',config_key='founding_discount_percent',config_key='founding_discount_max_customers',config_key='founding_discount_active')",
+        }),
+        fetchRecords<{ email: string }>('customers', {
+          filterByFormula: `{email}='${safeEmail}'`,
           maxRecords: 1,
+          fields: ['email'],
         }),
       ]);
       isFirstVisit = appointments.records.length === 0;
-      if (platformConfig.records.length > 0) {
-        firstCleanPremium = parseFloat(platformConfig.records[0].fields.config_value);
+
+      // Parse platform config values
+      const configMap: Record<string, string> = {};
+      for (const rec of platformConfig.records) {
+        configMap[rec.fields.config_key] = rec.fields.config_value;
+      }
+      if (configMap.first_clean_premium) {
+        firstCleanPremium = parseFloat(configMap.first_clean_premium);
+      }
+
+      // Founding discount: must be active, customer must be new (not in customers table), and slots remaining
+      const foundingActive = configMap.founding_discount_active === '1';
+      const maxCustomers = parseFloat(configMap.founding_discount_max_customers || '20');
+      const isNewCustomer = customerCount.records.length === 0;
+
+      if (foundingActive && isNewCustomer) {
+        // Count total customers to check if slots remain
+        const allCustomers = await fetchRecords<{ email: string }>('customers', {
+          fields: ['email'],
+        });
+        const slotsRemaining = maxCustomers - allCustomers.records.length;
+        if (slotsRemaining > 0) {
+          foundingDiscountEligible = true;
+          foundingDiscountPercent = parseFloat(configMap.founding_discount_percent || '10');
+        }
       }
     } catch {
-      // If appointments table doesn't exist or query fails, default to first visit
+      // If tables don't exist or query fails, default to first visit, no founding discount
       isFirstVisit = true;
     }
 
     // Calculate quote amount (subtotal before tax)
     const addonSet = new Set(body.addons as AddonKey[]);
+    const pricingConfig: Partial<import('@/app/book/lib/pricing').PricingConfig> = {};
+    if (firstCleanPremium != null) pricingConfig.firstCleanPremium = firstCleanPremium;
+    if (foundingDiscountPercent > 0) pricingConfig.foundingDiscountPercent = foundingDiscountPercent;
+
     const price = calculatePrice(
       {
         serviceType: body.serviceType as ServiceType,
@@ -104,8 +138,9 @@ export async function POST(request: Request) {
         intake: body.intake,
         addons: addonSet,
         isFirstVisit,
+        foundingDiscountEligible,
       },
-      firstCleanPremium != null ? { firstCleanPremium } : undefined,
+      Object.keys(pricingConfig).length > 0 ? pricingConfig : undefined,
     );
 
     // Compute intake score and tier for Airtable
@@ -164,6 +199,8 @@ export async function POST(request: Request) {
       quote_amount: price.subtotal,
       first_visit_premium: price.firstVisitPremium > 0 ? price.firstVisitPremium : null,
       is_first_visit: isFirstVisit,
+      founding_discount_applied: price.foundingDiscount > 0,
+      founding_discount_amount: price.foundingDiscount > 0 ? price.foundingDiscount : null,
       is_urgent: false,
       service_vertical: 'CLEANING',
     });
