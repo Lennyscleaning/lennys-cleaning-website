@@ -11,9 +11,10 @@ const services: { value: ServiceType; label: string; desc: string }[] = [
 interface Props {
   data: BookingFormData;
   onChange: (updates: Partial<BookingFormData>) => void;
+  startingPrices?: Record<string, number>;
 }
 
-export default function Step1ServiceType({ data, onChange }: Props) {
+export default function Step1ServiceType({ data, onChange, startingPrices }: Props) {
   return (
     <div>
       <h2 className="font-display font-semibold text-2xl text-charcoal mb-2">
@@ -25,6 +26,7 @@ export default function Step1ServiceType({ data, onChange }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {services.map((s) => {
           const selected = data.serviceType === s.value;
+          const price = startingPrices?.[s.value];
           return (
             <button
               key={s.value}
@@ -40,12 +42,21 @@ export default function Step1ServiceType({ data, onChange }: Props) {
                 {s.label}
               </span>
               <span className="block font-body text-sm text-charcoal-light mt-0.5">
+                {price ? <><span className="text-forest font-medium">From ${price}</span> &middot; </> : null}
                 {s.desc}
               </span>
             </button>
           );
         })}
       </div>
+
+      {/* Reassurance */}
+      <p className="flex items-center justify-center gap-1.5 font-body text-xs text-charcoal-light/70 text-center mt-5">
+        <svg className="w-3.5 h-3.5 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+        Your exact price depends on home size and extras — you&apos;ll see the full breakdown before you book.
+      </p>
     </div>
   );
 }

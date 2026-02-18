@@ -160,6 +160,16 @@ export default function BookingForm() {
     return null;
   }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.addons, pricingConfig, foundingDiscountEligible]);
 
+  // Starting prices for Step 1 cards (1-bedroom base price per service type)
+  const startingPrices = useMemo(() => {
+    if (!pricingConfig?.basePrices) return undefined;
+    const prices: Record<string, number> = {};
+    for (const [key, matrix] of Object.entries(pricingConfig.basePrices)) {
+      if (matrix[1] != null) prices[key] = matrix[1];
+    }
+    return Object.keys(prices).length > 0 ? prices : undefined;
+  }, [pricingConfig]);
+
   const canContinue = isStepValid(step, data);
 
   const handleNext = async () => {
@@ -198,6 +208,46 @@ export default function BookingForm() {
 
   return (
     <div>
+      {/* Step 1 hero + trust signals */}
+      {step === 1 && (
+        <div className="text-center mb-6">
+          <h1 className="font-display font-semibold text-charcoal leading-tight tracking-tight text-[clamp(24px,4vw,32px)]">
+            Book your cleaning in under 2 minutes
+          </h1>
+          <p className="font-body text-[15px] text-charcoal-light mt-2">
+            Flat-rate pricing. No hidden fees. See your exact price before you commit.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-4">
+            <span className="flex items-center gap-1.5 text-xs font-medium text-charcoal-light">
+              <svg className="w-4 h-4 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              Background-checked
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-charcoal-light">
+              <svg className="w-4 h-4 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+              </svg>
+              Flat-rate pricing
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-charcoal-light">
+              <svg className="w-4 h-4 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.745 3.745 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+              </svg>
+              Satisfaction guaranteed
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-charcoal-light">
+              <svg className="w-4 h-4 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              </svg>
+              Serving Tacoma &amp; beyond
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Progress bar — hidden on confirmation */}
       {step <= 6 && (
         <div className="mb-8">
@@ -225,7 +275,7 @@ export default function BookingForm() {
       )}
 
       {/* Step content */}
-      {step === 1 && <Step1ServiceType data={data} onChange={handleChange} />}
+      {step === 1 && <Step1ServiceType data={data} onChange={handleChange} startingPrices={startingPrices} />}
       {step === 2 && <Step2HomeDetails data={data} onChange={handleChange} />}
       {step === 3 && (
         <Step3Addons
