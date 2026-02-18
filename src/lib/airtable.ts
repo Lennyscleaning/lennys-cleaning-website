@@ -3,7 +3,7 @@
    Reads AIRTABLE_API_KEY and AIRTABLE_BASE_ID from process.env.
    ─────────────────────────────────────────────── */
 
-const API_KEY = process.env.AIRTABLE_API_KEY ?? '';
+const API_KEY = process.env.AT_KEY || process.env.AIRTABLE_API_KEY || '';
 const BASE_ID = process.env.AIRTABLE_BASE_ID ?? '';
 const BASE_URL = 'https://api.airtable.com/v0';
 
