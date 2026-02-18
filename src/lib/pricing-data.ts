@@ -8,10 +8,10 @@ export const TAX_RATE = 0.102; // 10.2% Tacoma default — will eventually come 
 
 /* ─── Raw price matrices (numeric, used by booking form calculator) ─── */
 export const basePriceMatrix: Record<string, Record<number, number>> = {
-  standard:            { 1: 85,  2: 120, 3: 165, 4: 210, 5: 255, 6: 300 },
-  deep:                { 1: 150, 2: 220, 3: 295, 4: 380, 5: 460, 6: 540 },
-  move:                { 1: 175, 2: 225, 3: 325, 4: 400, 5: 475, 6: 550 },
-  airbnb:              { 1: 125, 2: 155, 3: 195, 4: 250, 5: 300, 6: 350 },
+  standard:            { 1: 95,  2: 130, 3: 180, 4: 230, 5: 255, 6: 290 },
+  deep:                { 1: 170, 2: 245, 3: 330, 4: 425, 5: 475, 6: 530 },
+  move:                { 1: 195, 2: 250, 3: 360, 4: 440, 5: 525, 6: 605 },
+  airbnb:              { 1: 95,  2: 125, 3: 155, 4: 195, 5: 215, 6: 235 },
   'post-construction': { 1: 250, 2: 320, 3: 390, 4: 480, 5: 570, 6: 660 },
 };
 
@@ -68,9 +68,9 @@ export const startingPrices = {
 /* ─── Recurring pricing (3BR base as display example) ─── */
 export const recurringPricing = {
   base: basePriceMatrix.standard[3],
-  weekly: { price: '$140', savings: '~15%' },
-  biweekly: { price: '$152', savings: '~8%' },
-  monthly: { price: '$157', savings: '~5%' },
+  weekly: { price: '$155', savings: '~15%' },
+  biweekly: { price: '$175', savings: '~3%' },
+  monthly: { price: '$180', savings: '~0%' },
 };
 
 /* ─── Add-ons (formatted for display pages) ─── */
@@ -127,12 +127,12 @@ export const serviceComparison = [
 
 /* ─── Pricing page: size ranges ─── */
 export const sizeRanges = [
-  { size: '1 bedroom', range: '$85\u2013$175' },
-  { size: '2 bedrooms', range: '$120\u2013$225' },
-  { size: '3 bedrooms', range: '$165\u2013$325' },
-  { size: '4 bedrooms', range: '$210\u2013$400' },
-  { size: '5 bedrooms', range: '$255\u2013$570' },
-  { size: '6 bedrooms', range: '$300\u2013$660' },
+  { size: '1 bedroom', range: '$95\u2013$250' },
+  { size: '2 bedrooms', range: '$125\u2013$320' },
+  { size: '3 bedrooms', range: '$155\u2013$390' },
+  { size: '4 bedrooms', range: '$195\u2013$480' },
+  { size: '5 bedrooms', range: '$215\u2013$570' },
+  { size: '6 bedrooms', range: '$235\u2013$660' },
 ];
 
 /* ─── City page: service cards ─── */
