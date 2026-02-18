@@ -1,0 +1,10 @@
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const key = process.env.AIRTABLE_API_KEY || '';
+  return NextResponse.json({
+    keyLength: key.length,
+    keyStart: key.substring(0, 10),
+    keyEnd: key.substring(key.length - 6),
+  });
+}
