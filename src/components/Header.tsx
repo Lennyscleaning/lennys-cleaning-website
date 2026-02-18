@@ -10,6 +10,7 @@ const servicesLinks = [
   { label: 'Move-in / move-out', href: '/services/move' },
   { label: 'Airbnb & vacation rental', href: '/services/airbnb' },
   { label: 'Recurring plans', href: '/services/recurring' },
+  { label: "What's included", href: '/services/whats-included' },
 ];
 
 const areasLinks = [
