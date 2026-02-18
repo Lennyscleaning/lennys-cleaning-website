@@ -81,7 +81,11 @@ export async function POST(request: Request) {
       bedrooms: body.bedrooms,
       bathrooms: body.bathrooms,
       pets: body.pets ?? false,
+      status: 'Lead',
+      source: 'Website',
+      is_active: true,
       service_vertical: 'CLEANING',
+      created_at: new Date().toISOString(),
     });
 
     // 2. Build notes with time preference + any special instructions
