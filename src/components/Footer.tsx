@@ -6,6 +6,8 @@ const quickLinks = [
   { label: 'Move-in / move-out clean', href: '/services/move' },
   { label: "What's included", href: '/services/whats-included' },
   { label: 'How it works', href: '/how-it-works' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Reviews', href: '/reviews' },
   { label: 'About', href: '/about' },
 ];
 

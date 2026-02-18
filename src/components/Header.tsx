@@ -10,6 +10,7 @@ const servicesLinks = [
   { label: 'Move-in / move-out', href: '/services/move' },
   { label: 'Airbnb & vacation rental', href: '/services/airbnb' },
   { label: 'Recurring plans', href: '/services/recurring' },
+  { label: 'Eco-friendly cleaning', href: '/services/eco-friendly' },
   { label: "What's included", href: '/services/whats-included' },
 ];
 
@@ -166,6 +167,21 @@ function MobileMenu({
               About
             </Link>
           </li>
+          <li>
+            <Link href="/how-it-works" onClick={onClose} className="block py-3 text-base font-medium text-charcoal">
+              How it works
+            </Link>
+          </li>
+          <li>
+            <Link href="/reviews" onClick={onClose} className="block py-3 text-base font-medium text-charcoal">
+              Reviews
+            </Link>
+          </li>
+          <li>
+            <Link href="/faq" onClick={onClose} className="block py-3 text-base font-medium text-charcoal">
+              FAQ
+            </Link>
+          </li>
 
           {/* Service Areas accordion */}
           <li>
@@ -275,6 +291,24 @@ export default function Header() {
               className="text-[15px] font-medium text-charcoal transition-colors duration-200 hover:text-forest"
             >
               About
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="text-[15px] font-medium text-charcoal transition-colors duration-200 hover:text-forest"
+            >
+              How it works
+            </Link>
+            <Link
+              href="/reviews"
+              className="text-[15px] font-medium text-charcoal transition-colors duration-200 hover:text-forest"
+            >
+              Reviews
+            </Link>
+            <Link
+              href="/faq"
+              className="text-[15px] font-medium text-charcoal transition-colors duration-200 hover:text-forest"
+            >
+              FAQ
             </Link>
             <Dropdown
               label="Service areas"
