@@ -70,8 +70,30 @@ export async function POST(request: Request) {
       .map((key) => addonLabels[key as AddonKey] ?? key)
       .join(', ');
 
-    const record = await createRecord('job_requests', {
+    // 1. Create customer record
+    const customer = await createRecord('customers', {
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      address: body.address,
+      city: body.city || '',
+      zip: body.zip,
+      bedrooms: body.bedrooms,
+      bathrooms: body.bathrooms,
+      pets: body.pets ?? false,
+      service_vertical: 'CLEANING',
+    });
+
+    // 2. Build notes with time preference + any special instructions
+    const notesParts: string[] = [];
+    if (body.timeSlot) notesParts.push(`Preferred time: ${body.timeSlot}`);
+    if (body.sqft) notesParts.push(`Square footage: ${body.sqft}`);
+    if (body.instructions) notesParts.push(body.instructions);
+
+    // 3. Create job request linked to customer
+    const jobRequest = await createRecord('job_requests', {
       request_name: `JR-${Date.now()}`,
+      customer: [customer.id],
       address: body.address,
       city: body.city || '',
       zip: body.zip,
@@ -79,26 +101,19 @@ export async function POST(request: Request) {
       frequency: 'One-Time',
       add_ons: addonNames || '',
       preferred_date: body.date,
-      preferred_time: body.timeSlot,
       bedrooms: body.bedrooms,
       bathrooms: body.bathrooms,
       condition: CONDITION_LABELS[body.condition] ?? body.condition,
       pets: body.pets ?? false,
-      special_instructions: body.instructions || '',
-      status: 'New',
+      notes: notesParts.join('\n'),
       quote_amount: price.subtotal,
-      source: 'Website',
       is_urgent: false,
-      urgency_tier: 'Standard',
       service_vertical: 'CLEANING',
-      customer_name: body.name,
-      customer_email: body.email,
-      customer_phone: body.phone,
     });
 
     return NextResponse.json({
       success: true,
-      recordId: record.id,
+      recordId: jobRequest.id,
     });
   } catch (err) {
     if (err instanceof SyntaxError) {

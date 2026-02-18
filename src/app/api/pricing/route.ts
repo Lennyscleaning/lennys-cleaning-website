@@ -3,6 +3,46 @@ import { fetchRecords, AirtableError } from '@/lib/airtable';
 
 export const revalidate = 300; // cache for 5 minutes
 
+/* ─── Map Airtable service_type labels → form keys ─── */
+const SERVICE_TYPE_MAP: Record<string, string> = {
+  'Standard': 'standard',
+  'Deep Clean': 'deep',
+  'Move-In-Out': 'move',
+  'Airbnb Turnover': 'airbnb',
+  'Post-Construction': 'post-construction',
+};
+
+/* ─── Derive addon key from display name ─── */
+function toAddonKey(name: string): string {
+  const map: Record<string, string> = {
+    'Inside Oven': 'oven',
+    'Inside Fridge': 'fridge',
+    'Inside Cabinets': 'cabinets',
+    'Windows Interior': 'windows',
+    'Laundry': 'laundry',
+    'Dishes': 'dishes',
+    'Baseboards': 'baseboards',
+    'Wall Spot Clean': 'wall-spot',
+    'Garage Sweep': 'garage',
+    'Patio/Deck': 'patio',
+    'Green Cleaning Products': 'green-products',
+    'Same-Day Service': 'same-day',
+    'Early Morning': 'early-morning',
+    'Weekend': 'weekend',
+  };
+  return map[name] ?? name.toLowerCase().replace(/[\s/]+/g, '-');
+}
+
+/* ─── Derive condition key from display name ─── */
+function toConditionKey(name: string): string {
+  const map: Record<string, string> = {
+    'Normal': 'normal',
+    'Lived-In': 'lived-in',
+    'Heavy': 'heavy',
+  };
+  return map[name] ?? name.toLowerCase().replace(/\s+/g, '-');
+}
+
 interface PriceBookFields {
   service_type: string;
   bedrooms: number;
@@ -10,15 +50,13 @@ interface PriceBookFields {
 }
 
 interface AddOnFields {
-  addon_key: string;
-  display_name: string;
+  add_on_name: string;
   price: number;
 }
 
 interface ConditionFields {
-  condition_key: string;
-  display_name: string;
-  multiplier: number;
+  condition_name: string;
+  adjustment_percent: number;
 }
 
 interface PlatformConfigFields {
@@ -33,10 +71,10 @@ export async function GET() {
         sort: [{ field: 'service_type' }, { field: 'bedrooms', direction: 'asc' }],
       }),
       fetchRecords<AddOnFields>('add_ons_config', {
-        sort: [{ field: 'addon_key', direction: 'asc' }],
+        sort: [{ field: 'add_on_name', direction: 'asc' }],
       }),
       fetchRecords<ConditionFields>('condition_adjustments', {
-        sort: [{ field: 'condition_key', direction: 'asc' }],
+        sort: [{ field: 'condition_name', direction: 'asc' }],
       }),
       fetchRecords<PlatformConfigFields>('platform_config', {
         filterByFormula:
@@ -48,22 +86,23 @@ export async function GET() {
     const basePrices: Record<string, Record<number, number>> = {};
     for (const rec of priceBook.records) {
       const { service_type, bedrooms, base_price } = rec.fields;
-      if (!basePrices[service_type]) basePrices[service_type] = {};
-      basePrices[service_type][bedrooms] = base_price;
+      const key = SERVICE_TYPE_MAP[service_type] ?? service_type.toLowerCase();
+      if (!basePrices[key]) basePrices[key] = {};
+      basePrices[key][bedrooms] = base_price;
     }
 
     // Build add-ons list
     const addOnsList = addOns.records.map((rec) => ({
-      key: rec.fields.addon_key,
-      name: rec.fields.display_name,
+      key: toAddonKey(rec.fields.add_on_name),
+      name: rec.fields.add_on_name,
       price: rec.fields.price,
     }));
 
-    // Build conditions list
+    // Build conditions list (convert adjustment_percent → multiplier)
     const conditionsList = conditions.records.map((rec) => ({
-      key: rec.fields.condition_key,
-      name: rec.fields.display_name,
-      multiplier: rec.fields.multiplier,
+      key: toConditionKey(rec.fields.condition_name),
+      name: rec.fields.condition_name,
+      multiplier: 1 + rec.fields.adjustment_percent / 100,
     }));
 
     // Build platform config map
@@ -77,7 +116,10 @@ export async function GET() {
       addOns: addOnsList,
       conditions: conditionsList,
       platformConfig: {
-        defaultSalesTaxRate: config.default_sales_tax_rate ?? null,
+        // Value stored as percentage (10.2) — convert to decimal (0.102)
+        defaultSalesTaxRate: config.default_sales_tax_rate != null
+          ? config.default_sales_tax_rate / 100
+          : null,
         extraBathroomSurcharge: config.extra_bathroom_surcharge ?? null,
         platformSplitPercent: config.platform_split_percent ?? null,
       },
