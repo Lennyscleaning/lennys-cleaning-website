@@ -33,7 +33,7 @@ const beliefs = [
 
 const stats = [
   { value: '$34–56/hr', label: 'operator earnings' },
-  { value: '70–75%', label: 'of every job goes to the professional' },
+  { value: '70–78%', label: 'of every job goes to the professional' },
   { value: '100%', label: 'background-checked team' },
   { value: 'Flat rate', label: 'no hourly surprises' },
 ];

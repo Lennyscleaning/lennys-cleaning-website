@@ -17,7 +17,7 @@ Residential cleaning marketplace launching in Tacoma, WA. Built with Next.js 14+
 - Email: hello@lennyscleaning.com
 - Pricing: Standard from $85, Deep from $150, Move-in/out from $175, Airbnb from $125
 - All pricing data centralized in src/lib/pricing-data.ts — never hardcode prices in pages
-- Operator pay: $34-56/hr, tiered split — Standard 70/30, Preferred 73/27, Elite 75/25 (operator/platform)
+- Operator pay: $34-56/hr, 30/70 base split. Preferred 25/75. Elite 22/78. Founding operators locked at 75%.
 
 ## Copy Rules
 - "Your home" not "your house"

@@ -454,7 +454,7 @@ export default function HomePage() {
               </p>
               <p className="text-warm-white/80 text-sm md:text-[0.9375rem] leading-relaxed">
                 Join Tacoma&apos;s highest-paying cleaning platform. Earn
-                $34–56/hr, set your own schedule, and keep 70–75% of every job.
+                $34–56/hr, set your own schedule, and keep 70–78% of every job.
               </p>
             </div>
             <Link
