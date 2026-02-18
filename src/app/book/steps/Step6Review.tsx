@@ -86,22 +86,26 @@ export default function Step6Review({ data, price }: Props) {
             <h3 className="font-body font-semibold text-sm text-charcoal mb-3 uppercase tracking-wide">
               Price breakdown
             </h3>
-            <Row label="Base price" value={`$${price.base}`} />
+            <Row label="Base price" value={`$${price.base.toFixed(2)}`} />
             {price.bathroomSurcharge > 0 && (
-              <Row label="Extra bathroom surcharge" value={`$${price.bathroomSurcharge}`} />
+              <Row label="Extra bathroom surcharge" value={`$${price.bathroomSurcharge.toFixed(2)}`} />
             )}
             {price.conditionMultiplier !== 1 && (
               <Row label={`Condition: ${price.conditionLabel}`} value={`×${price.conditionMultiplier}`} />
             )}
             {price.petsSurcharge > 0 && (
-              <Row label="Pets surcharge" value={`$${price.petsSurcharge}`} />
+              <Row label="Pets surcharge" value={`$${price.petsSurcharge.toFixed(2)}`} />
             )}
             {price.addonsTotal > 0 && (
-              <Row label="Add-ons total" value={`$${price.addonsTotal}`} />
+              <Row label="Add-ons total" value={`$${price.addonsTotal.toFixed(2)}`} />
             )}
+            <div className="border-t border-forest/20 mt-2 pt-2">
+              <Row label="Subtotal" value={`$${price.subtotal.toFixed(2)}`} />
+              <Row label={`Sales tax (${(price.taxRate * 100).toFixed(1)}%)`} value={`$${price.taxAmount.toFixed(2)}`} />
+            </div>
             <div className="flex justify-between pt-3 mt-2 border-t-2 border-forest/20">
               <span className="font-body font-semibold text-charcoal">Estimated total</span>
-              <span className="font-display font-semibold text-xl text-forest">${price.total}</span>
+              <span className="font-display font-semibold text-xl text-forest">${price.total.toFixed(2)}</span>
             </div>
             <p className="font-body text-xs text-charcoal-light mt-2">
               Final price confirmed within 2 hours of booking.

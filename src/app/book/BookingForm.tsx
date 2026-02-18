@@ -104,7 +104,10 @@ export default function BookingForm() {
       console.log('Booking submitted:', {
         ...data,
         addons: Array.from(data.addons),
-        estimatedTotal: price?.total ?? null,
+        subtotal: price?.subtotal ?? null,
+        taxRate: price?.taxRate ?? null,
+        taxAmount: price?.taxAmount ?? null,
+        total: price?.total ?? null,
       });
       setStep(7);
       return;
@@ -151,7 +154,7 @@ export default function BookingForm() {
       {step === 4 && <Step4Schedule data={data} onChange={handleChange} />}
       {step === 5 && <Step6Review data={data} price={price} />}
       {step === 6 && <Step5ContactInfo data={data} onChange={handleChange} />}
-      {step === 7 && <Step7Confirmation data={data} />}
+      {step === 7 && <Step7Confirmation data={data} price={price} />}
 
       {/* Navigation buttons — hidden on confirmation */}
       {step <= 6 && (

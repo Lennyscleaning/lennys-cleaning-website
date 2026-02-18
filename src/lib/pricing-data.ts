@@ -3,6 +3,9 @@
    Import from here — never hardcode prices in page files.
    ─────────────────────────────────────────────────────── */
 
+/* ─── Tax rate ─── */
+export const TAX_RATE = 0.102; // 10.2% Tacoma default — will eventually come from Airtable by zip
+
 /* ─── Raw price matrices (numeric, used by booking form calculator) ─── */
 export const basePriceMatrix: Record<string, Record<number, number>> = {
   standard:            { 1: 85,  2: 120, 3: 165, 4: 210, 5: 255, 6: 300 },

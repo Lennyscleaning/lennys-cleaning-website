@@ -1,4 +1,4 @@
-import { basePriceMatrix, addonPriceMap } from '@/lib/pricing-data';
+import { basePriceMatrix, addonPriceMap, TAX_RATE } from '@/lib/pricing-data';
 import type { ServiceType, Bedrooms, AddonKey, Condition, Bathrooms } from './types';
 
 export const addonPrices = addonPriceMap as Record<AddonKey, number>;
@@ -36,6 +36,9 @@ export interface PriceBreakdown {
   petsSurcharge: number;
   addonsTotal: number;
   addonItems: { label: string; price: number }[];
+  subtotal: number;
+  taxRate: number;
+  taxAmount: number;
   total: number;
 }
 
@@ -69,8 +72,9 @@ export function calculatePrice(opts: {
     addonsTotal += addonPrices[key];
   }
 
-  const subtotal = (base + bathroomSurcharge) * conditionMultiplier + petsSurcharge + addonsTotal;
-  const total = Math.round(subtotal);
+  const subtotal = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge + addonsTotal);
+  const taxAmount = Math.round(subtotal * TAX_RATE * 100) / 100;
+  const total = subtotal + taxAmount;
 
   return {
     base,
@@ -80,6 +84,9 @@ export function calculatePrice(opts: {
     petsSurcharge,
     addonsTotal,
     addonItems,
+    subtotal,
+    taxRate: TAX_RATE,
+    taxAmount,
     total,
   };
 }

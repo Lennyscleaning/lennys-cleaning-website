@@ -1,4 +1,5 @@
 import type { BookingFormData, ServiceType } from '../lib/types';
+import type { PriceBreakdown } from '../lib/pricing';
 
 const serviceLabels: Record<ServiceType, string> = {
   standard: 'Standard cleaning',
@@ -10,9 +11,10 @@ const serviceLabels: Record<ServiceType, string> = {
 
 interface Props {
   data: BookingFormData;
+  price: PriceBreakdown | null;
 }
 
-export default function Step7Confirmation({ data }: Props) {
+export default function Step7Confirmation({ data, price }: Props) {
   return (
     <div className="text-center py-6">
       {/* Checkmark icon */}
@@ -54,6 +56,12 @@ export default function Step7Confirmation({ data }: Props) {
             <span className="font-body text-sm text-charcoal-light">Time</span>
             <span className="font-body text-sm font-medium text-charcoal">{data.timeSlot}</span>
           </div>
+          {price && (
+            <div className="flex justify-between pt-2 mt-2 border-t border-cream-dark">
+              <span className="font-body text-sm font-semibold text-charcoal">Estimated total</span>
+              <span className="font-body text-sm font-semibold text-forest">${price.total.toFixed(2)}</span>
+            </div>
+          )}
         </div>
       </div>
 
