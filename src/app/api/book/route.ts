@@ -71,46 +71,42 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if this is a first-time customer + founding discount eligibility
+    // Check first-visit status, platform config, and founding discount eligibility
     let isFirstVisit = true;
     let firstCleanPremium: number | undefined;
     let foundingDiscountEligible = false;
     let foundingDiscountPercent = 0;
-    try {
-      const safeEmail = body.email.replace(/'/g, "\\'");
-      const [appointments, platformConfig, customerCount] = await Promise.all([
-        fetchRecords<{ status: string }>('appointments', {
-          filterByFormula: `AND({customer_email}='${safeEmail}',{status}='completed')`,
-          maxRecords: 1,
-          fields: ['status'],
-        }),
-        fetchRecords<{ config_key: string; config_value: string }>('platform_config', {
-          filterByFormula: "OR(config_key='first_clean_premium',config_key='founding_discount_percent',config_key='founding_discount_max_customers',config_key='founding_discount_active')",
-        }),
-        fetchRecords<{ email: string }>('customers', {
-          filterByFormula: `{email}='${safeEmail}'`,
-          maxRecords: 1,
-          fields: ['email'],
-        }),
-      ]);
-      isFirstVisit = appointments.records.length === 0;
 
-      // Parse platform config values
-      const configMap: Record<string, string> = {};
-      for (const rec of platformConfig.records) {
-        configMap[rec.fields.config_key] = rec.fields.config_value;
-      }
-      if (configMap.first_clean_premium) {
-        firstCleanPremium = parseFloat(configMap.first_clean_premium);
-      }
+    const safeEmail = body.email.replace(/'/g, "\\'");
 
-      // Founding discount: must be active, customer must be new (not in customers table), and slots remaining
-      const foundingActive = configMap.founding_discount_active === '1';
-      const maxCustomers = parseFloat(configMap.founding_discount_max_customers || '20');
-      const isNewCustomer = customerCount.records.length === 0;
+    // Fetch platform config + check if customer already exists (each query fails independently)
+    const [platformConfig, existingCustomer] = await Promise.all([
+      fetchRecords<{ config_key: string; config_value: string }>('platform_config', {
+        filterByFormula: "OR(config_key='first_clean_premium',config_key='founding_discount_percent',config_key='founding_discount_max_customers',config_key='founding_discount_active')",
+      }).catch(() => ({ records: [] as { id: string; createdTime: string; fields: { config_key: string; config_value: string } }[] })),
+      fetchRecords<{ email: string }>('customers', {
+        filterByFormula: `{email}='${safeEmail}'`,
+        maxRecords: 1,
+        fields: ['email'],
+      }).catch(() => ({ records: [] as { id: string; createdTime: string; fields: { email: string } }[] })),
+    ]);
 
-      if (foundingActive && isNewCustomer) {
-        // Count total customers to check if slots remain
+    // Parse platform config values
+    const configMap: Record<string, string> = {};
+    for (const rec of platformConfig.records) {
+      configMap[rec.fields.config_key] = rec.fields.config_value;
+    }
+    if (configMap.first_clean_premium) {
+      firstCleanPremium = parseFloat(configMap.first_clean_premium);
+    }
+
+    // Founding discount: must be active, customer must be new, and slots remaining
+    const foundingActive = configMap.founding_discount_active === '1';
+    const maxCustomers = parseFloat(configMap.founding_discount_max_customers || '20');
+    const isNewCustomer = existingCustomer.records.length === 0;
+
+    if (foundingActive && isNewCustomer) {
+      try {
         const allCustomers = await fetchRecords<{ email: string }>('customers', {
           fields: ['email'],
         });
@@ -119,10 +115,9 @@ export async function POST(request: Request) {
           foundingDiscountEligible = true;
           foundingDiscountPercent = parseFloat(configMap.founding_discount_percent || '10');
         }
+      } catch {
+        // If customer count fails, skip founding discount
       }
-    } catch {
-      // If tables don't exist or query fails, default to first visit, no founding discount
-      isFirstVisit = true;
     }
 
     // Fetch live pricing from Airtable and calculate quote
@@ -170,9 +165,7 @@ export async function POST(request: Request) {
       bathrooms: body.bathrooms,
       pets: hasPets(body.intake),
       status: 'Lead',
-      source: 'Website',
-      is_active: true,
-      sms_consent: body.smsConsent ?? false,
+      is_founding_customer: foundingDiscountEligible,
       service_vertical: 'CLEANING',
       created_at: new Date().toISOString(),
     });
@@ -181,8 +174,15 @@ export async function POST(request: Request) {
     const notesParts: string[] = [];
     if (body.timeSlot) notesParts.push(`Preferred time: ${body.timeSlot}`);
     if (body.sqft) notesParts.push(`Square footage: ${body.sqft}`);
+    if (addonNames) notesParts.push(`Add-ons: ${addonNames}`);
     notesParts.push(`Condition: ${tier.friendlyLabel} condition (score: ${intakeScore}/13)`);
     notesParts.push(`Home details: ${intakeSummary}`);
+    if (isFirstVisit && price.firstVisitPremium > 0) {
+      notesParts.push(`First visit premium: $${price.firstVisitPremium}`);
+    }
+    if (price.foundingDiscount > 0) {
+      notesParts.push(`Founding discount: -$${price.foundingDiscount} (${foundingDiscountPercent}%)`);
+    }
     if (body.instructions) notesParts.push(body.instructions);
 
     // 3. Create job request linked to customer
@@ -193,8 +193,6 @@ export async function POST(request: Request) {
       city: body.city || '',
       zip: body.zip,
       service_type: SERVICE_TYPE_LABELS[body.serviceType] ?? body.serviceType,
-      frequency: 'One-Time',
-      add_ons: addonNames || '',
       preferred_date: body.date,
       bedrooms: body.bedrooms,
       bathrooms: body.bathrooms,
@@ -202,10 +200,6 @@ export async function POST(request: Request) {
       pets: hasPets(body.intake),
       notes: notesParts.join('\n'),
       quote_amount: price.subtotal,
-      first_visit_premium: price.firstVisitPremium > 0 ? price.firstVisitPremium : null,
-      is_first_visit: isFirstVisit,
-      founding_discount_applied: price.foundingDiscount > 0,
-      founding_discount_amount: price.foundingDiscount > 0 ? price.foundingDiscount : null,
       is_urgent: false,
       service_vertical: 'CLEANING',
     });
