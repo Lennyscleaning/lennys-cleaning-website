@@ -78,7 +78,7 @@ export async function GET() {
       }),
       fetchRecords<PlatformConfigFields>('platform_config', {
         filterByFormula:
-          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium')",
+          "OR(config_key='default_sales_tax_rate',config_key='extra_bathroom_surcharge',config_key='platform_split_percent',config_key='first_clean_premium',config_key='condition_tier_standard_max',config_key='condition_tier_moderate_max',config_key='condition_tier_heavy_max',config_key='condition_moderate_multiplier',config_key='condition_heavy_multiplier',config_key='condition_extreme_multiplier',config_key='pet_surcharge')",
       }),
     ]);
 
@@ -111,10 +111,65 @@ export async function GET() {
       config[rec.fields.config_key] = parseFloat(rec.fields.config_value);
     }
 
+    // Build tier config from individual platform_config values (if present)
+    const hasTierConfig =
+      config.condition_tier_standard_max != null ||
+      config.condition_tier_moderate_max != null ||
+      config.condition_tier_heavy_max != null;
+
+    let tierConfig: {
+      tier: string;
+      minScore: number;
+      maxScore: number;
+      multiplier: number;
+      friendlyLabel: string;
+      friendlyMessage: string;
+    }[] | undefined;
+
+    if (hasTierConfig) {
+      const stdMax = config.condition_tier_standard_max ?? 2;
+      const modMax = config.condition_tier_moderate_max ?? 5;
+      const hvyMax = config.condition_tier_heavy_max ?? 8;
+      tierConfig = [
+        {
+          tier: 'STANDARD',
+          minScore: 0,
+          maxScore: stdMax,
+          multiplier: 1.0,
+          friendlyLabel: 'Standard',
+          friendlyMessage: 'Your home sounds well-maintained! Standard pricing applies.',
+        },
+        {
+          tier: 'MODERATE',
+          minScore: stdMax + 1,
+          maxScore: modMax,
+          multiplier: config.condition_moderate_multiplier ?? 1.1,
+          friendlyLabel: 'Moderate',
+          friendlyMessage: "Got it — we'll allocate a bit of extra time for your home.",
+        },
+        {
+          tier: 'HEAVY',
+          minScore: modMax + 1,
+          maxScore: hvyMax,
+          multiplier: config.condition_heavy_multiplier ?? 1.2,
+          friendlyLabel: 'Heavy',
+          friendlyMessage: "Thanks for being upfront! We'll make sure your cleaning professional has plenty of time to do a thorough job.",
+        },
+        {
+          tier: 'EXTREME',
+          minScore: hvyMax + 1,
+          maxScore: 13,
+          multiplier: config.condition_extreme_multiplier ?? 1.35,
+          friendlyLabel: 'Intensive',
+          friendlyMessage: "Your home needs some serious love — we'll price this to make sure your cleaning professional can do it right, not rushed.",
+        },
+      ];
+    }
+
     return NextResponse.json({
       basePrices,
       addOns: addOnsList,
-      conditions: conditionsList,
+      conditions: conditionsList, // kept for backward compat
       platformConfig: {
         // Value stored as percentage (10.2) — convert to decimal (0.102)
         defaultSalesTaxRate: config.default_sales_tax_rate != null
@@ -124,6 +179,8 @@ export async function GET() {
         platformSplitPercent: config.platform_split_percent ?? null,
         // Stored as percentage (15) — passed through as-is
         firstCleanPremium: config.first_clean_premium ?? null,
+        tierConfig: tierConfig ?? null,
+        petSurcharge: config.pet_surcharge ?? null,
       },
     });
   } catch (err) {

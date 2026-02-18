@@ -1,5 +1,12 @@
 import { basePriceMatrix, addonPriceMap, TAX_RATE } from '@/lib/pricing-data';
-import type { ServiceType, Bedrooms, AddonKey, Condition, Bathrooms } from './types';
+import type { ServiceType, Bedrooms, AddonKey, Bathrooms, IntakeAnswers } from './types';
+import {
+  calculateIntakeScore,
+  getTierFromScore,
+  hasPets,
+  DEFAULT_TIER_CONFIG,
+  type TierConfig,
+} from './intake-scoring';
 
 export const addonPrices = addonPriceMap as Record<AddonKey, number>;
 
@@ -21,18 +28,14 @@ export const addonLabels: Record<AddonKey, string> = {
 };
 
 const BATHROOM_SURCHARGE = 20; // per full bathroom beyond the first
-
-const conditionMultipliers: Record<Condition, number> = {
-  normal: 1.0,
-  'lived-in': 1.1,
-  heavy: 1.25,
-};
+const DEFAULT_PET_SURCHARGE = 15;
 
 export interface PricingConfig {
   basePrices: Record<string, Record<number, number>>;
   addonPrices: Record<string, number>;
   addonNames: Record<string, string>;
-  conditionMultipliers: Record<string, number>;
+  tierConfig?: TierConfig[];
+  petSurcharge?: number;
   taxRate?: number;
   bathroomSurcharge?: number;
   firstCleanPremium?: number; // percentage, e.g. 15 for 15%
@@ -41,7 +44,10 @@ export interface PricingConfig {
 export interface PriceBreakdown {
   base: number;
   bathroomSurcharge: number;
-  conditionLabel: string;
+  conditionTier: string;
+  conditionFriendlyLabel: string;
+  conditionFriendlyMessage: string;
+  conditionScore: number;
   conditionMultiplier: number;
   petsSurcharge: number;
   firstVisitPremium: number;
@@ -60,8 +66,7 @@ export function calculatePrice(
     serviceType: ServiceType;
     bedrooms: Bedrooms;
     bathrooms: Bathrooms;
-    condition: Condition;
-    pets: boolean;
+    intake: IntakeAnswers;
     addons: Set<AddonKey>;
     isFirstVisit?: boolean;
   },
@@ -70,7 +75,8 @@ export function calculatePrice(
   const prices = config?.basePrices ?? basePriceMatrix;
   const addonMap = config?.addonPrices ?? (addonPriceMap as Record<string, number>);
   const addonNameMap = config?.addonNames ?? (addonLabels as Record<string, string>);
-  const condMults = config?.conditionMultipliers ?? (conditionMultipliers as Record<string, number>);
+  const tierConfig = config?.tierConfig ?? DEFAULT_TIER_CONFIG;
+  const petSurchargeAmount = config?.petSurcharge ?? DEFAULT_PET_SURCHARGE;
   const taxRate = config?.taxRate ?? TAX_RATE;
   const bathSurcharge = config?.bathroomSurcharge ?? BATHROOM_SURCHARGE;
   const premiumPercent = config?.firstCleanPremium ?? DEFAULT_FIRST_CLEAN_PREMIUM;
@@ -80,13 +86,11 @@ export function calculatePrice(
   const extraBathrooms = Math.max(0, Math.floor(opts.bathrooms) - 1);
   const bathroomSurcharge = extraBathrooms * bathSurcharge;
 
-  const conditionMultiplier = condMults[opts.condition] ?? 1.0;
-  const conditionLabel =
-    conditionMultiplier === 1.0
-      ? 'Normal'
-      : `${opts.condition === 'lived-in' ? 'Lived-in' : 'Heavy'} (${conditionMultiplier.toFixed(2)}x)`;
+  const score = calculateIntakeScore(opts.intake) ?? 0;
+  const tier = getTierFromScore(score, tierConfig);
+  const conditionMultiplier = tier.multiplier;
 
-  const petsSurcharge = opts.pets ? 15 : 0;
+  const petsSurcharge = hasPets(opts.intake) ? petSurchargeAmount : 0;
 
   // Adjusted base price: base + bathroom surcharge, scaled by condition, plus pets
   const adjustedBase = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge);
@@ -110,7 +114,10 @@ export function calculatePrice(
   return {
     base,
     bathroomSurcharge,
-    conditionLabel,
+    conditionTier: tier.tier,
+    conditionFriendlyLabel: tier.friendlyLabel,
+    conditionFriendlyMessage: tier.friendlyMessage,
+    conditionScore: score,
     conditionMultiplier,
     petsSurcharge,
     firstVisitPremium,

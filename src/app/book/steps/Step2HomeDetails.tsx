@@ -3,8 +3,19 @@ import type {
   Bedrooms,
   Bathrooms,
   SqftRange,
-  Condition,
+  IntakeAnswers,
 } from '../lib/types';
+import {
+  lastProfessionalCleanOptions,
+  petSituationOptions,
+  visibleBuildupOptions,
+  clutterLevelOptions,
+  hasYoungChildrenOptions,
+  flooringTypeOptions,
+  calculateIntakeScore,
+  getTierFromScore,
+  type IntakeOption,
+} from '../lib/intake-scoring';
 
 const bedroomOptions: Bedrooms[] = [1, 2, 3, 4, 5, 6];
 const bathroomOptions: Bathrooms[] = [1, 1.5, 2, 2.5, 3, 3.5, 4];
@@ -15,11 +26,6 @@ const sqftOptions: { value: SqftRange; label: string }[] = [
   { value: '2000-2500', label: '2,000 – 2,500 sq ft' },
   { value: '2500-3000', label: '2,500 – 3,000 sq ft' },
   { value: '3000+', label: '3,000+ sq ft' },
-];
-const conditionOptions: { value: Condition; label: string; desc: string }[] = [
-  { value: 'normal', label: 'Normal', desc: 'Regularly maintained' },
-  { value: 'lived-in', label: 'Lived-in', desc: 'Needs some extra attention' },
-  { value: 'heavy', label: 'Heavy', desc: 'Hasn\'t been cleaned in a while' },
 ];
 
 interface Props {
@@ -66,7 +72,51 @@ function PillGroup<T extends string | number>({
   );
 }
 
+function IntakeSelect<T extends string>({
+  label,
+  options,
+  value,
+  onSelect,
+}: {
+  label: string;
+  options: IntakeOption<T>[];
+  value: T | '';
+  onSelect: (v: T) => void;
+}) {
+  return (
+    <div>
+      <span className="block font-body text-sm font-medium text-charcoal mb-2">{label}</span>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => {
+          const selected = value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onSelect(opt.value)}
+              className={`px-4 py-2 rounded-md font-body text-sm font-medium transition-all duration-200 text-left ${
+                selected
+                  ? 'bg-forest text-warm-white'
+                  : 'bg-cream text-charcoal hover:bg-cream-dark'
+              }`}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Step2HomeDetails({ data, onChange }: Props) {
+  const handleIntakeChange = <K extends keyof IntakeAnswers>(field: K, value: IntakeAnswers[K]) => {
+    onChange({ intake: { ...data.intake, [field]: value } });
+  };
+
+  const score = calculateIntakeScore(data.intake);
+  const tier = score !== null ? getTierFromScore(score) : null;
+
   return (
     <div>
       <h2 className="font-display font-semibold text-2xl text-charcoal mb-2">
@@ -112,59 +162,66 @@ export default function Step2HomeDetails({ data, onChange }: Props) {
           </select>
         </div>
 
-        <div>
-          <span className="block font-body text-sm font-medium text-charcoal mb-2">
-            Home condition
-          </span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {conditionOptions.map((opt) => {
-              const selected = data.condition === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => onChange({ condition: opt.value })}
-                  className={`text-left rounded-md border-2 px-4 py-3 transition-all duration-200 ${
-                    selected
-                      ? 'ring-2 ring-forest bg-cream border-forest'
-                      : 'border-cream-dark bg-warm-white hover:border-forest/30'
-                  }`}
-                >
-                  <span className="block font-body font-semibold text-sm text-charcoal">
-                    {opt.label}
-                  </span>
-                  <span className="block font-body text-xs text-charcoal-light mt-0.5">
-                    {opt.desc}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        {/* Intake questions */}
+        <div className="border-t border-cream-dark pt-6">
+          <h3 className="font-body font-semibold text-base text-charcoal mb-1">
+            Help us give you an accurate quote
+          </h3>
+          <p className="font-body text-sm text-charcoal-light mb-6">
+            These help us match you with the right cleaning professional.
+          </p>
 
-        <div>
-          <span className="block font-body text-sm font-medium text-charcoal mb-2">
-            Do you have pets?
-          </span>
-          <div className="flex gap-3">
-            {([true, false] as const).map((val) => {
-              const selected = data.pets === val;
-              return (
-                <button
-                  key={String(val)}
-                  type="button"
-                  onClick={() => onChange({ pets: val })}
-                  className={`px-6 py-2 rounded-md font-body text-sm font-medium transition-all duration-200 ${
-                    selected
-                      ? 'bg-forest text-warm-white'
-                      : 'bg-cream text-charcoal hover:bg-cream-dark'
-                  }`}
-                >
-                  {val ? 'Yes' : 'No'}
-                </button>
-              );
-            })}
+          <div className="space-y-6">
+            <IntakeSelect
+              label="When was your home last professionally cleaned?"
+              options={lastProfessionalCleanOptions}
+              value={data.intake.lastProfessionalClean}
+              onSelect={(v) => handleIntakeChange('lastProfessionalClean', v)}
+            />
+
+            <IntakeSelect
+              label="Do you have pets?"
+              options={petSituationOptions}
+              value={data.intake.petSituation}
+              onSelect={(v) => handleIntakeChange('petSituation', v)}
+            />
+
+            <IntakeSelect
+              label="Are there areas with visible buildup?"
+              options={visibleBuildupOptions}
+              value={data.intake.visibleBuildup}
+              onSelect={(v) => handleIntakeChange('visibleBuildup', v)}
+            />
+
+            <IntakeSelect
+              label="How would you describe the clutter level?"
+              options={clutterLevelOptions}
+              value={data.intake.clutterLevel}
+              onSelect={(v) => handleIntakeChange('clutterLevel', v)}
+            />
+
+            <IntakeSelect
+              label="Do you have children under 10?"
+              options={hasYoungChildrenOptions}
+              value={data.intake.hasYoungChildren}
+              onSelect={(v) => handleIntakeChange('hasYoungChildren', v)}
+            />
+
+            <IntakeSelect
+              label="What's your primary flooring?"
+              options={flooringTypeOptions}
+              value={data.intake.flooringType}
+              onSelect={(v) => handleIntakeChange('flooringType', v)}
+            />
           </div>
+
+          {tier && (
+            <div className="mt-6 bg-forest/5 rounded-md px-4 py-3">
+              <p className="font-body text-sm text-charcoal">
+                {tier.friendlyMessage}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

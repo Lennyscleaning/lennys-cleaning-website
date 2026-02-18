@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createRecord, fetchRecords, AirtableError } from '@/lib/airtable';
 import { addonLabels, calculatePrice } from '@/app/book/lib/pricing';
-import type { ServiceType, Bedrooms, Bathrooms, Condition, AddonKey } from '@/app/book/lib/types';
+import type { ServiceType, Bedrooms, Bathrooms, AddonKey, IntakeAnswers } from '@/app/book/lib/types';
+import {
+  calculateIntakeScore,
+  getTierFromScore,
+  hasPets,
+  buildIntakeSummary,
+} from '@/app/book/lib/intake-scoring';
 
 const SERVICE_TYPE_LABELS: Record<string, string> = {
   standard: 'Standard',
@@ -11,19 +17,12 @@ const SERVICE_TYPE_LABELS: Record<string, string> = {
   'post-construction': 'Post-Construction',
 };
 
-const CONDITION_LABELS: Record<string, string> = {
-  normal: 'Normal',
-  'lived-in': 'Lived-In',
-  heavy: 'Heavy',
-};
-
 interface BookingPayload {
   serviceType: string;
   bedrooms: number;
   bathrooms: number;
   sqft?: string;
-  condition: string;
-  pets: boolean;
+  intake: IntakeAnswers;
   addons: string[];
   date: string;
   timeSlot: string;
@@ -43,7 +42,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     const required: (keyof BookingPayload)[] = [
-      'serviceType', 'bedrooms', 'bathrooms', 'condition',
+      'serviceType', 'bedrooms', 'bathrooms',
       'date', 'timeSlot', 'name', 'email', 'phone', 'address', 'zip',
     ];
     for (const field of required) {
@@ -53,6 +52,22 @@ export async function POST(request: Request) {
           { status: 400 },
         );
       }
+    }
+
+    // Validate all 6 intake fields are present
+    if (
+      !body.intake ||
+      !body.intake.lastProfessionalClean ||
+      !body.intake.petSituation ||
+      !body.intake.visibleBuildup ||
+      !body.intake.clutterLevel ||
+      !body.intake.hasYoungChildren ||
+      !body.intake.flooringType
+    ) {
+      return NextResponse.json(
+        { error: 'Missing required intake fields' },
+        { status: 400 },
+      );
     }
 
     // Check if this is a first-time customer (no completed appointments)
@@ -86,13 +101,17 @@ export async function POST(request: Request) {
         serviceType: body.serviceType as ServiceType,
         bedrooms: body.bedrooms as Bedrooms,
         bathrooms: body.bathrooms as Bathrooms,
-        condition: body.condition as Condition,
-        pets: body.pets ?? false,
+        intake: body.intake,
         addons: addonSet,
         isFirstVisit,
       },
       firstCleanPremium != null ? { firstCleanPremium } : undefined,
     );
+
+    // Compute intake score and tier for Airtable
+    const intakeScore = calculateIntakeScore(body.intake) ?? 0;
+    const tier = getTierFromScore(intakeScore);
+    const intakeSummary = buildIntakeSummary(body.intake);
 
     // Build add-on display names
     const addonNames = body.addons
@@ -109,7 +128,7 @@ export async function POST(request: Request) {
       zip: body.zip,
       bedrooms: body.bedrooms,
       bathrooms: body.bathrooms,
-      pets: body.pets ?? false,
+      pets: hasPets(body.intake),
       status: 'Lead',
       source: 'Website',
       is_active: true,
@@ -118,10 +137,12 @@ export async function POST(request: Request) {
       created_at: new Date().toISOString(),
     });
 
-    // 2. Build notes with time preference + any special instructions
+    // 2. Build notes with time preference + intake summary + any special instructions
     const notesParts: string[] = [];
     if (body.timeSlot) notesParts.push(`Preferred time: ${body.timeSlot}`);
     if (body.sqft) notesParts.push(`Square footage: ${body.sqft}`);
+    notesParts.push(`Condition: ${tier.friendlyLabel} condition (score: ${intakeScore}/13)`);
+    notesParts.push(`Home details: ${intakeSummary}`);
     if (body.instructions) notesParts.push(body.instructions);
 
     // 3. Create job request linked to customer
@@ -137,8 +158,8 @@ export async function POST(request: Request) {
       preferred_date: body.date,
       bedrooms: body.bedrooms,
       bathrooms: body.bathrooms,
-      condition: CONDITION_LABELS[body.condition] ?? body.condition,
-      pets: body.pets ?? false,
+      condition: tier.tier,
+      pets: hasPets(body.intake),
       notes: notesParts.join('\n'),
       quote_amount: price.subtotal,
       first_visit_premium: price.firstVisitPremium > 0 ? price.firstVisitPremium : null,

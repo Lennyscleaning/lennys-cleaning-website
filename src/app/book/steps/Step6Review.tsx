@@ -1,5 +1,6 @@
 import type { BookingFormData, ServiceType } from '../lib/types';
 import type { PriceBreakdown } from '../lib/pricing';
+import { hasPets } from '../lib/intake-scoring';
 
 const serviceLabels: Record<ServiceType, string> = {
   standard: 'Standard cleaning',
@@ -43,8 +44,8 @@ export default function Step6Review({ data, price }: Props) {
           <Row label="Bedrooms" value={String(data.bedrooms)} />
           <Row label="Bathrooms" value={String(data.bathrooms)} />
           <Row label="Square footage" value={data.sqft} />
-          <Row label="Condition" value={data.condition} />
-          <Row label="Pets" value={data.pets ? 'Yes' : 'No'} />
+          <Row label="Condition" value={price?.conditionFriendlyLabel ?? ''} />
+          <Row label="Pets" value={hasPets(data.intake) ? 'Yes' : 'No'} />
         </div>
 
         {/* Add-ons */}
@@ -91,7 +92,7 @@ export default function Step6Review({ data, price }: Props) {
               <Row label="Extra bathroom surcharge" value={`$${price.bathroomSurcharge.toFixed(2)}`} />
             )}
             {price.conditionMultiplier !== 1 && (
-              <Row label={`Condition: ${price.conditionLabel}`} value={`×${price.conditionMultiplier}`} />
+              <Row label={`Condition adjustment: ${price.conditionFriendlyLabel}`} value={`×${price.conditionMultiplier}`} />
             )}
             {price.petsSurcharge > 0 && (
               <Row label="Pets surcharge" value={`$${price.petsSurcharge.toFixed(2)}`} />

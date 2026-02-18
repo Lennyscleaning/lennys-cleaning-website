@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import type { BookingFormData, ServiceType, Bedrooms, Bathrooms, Condition } from './lib/types';
+import type { BookingFormData, ServiceType, Bedrooms, Bathrooms } from './lib/types';
 import { calculatePrice, type PricingConfig } from './lib/pricing';
+import { calculateIntakeScore, type TierConfig } from './lib/intake-scoring';
 import Step1ServiceType from './steps/Step1ServiceType';
 import Step2HomeDetails from './steps/Step2HomeDetails';
 import Step3Addons from './steps/Step3Addons';
@@ -25,8 +26,14 @@ const initialData: BookingFormData = {
   bedrooms: null,
   bathrooms: null,
   sqft: '',
-  condition: '',
-  pets: null,
+  intake: {
+    lastProfessionalClean: '',
+    petSituation: '',
+    visibleBuildup: '',
+    clutterLevel: '',
+    hasYoungChildren: '',
+    flooringType: '',
+  },
   addons: new Set(),
   date: '',
   timeSlot: '',
@@ -48,8 +55,12 @@ function isStepValid(step: number, data: BookingFormData): boolean {
       return (
         data.bedrooms !== null &&
         data.bathrooms !== null &&
-        data.condition !== '' &&
-        data.pets !== null
+        data.intake.lastProfessionalClean !== '' &&
+        data.intake.petSituation !== '' &&
+        data.intake.visibleBuildup !== '' &&
+        data.intake.clutterLevel !== '' &&
+        data.intake.hasYoungChildren !== '' &&
+        data.intake.flooringType !== ''
       );
     case 3:
       return true;
@@ -89,6 +100,8 @@ export default function BookingForm() {
           defaultSalesTaxRate: number | null;
           extraBathroomSurcharge: number | null;
           firstCleanPremium: number | null;
+          tierConfig?: TierConfig[];
+          petSurcharge?: number | null;
         };
       }) => {
         const addonPrices: Record<string, number> = {};
@@ -97,15 +110,12 @@ export default function BookingForm() {
           addonPrices[addon.key] = addon.price;
           addonNames[addon.key] = addon.name;
         }
-        const condMults: Record<string, number> = {};
-        for (const cond of apiData.conditions) {
-          condMults[cond.key] = cond.multiplier;
-        }
         setPricingConfig({
           basePrices: apiData.basePrices,
           addonPrices,
           addonNames,
-          conditionMultipliers: condMults,
+          tierConfig: apiData.platformConfig.tierConfig ?? undefined,
+          petSurcharge: apiData.platformConfig.petSurcharge ?? undefined,
           taxRate: apiData.platformConfig.defaultSalesTaxRate ?? undefined,
           bathroomSurcharge: apiData.platformConfig.extraBathroomSurcharge ?? undefined,
           firstCleanPremium: apiData.platformConfig.firstCleanPremium ?? undefined,
@@ -125,15 +135,14 @@ export default function BookingForm() {
       data.serviceType &&
       data.bedrooms &&
       data.bathrooms &&
-      data.condition
+      calculateIntakeScore(data.intake) !== null
     ) {
       return calculatePrice(
         {
           serviceType: data.serviceType as ServiceType,
           bedrooms: data.bedrooms as Bedrooms,
           bathrooms: data.bathrooms as Bathrooms,
-          condition: data.condition as Condition,
-          pets: data.pets ?? false,
+          intake: data.intake,
           addons: data.addons,
           isFirstVisit: true, // Booking form is for new bookings — backend verifies
         },
@@ -141,7 +150,7 @@ export default function BookingForm() {
       );
     }
     return null;
-  }, [data.serviceType, data.bedrooms, data.bathrooms, data.condition, data.pets, data.addons, pricingConfig]);
+  }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.addons, pricingConfig]);
 
   const canContinue = isStepValid(step, data);
 

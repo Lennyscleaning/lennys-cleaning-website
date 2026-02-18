@@ -8,7 +8,49 @@ export type ServiceType =
 export type Bedrooms = 1 | 2 | 3 | 4 | 5 | 6;
 export type Bathrooms = 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4;
 export type SqftRange = '<1000' | '1000-1500' | '1500-2000' | '2000-2500' | '2500-3000' | '3000+';
-export type Condition = 'normal' | 'lived-in' | 'heavy';
+export type LastProfessionalClean =
+  | 'within-month'
+  | '1-3-months'
+  | '3-6-months'
+  | '6-12-months'
+  | 'over-year'
+  | 'never';
+
+export type PetSituation =
+  | 'no-pets'
+  | '1-pet-non-shedding'
+  | '1-pet-shedding'
+  | '2-pets'
+  | '3-plus-pets';
+
+export type VisibleBuildup =
+  | 'no-buildup'
+  | 'some-areas'
+  | 'multiple-areas';
+
+export type ClutterLevel =
+  | 'minimal'
+  | 'moderate'
+  | 'heavy';
+
+export type HasYoungChildren = 'no' | 'yes';
+
+export type FlooringType =
+  | 'hard-surface'
+  | 'mixed'
+  | 'mostly-carpet';
+
+export interface IntakeAnswers {
+  lastProfessionalClean: LastProfessionalClean | '';
+  petSituation: PetSituation | '';
+  visibleBuildup: VisibleBuildup | '';
+  clutterLevel: ClutterLevel | '';
+  hasYoungChildren: HasYoungChildren | '';
+  flooringType: FlooringType | '';
+}
+
+export type ConditionTier = 'STANDARD' | 'MODERATE' | 'HEAVY' | 'EXTREME';
+
 export type TimeSlot =
   | '8:00 AM'
   | '8:30 AM'
@@ -47,8 +89,7 @@ export interface BookingFormData {
   bedrooms: Bedrooms | null;
   bathrooms: Bathrooms | null;
   sqft: SqftRange | '';
-  condition: Condition | '';
-  pets: boolean | null;
+  intake: IntakeAnswers;
   addons: Set<AddonKey>;
   date: string;
   timeSlot: TimeSlot | '';
