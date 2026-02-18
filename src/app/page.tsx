@@ -224,6 +224,33 @@ export default function HomePage() {
       <TrustBar />
 
       {/* ═══════════════════════════════════════
+          Section 2b — No-surprises reassurance strip
+          ═══════════════════════════════════════ */}
+      <Reveal>
+        <section className="bg-cream border-t border-cream-dark">
+          <div className="mx-auto max-w-[1200px] px-5 xl:px-0 py-5">
+            <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6">
+              {[
+                'No memberships or subscriptions',
+                'No hidden fees — your quote is your price',
+                'No callbacks or home walkthroughs',
+                'Book in 2 minutes, see your price instantly',
+              ].map((label) => (
+                <div key={label} className="flex items-center gap-2.5">
+                  <svg className="w-5 h-5 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  <span className="text-sm font-medium text-charcoal-light leading-tight">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      {/* ═══════════════════════════════════════
           Section 3 — How It Works
           ═══════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-warm-white">

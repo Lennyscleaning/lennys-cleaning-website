@@ -202,6 +202,46 @@ export default function JoinOurTeamPage() {
         </div>
       </section>
 
+      {/* ══════ PAY TRANSPARENCY ══════ */}
+      <section className="py-24 px-6 bg-cream">
+        <div className="max-w-[800px] mx-auto">
+          <Reveal>
+            <p className="overline mb-3">PAY TRANSPARENCY</p>
+            <h2 className="font-display font-medium text-charcoal leading-[1.15] tracking-tight mb-4 text-[clamp(28px,4vw,44px)]">
+              Know what you&apos;ll earn before you accept
+            </h2>
+            <p className="font-body text-[17px] text-charcoal-light leading-relaxed mb-12">
+              Every job offer shows you the exact dollar amount you&apos;ll take home — before you say yes. No commission math. No mystery deductions. No finding out what you actually earned after the fact.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="bg-warm-white rounded-md overflow-hidden shadow-md">
+              <div className="px-7 py-5 border-b border-cream">
+                <p className="font-body text-sm font-semibold text-charcoal-light uppercase tracking-wider mb-3">
+                  How Lenny&apos;s compares
+                </p>
+              </div>
+              <div className="px-7 py-5 border-b border-cream">
+                <p className="font-body text-sm font-semibold text-charcoal-light uppercase tracking-wider mb-1">
+                  Industry average
+                </p>
+                <p className="font-body text-[15px] text-charcoal-light leading-relaxed">
+                  Cleaning professionals find out their real pay after deductions, fees, and adjustments.
+                </p>
+              </div>
+              <div className="px-7 py-5 bg-forest/[0.06]">
+                <p className="font-body text-sm font-semibold text-forest uppercase tracking-wider mb-1">
+                  Lenny&apos;s
+                </p>
+                <p className="font-body text-[15px] text-charcoal leading-relaxed">
+                  You see &ldquo;You earn: $231.00&rdquo; before you accept. That&apos;s what hits your account. Period.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ══════ REQUIREMENTS ══════ */}
       <section className="py-24 px-6 bg-cream">
         <div className="max-w-[600px] mx-auto">
@@ -254,6 +294,40 @@ export default function JoinOurTeamPage() {
                 </div>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════ TRUST COMMITMENTS ══════ */}
+      <section className="py-24 px-6 bg-cream">
+        <div className="max-w-[800px] mx-auto">
+          <Reveal>
+            <p className="overline mb-3">OUR COMMITMENTS</p>
+            <h2 className="font-display font-medium text-charcoal leading-[1.15] tracking-tight mb-12 text-[clamp(28px,4vw,44px)]">
+              How we treat our team
+            </h2>
+          </Reveal>
+          <div className="space-y-8">
+            <Reveal delay={0}>
+              <div className="bg-warm-white rounded-md p-7">
+                <h3 className="font-display font-medium text-xl text-charcoal leading-tight mb-2">
+                  100% of tips are yours
+                </h3>
+                <p className="font-body text-[15px] text-charcoal-light leading-relaxed">
+                  Tips are added to your weekly payout. We never take a cut of gratuities. Ever.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={100}>
+              <div className="bg-warm-white rounded-md p-7">
+                <h3 className="font-display font-medium text-xl text-charcoal leading-tight mb-2">
+                  No surprise deactivations
+                </h3>
+                <p className="font-body text-[15px] text-charcoal-light leading-relaxed">
+                  Your account is yours. We use a clear three-strike system with written documentation at every step. You&apos;ll always know where you stand, and you&apos;ll always have a path back.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

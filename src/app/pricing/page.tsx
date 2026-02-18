@@ -153,6 +153,11 @@ export default async function PricingPage() {
               ))}
             </div>
           </Reveal>
+          <Reveal delay={200}>
+            <p className="font-body text-[15px] text-charcoal-light text-center mt-6">
+              What you see is what you pay. No memberships, no contracts, no hidden charges.
+            </p>
+          </Reveal>
         </div>
       </section>
 

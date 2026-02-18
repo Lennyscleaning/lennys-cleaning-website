@@ -51,9 +51,19 @@ const categories = [
           'Pricing is based on your home size (bedrooms/bathrooms), service type, and any add-ons you select. You\'ll see your exact price before booking — no hourly estimates that balloon.',
       },
       {
+        question: 'Do I need a membership or subscription?',
+        answer:
+          'Never. Every booking is standalone. Want to rebook weekly? Great — you\'ll save with our recurring rates. Want to book once and come back in six months? That works too. No subscriptions, no commitments, no cancellation fees.',
+      },
+      {
+        question: 'Will my price change after I book?',
+        answer:
+          'The price you see at booking is the price you pay. The only exception is if your cleaning professional arrives and the home condition is significantly different from what was described — and even then, they\'ll contact you for approval before any adjustment.',
+      },
+      {
         question: 'Are there any hidden fees?',
         answer:
-          'Never. The price you see at booking is the price you pay. No fuel surcharges, no \'supply fees,\' no surprises.',
+          'No. Your quote includes everything. No travel fees, no supply fees, no platform fees added at checkout. Tips are optional and go 100% to your cleaning professional.',
       },
       {
         question: 'What payment methods do you accept?',

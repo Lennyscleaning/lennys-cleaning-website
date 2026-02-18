@@ -266,6 +266,9 @@ export default async function AirbnbCleaningPage() {
             <p className="font-body text-sm text-charcoal-light text-center mt-3 max-w-[560px] mx-auto">
               First-time customers: a one-time First Visit Assessment (15%) applies to your first booking. This gives your cleaning specialist extra time to learn your home. All future bookings are at the listed rate.
             </p>
+            <p className="font-body text-[15px] text-charcoal-light text-center mt-5 max-w-[560px] mx-auto">
+              What you see is what you pay. No memberships, no contracts, no hidden charges.
+            </p>
           </Reveal>
         </div>
       </section>
