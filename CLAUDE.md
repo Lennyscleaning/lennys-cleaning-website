@@ -47,3 +47,21 @@ Located at public/images/lennys-website-images/
 - `npm run dev` — local dev server
 - `npm run build` — production build (test before pushing)
 - `git push origin preview` — triggers Vercel preview deployment
+
+## Sentry Observability (ALWAYS follow these)
+- Import Sentry: `import * as Sentry from "@sentry/nextjs"`
+- Every try/catch block must use `Sentry.captureException(error)` — never just console.error
+- Every API route must wrap its main logic in `Sentry.startSpan` with meaningful `op` and `name`
+- Use structured logging: `const { logger } = Sentry` with logger.info, logger.warn, logger.error
+- Use `logger.fmt` for template literals in logs
+- Add relevant attributes to spans (userId, bookingId, endpoint, etc.)
+- Log every critical event: booking created, SMS sent, payment captured, dispatch assigned, error occurred
+
+## Event Logging
+- Every API route and workflow must write to the event_log Airtable table for critical actions
+- Event types: BOOKING_CREATED, SMS_SENT, PAYMENT_CAPTURED, DISPATCH_ASSIGNED, ERROR
+
+## Environment
+- Airtable base: appPoJJ6PW9RWYLaq
+- Always check Airtable schema before writing API routes — never assume field names
+- Deploy target: Vercel project "lennys-cleaning" (NOT lennys-cleaning-website)
