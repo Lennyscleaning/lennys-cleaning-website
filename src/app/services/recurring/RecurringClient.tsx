@@ -168,7 +168,7 @@ export default function RecurringClient({ recurringPrices, displayBedrooms }: Re
           </Reveal>
           <Reveal delay={200}>
             <p className="font-body text-charcoal-light leading-relaxed max-w-[560px] mx-auto mb-8 text-[clamp(16px,2vw,19px)]">
-              The same vetted professional, a consistent clean every visit, and savings up to 30%. Your home stays ready without you having to think about it.
+              The same vetted professional, a consistent clean every visit, and savings up to 15%. Your home stays ready without you having to think about it.
             </p>
           </Reveal>
           <Reveal delay={300}>

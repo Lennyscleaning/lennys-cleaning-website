@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CityPageTemplate from '@/components/CityPageTemplate';
 
 export const metadata: Metadata = {
-  title: "House Cleaning in Puyallup | Lenny's Cleaning",
+  title: "House Cleaning in Puyallup",
   description:
     'Professional house cleaning in Puyallup, WA. Background-checked cleaners, flat-rate pricing, and a satisfaction guarantee. Book online in 60 seconds.',
   openGraph: {

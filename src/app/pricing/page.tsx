@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const pricing = await fetchPricingData();
   const s = pricing.startingPrices;
   return {
-    title: "House Cleaning Prices in Tacoma | Lenny's Cleaning",
+    title: "House Cleaning Prices in Tacoma",
     description: `Transparent, flat-rate house cleaning prices in Tacoma. Standard from ${s.standard}, deep cleaning from ${s.deep}, move-out from ${s.move}. See your exact price before you book.`,
     openGraph: {
       title: "House Cleaning Prices in Tacoma | Lenny's Cleaning — Tacoma, WA",
@@ -56,7 +56,7 @@ export default async function PricingPage() {
   /* ─── JSON-LD (built from Airtable data) ─── */
   const lowPrice = pricingData.basePriceMatrix.standard?.[1] ?? 0;
   const highPrice = Math.max(
-    ...Object.values(pricingData.basePriceMatrix).flatMap((m) => Object.values(m)),
+    ...Object.values(pricingData.basePriceMatrix.deep ?? {}),
   );
   const jsonLd = {
     '@context': 'https://schema.org',

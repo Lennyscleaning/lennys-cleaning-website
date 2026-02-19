@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CityPageTemplate from '@/components/CityPageTemplate';
 
 export const metadata: Metadata = {
-  title: "House Cleaning in Fife | Lenny's Cleaning",
+  title: "House Cleaning in Fife",
   description:
     'Professional house cleaning in Fife, WA. Background-checked cleaners, flat-rate pricing, and a satisfaction guarantee. Book online in 60 seconds.',
   openGraph: {

@@ -5,7 +5,7 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions | Lenny's Cleaning — Tacoma, WA",
+  title: "Frequently Asked Questions",
   description:
     'Answers to common questions about booking, pricing, services, and working with Lenny\'s Cleaning in Tacoma.',
   openGraph: {

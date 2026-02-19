@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CityPageTemplate from '@/components/CityPageTemplate';
 
 export const metadata: Metadata = {
-  title: "House Cleaning in Gig Harbor | Lenny's Cleaning",
+  title: "House Cleaning in Gig Harbor",
   description:
     'Professional house cleaning in Gig Harbor, WA. Background-checked cleaners, flat-rate pricing, and a satisfaction guarantee. Book online in 60 seconds.',
   openGraph: {

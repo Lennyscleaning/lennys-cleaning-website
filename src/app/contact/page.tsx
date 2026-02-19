@@ -5,7 +5,7 @@ import ContactForm from './ContactForm';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "Contact Us | Lenny's Cleaning — Tacoma, WA",
+  title: "Contact Us",
   description:
     "Get in touch with Lenny's Cleaning. Call, email, or send us a message. Serving Tacoma, Lakewood, Puyallup, University Place, and the South Sound.",
   openGraph: {

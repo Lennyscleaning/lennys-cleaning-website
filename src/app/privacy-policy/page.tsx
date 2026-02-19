@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Lenny's Cleaning",
+  title: "Privacy Policy",
   description:
     "Privacy policy for Lenny's Cleaning. Learn how we collect, use, and protect your personal information.",
 };

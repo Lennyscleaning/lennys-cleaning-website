@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const shortDesc = `Book professional house cleaning in Tacoma starting at ${stdPrice}. Vetted professionals, flat-rate pricing, satisfaction guaranteed.`;
 
   return {
-    title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
+    title: { absolute: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA" },
     description: desc,
     openGraph: {
       title: "Tacoma House Cleaning | Lenny's Cleaning — Tacoma, WA",
@@ -114,14 +114,14 @@ const valueCards = [
 ];
 
 const cityPills = [
-  { name: 'Tacoma', href: '/tacoma' },
-  { name: 'Lakewood', href: '/lakewood' },
-  { name: 'Puyallup', href: '/puyallup' },
-  { name: 'University Place', href: '/university-place' },
-  { name: 'Fife', href: '/fife' },
-  { name: 'Spanaway', href: '/spanaway' },
-  { name: 'Bonney Lake', href: '/bonney-lake' },
-  { name: 'Gig Harbor', href: '/gig-harbor' },
+  { name: 'Tacoma', href: '/house-cleaning-tacoma' },
+  { name: 'Lakewood', href: '/house-cleaning-lakewood' },
+  { name: 'Puyallup', href: '/house-cleaning-puyallup' },
+  { name: 'University Place', href: '/house-cleaning-university-place' },
+  { name: 'Fife', href: '/house-cleaning-fife' },
+  { name: 'Spanaway', href: '/house-cleaning-spanaway' },
+  { name: 'Bonney Lake', href: '/house-cleaning-bonney-lake' },
+  { name: 'Gig Harbor', href: '/house-cleaning-gig-harbor' },
 ];
 
 /* ─── Page Component ─── */

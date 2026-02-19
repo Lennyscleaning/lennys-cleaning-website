@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Lenny's Cleaning",
+  title: "Terms of Service",
   description:
     "Terms of service for Lenny's Cleaning. Read our terms for booking cleaning services, cancellation policy, and more.",
 };

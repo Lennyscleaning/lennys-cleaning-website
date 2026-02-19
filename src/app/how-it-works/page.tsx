@@ -6,7 +6,7 @@ import { fetchPricingData } from '@/lib/fetch-pricing';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "How It Works | Lenny's Cleaning — Tacoma, WA",
+  title: "How It Works",
   description:
     "Book a cleaning in under 2 minutes. Get an instant flat-rate quote, we match you with a vetted professional, and your home gets the attention it deserves.",
   openGraph: {

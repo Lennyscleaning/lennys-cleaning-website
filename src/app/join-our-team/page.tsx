@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "Join Our Team | Lenny's Cleaning — Tacoma, WA",
+  title: "Join Our Team",
   description:
     "Earn $34-56/hr as an independent cleaning professional with Lenny's Cleaning in Tacoma. Keep 70-78% of every job. Set your own schedule. Apply today.",
   openGraph: {

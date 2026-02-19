@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CityPageTemplate from '@/components/CityPageTemplate';
 
 export const metadata: Metadata = {
-  title: "House Cleaning in Bonney Lake | Lenny's Cleaning",
+  title: "House Cleaning in Bonney Lake",
   description:
     'Professional house cleaning in Bonney Lake, WA. Background-checked cleaners, flat-rate pricing, and a satisfaction guarantee. Book online in 60 seconds.',
   openGraph: {

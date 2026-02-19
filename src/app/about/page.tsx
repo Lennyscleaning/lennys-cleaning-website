@@ -5,7 +5,7 @@ import TrustBar from '@/components/TrustBar';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "About Lenny's Cleaning | Tacoma, WA",
+  title: "About Us",
   description:
     "Lenny's Cleaning was founded on a simple idea: homeowners deserve better pricing, and cleaning professionals deserve better pay. Meet the team behind Tacoma's trusted cleaning marketplace.",
   openGraph: {

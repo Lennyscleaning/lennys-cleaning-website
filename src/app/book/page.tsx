@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import BookingForm from './BookingForm';
 
 export const metadata: Metadata = {
-  title: "Book a Cleaning | Lenny's Cleaning — Tacoma, WA",
+  title: "Book a Cleaning",
   description:
     'Book a residential cleaning in Tacoma with Lenny\'s Cleaning. Flat-rate pricing, background-checked professionals, satisfaction guaranteed.',
   openGraph: {

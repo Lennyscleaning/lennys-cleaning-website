@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "What's Included in Each Cleaning | Lenny's Cleaning",
+  title: "What's Included in Each Cleaning",
   description:
     "See exactly what's included in every Lenny's Cleaning service — standard, deep, move-in/out, Airbnb turnover, and post-construction. No surprises, just a clean home.",
   openGraph: {

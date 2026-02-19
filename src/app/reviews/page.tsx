@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "Reviews | Lenny's Cleaning — Tacoma, WA",
+  title: "Reviews",
   description:
     "Read honest reviews from Tacoma homeowners about Lenny's Cleaning. Background-checked professionals, flat-rate pricing, satisfaction guaranteed.",
   openGraph: {

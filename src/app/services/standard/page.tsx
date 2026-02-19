@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const pricing = await fetchPricingData();
   const stdPrice = pricing.startingPrices.standard;
   return {
-    title: "Standard House Cleaning in Tacoma | Lenny's Cleaning",
+    title: "Standard House Cleaning in Tacoma",
     description: `Book routine residential cleaning in Tacoma starting at ${stdPrice}. Kitchens, bathrooms, bedrooms, and living areas — every room, every visit. Flat-rate pricing, vetted professionals.`,
     openGraph: {
       title: "Standard House Cleaning in Tacoma | Lenny's Cleaning — Tacoma, WA",

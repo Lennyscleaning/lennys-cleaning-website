@@ -6,7 +6,7 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
-  title: "Eco-Friendly House Cleaning | Lenny's Cleaning — Tacoma, WA",
+  title: "Eco-Friendly House Cleaning",
   description:
     "Eco-friendly house cleaning in Tacoma with plant-based, non-toxic products. Safe for kids, pets, and the planet. Add green cleaning to any Lenny's booking for $10.",
   openGraph: {
