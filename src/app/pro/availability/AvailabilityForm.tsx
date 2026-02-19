@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /* ─── Constants ─── */
 
@@ -47,6 +47,7 @@ type Step = 'phone' | 'availability';
 /* ─── Component ─── */
 
 export default function AvailabilityForm() {
+  const phoneRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
   const [contractorId, setContractorId] = useState('');
@@ -62,6 +63,12 @@ export default function AvailabilityForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    phoneRef.current?.focus();
+  }, []);
 
   async function handleLookup(e: React.FormEvent) {
     e.preventDefault();
@@ -157,6 +164,19 @@ export default function AvailabilityForm() {
   const selectClass =
     'flex-1 bg-warm-white border border-cream-dark rounded-sm px-3 py-2.5 font-body text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors duration-200';
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-warm-white">
+        <div className="max-w-[480px] mx-auto px-5 pt-[120px] pb-20">
+          <p className="overline mb-3">OPERATOR PORTAL</p>
+          <h1 className="font-display font-semibold text-charcoal leading-[1.1] tracking-tight mb-3 text-[clamp(28px,5vw,40px)]">
+            Set your availability
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-warm-white">
       <div className="max-w-[480px] mx-auto px-5 pt-[120px] pb-20">
@@ -175,12 +195,12 @@ export default function AvailabilityForm() {
               Phone number
             </label>
             <input
+              ref={phoneRef}
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(253) 555-1234"
               className={`${inputClass} mb-6`}
-              autoFocus
               required
             />
 
