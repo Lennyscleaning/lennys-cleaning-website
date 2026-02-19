@@ -14,9 +14,9 @@ describe('Airtable Data Integrity', () => {
       records = result.records
     })
 
-    it('has records for all 4 active service types', () => {
+    it('has records for all 5 active service types', () => {
       const types = new Set(records.map((r) => r.fields.service_type))
-      expect(types.size).toBe(4)
+      expect(types.size).toBe(5)
     })
 
     it('Standard has rows for bedrooms 1-6', () => {

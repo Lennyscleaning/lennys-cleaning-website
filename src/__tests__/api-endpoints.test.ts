@@ -18,9 +18,9 @@ describe('API Endpoints', () => {
       expect(status).toBe(200)
     })
 
-    it('TEST 2: basePrices has 4 active service types', () => {
+    it('TEST 2: basePrices has 5 active service types', () => {
       expect(data.basePrices).toBeDefined()
-      expect(Object.keys(data.basePrices)).toHaveLength(4)
+      expect(Object.keys(data.basePrices)).toHaveLength(5)
     })
 
     it('TEST 3: standard 1BR = 95', () => {
