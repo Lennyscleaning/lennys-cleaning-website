@@ -63,6 +63,34 @@ Located at public/images/lennys-website-images/
 - Every API route and workflow must write to the event_log Airtable table for critical actions
 - Event types: BOOKING_CREATED, SMS_SENT, PAYMENT_CAPTURED, DISPATCH_ASSIGNED, ERROR
 
+## Testing Standards
+
+Every new feature MUST include tests. No exceptions.
+
+### Required for every PR:
+- **Unit tests** for any new business logic (pricing, calculations, data transforms)
+- **Integration tests** for any new API route (test request/response)
+- **Page render test** added to pages-render.test.ts for any new page
+- Run `npm test` before committing — all tests must pass
+
+### Test structure:
+- Unit tests: colocated with source (e.g., `src/app/book/lib/__tests__/pricing.test.ts`)
+- Integration tests: `src/__tests__/` directory
+- Framework: Vitest + @testing-library/react
+- Run: `npm test` (all tests) or `npm run test:watch` (dev mode)
+
+### What to test:
+- Pricing calculations: every layer (base, condition, first-visit, surcharges, discounts, tax)
+- API routes: valid requests return correct data, invalid requests return proper errors
+- Page renders: every page returns 200 with expected content
+- Airtable integrity: config values match expected business rules
+- No hardcoded prices in production code
+
+### What NOT to test:
+- Visual layout (manual QA only)
+- Third-party services (Stripe, Twilio) — mock these
+- Airtable write operations in CI (use read-only tests or mocks)
+
 ## Environment
 - Airtable base: appPoJJ6PW9RWYLaq
 - Always check Airtable schema before writing API routes — never assume field names
