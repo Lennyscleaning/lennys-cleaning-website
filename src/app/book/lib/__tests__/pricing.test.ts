@@ -57,7 +57,7 @@ const moderateIntake: IntakeAnswers = {
   flooringType: 'hard-surface',         // 0
 };
 
-// Score 7 → HEAVY (multiplier 1.2)
+// Score 7 → HEAVY (multiplier 1.25)
 const heavyIntake: IntakeAnswers = {
   lastProfessionalClean: 'over-year',   // 3
   petSituation: '2-pets',               // 2
@@ -67,7 +67,7 @@ const heavyIntake: IntakeAnswers = {
   flooringType: 'hard-surface',         // 0
 };
 
-// Score 10 → EXTREME (multiplier 1.35)
+// Score 10 → EXTREME (multiplier 1.50)
 const extremeIntake: IntakeAnswers = {
   lastProfessionalClean: 'never',       // 4
   petSituation: '3-plus-pets',          // 3
@@ -166,7 +166,7 @@ describe('GROUP 2 — Condition Multipliers', () => {
     expect(result.conditionMultiplier).toBe(1.1);
   });
 
-  it('HEAVY tier (×1.2): $216', () => {
+  it('HEAVY tier (×1.25): $225', () => {
     const heavyNoPet: IntakeAnswers = {
       lastProfessionalClean: 'over-year',   // 3
       petSituation: 'no-pets',              // 0
@@ -176,11 +176,11 @@ describe('GROUP 2 — Condition Multipliers', () => {
       flooringType: 'hard-surface',         // 0
     }; // score = 6, no pets
     const result = calc({ intake: heavyNoPet });
-    expect(result.subtotal).toBe(216);
-    expect(result.conditionMultiplier).toBe(1.2);
+    expect(result.subtotal).toBe(225);
+    expect(result.conditionMultiplier).toBe(1.25);
   });
 
-  it('EXTREME tier (×1.35): $243', () => {
+  it('EXTREME tier (×1.50): $270', () => {
     const extremeNoPet: IntakeAnswers = {
       lastProfessionalClean: 'never',       // 4
       petSituation: 'no-pets',              // 0
@@ -190,8 +190,8 @@ describe('GROUP 2 — Condition Multipliers', () => {
       flooringType: 'hard-surface',         // 0
     }; // score = 9, no pets
     const result = calc({ intake: extremeNoPet });
-    expect(result.subtotal).toBe(243);
-    expect(result.conditionMultiplier).toBe(1.35);
+    expect(result.subtotal).toBe(270);
+    expect(result.conditionMultiplier).toBe(1.5);
   });
 });
 
@@ -385,7 +385,7 @@ describe('GROUP 9 — Full Stack Scenarios', () => {
       clutterLevel: 'moderate',             // 1
       hasYoungChildren: 'yes',              // 1
       flooringType: 'hard-surface',         // 0
-    }; // score = 6 → HEAVY ×1.2
+    }; // score = 6 → HEAVY ×1.25
     const result = calc({
       serviceType: 'deep',
       bedrooms: 4 as Bedrooms,
@@ -394,18 +394,18 @@ describe('GROUP 9 — Full Stack Scenarios', () => {
       addons: new Set(['oven', 'fridge', 'baseboards'] as AddonKey[]),
     });
     // base = 425, bathSurcharge = 40
-    // adjustedBase = Math.round((425 + 40) * 1.2 + 0) = Math.round(558) = 558
+    // adjustedBase = Math.round((425 + 40) * 1.25 + 0) = Math.round(581.25) = 581
     expect(result.base).toBe(425);
     expect(result.bathroomSurcharge).toBe(40);
-    expect(result.conditionMultiplier).toBe(1.2);
+    expect(result.conditionMultiplier).toBe(1.25);
     expect(result.petsSurcharge).toBe(0);
     expect(result.firstVisitPremium).toBe(0);
     expect(result.addonsTotal).toBe(85);
-    // subtotal = 558 + 0 + 85 = 643
-    expect(result.subtotal).toBe(643);
-    // tax = Math.round(643 * 0.102 * 100) / 100 = 65.59
-    expect(result.taxAmount).toBe(65.59);
-    expect(result.total).toBe(708.59);
+    // subtotal = 581 + 0 + 85 = 666
+    expect(result.subtotal).toBe(666);
+    // tax = Math.round(666 * 0.102 * 100) / 100 = 67.93
+    expect(result.taxAmount).toBe(67.93);
+    expect(result.total).toBeCloseTo(733.93, 2);
   });
 
   it('Scenario D — Airbnb Quick: Airbnb 2BR, 1 bath, standard, minimal', () => {
@@ -429,7 +429,7 @@ describe('GROUP 9 — Full Stack Scenarios', () => {
       clutterLevel: 'heavy',               // 2
       hasYoungChildren: 'yes',              // 1
       flooringType: 'hard-surface',         // 0
-    }; // score = 10 → EXTREME ×1.35
+    }; // score = 10 → EXTREME ×1.50
     const allAddons = new Set([
       'oven', 'fridge', 'cabinets', 'windows', 'laundry', 'dishes', 'baseboards',
       'wall-spot', 'garage', 'patio', 'green-products', 'same-day', 'early-morning', 'weekend',
@@ -444,23 +444,23 @@ describe('GROUP 9 — Full Stack Scenarios', () => {
       foundingDiscountEligible: true,
     });
     // base = 425, bathSurcharge = 60
-    // adjustedBase = Math.round((425 + 60) * 1.35 + 15) = Math.round(654.75 + 15) = Math.round(669.75) = 670
+    // adjustedBase = Math.round((425 + 60) * 1.50 + 15) = Math.round(727.5 + 15) = Math.round(742.5) = 743
     expect(result.base).toBe(425);
     expect(result.bathroomSurcharge).toBe(60);
-    expect(result.conditionMultiplier).toBe(1.35);
+    expect(result.conditionMultiplier).toBe(1.5);
     expect(result.petsSurcharge).toBe(15);
-    // firstVisitPremium = Math.round(670 * 15/100) = Math.round(100.5) = 101
-    expect(result.firstVisitPremium).toBe(101);
+    // firstVisitPremium = Math.round(743 * 15/100) = Math.round(111.45) = 111
+    expect(result.firstVisitPremium).toBe(111);
     // all addons = 35+30+30+35+15+10+20+15+25+30+10+50+15+20 = 340
     expect(result.addonsTotal).toBe(340);
-    // preDiscountSubtotal = 670 + 101 + 340 = 1111
-    // foundingDiscount = Math.round(1111 * 10/100) = 111
-    expect(result.foundingDiscount).toBe(111);
-    // subtotal = 1111 - 111 = 1000
-    expect(result.subtotal).toBe(1000);
-    // tax = Math.round(1000 * 0.102 * 100) / 100 = 102.00
-    expect(result.taxAmount).toBe(102);
-    expect(result.total).toBe(1102);
+    // preDiscountSubtotal = 743 + 111 + 340 = 1194
+    // foundingDiscount = Math.round(1194 * 10/100) = Math.round(119.4) = 119
+    expect(result.foundingDiscount).toBe(119);
+    // subtotal = 1194 - 119 = 1075
+    expect(result.subtotal).toBe(1075);
+    // tax = Math.round(1075 * 0.102 * 100) / 100 = 109.65
+    expect(result.taxAmount).toBe(109.65);
+    expect(result.total).toBe(1184.65);
   });
 });
 

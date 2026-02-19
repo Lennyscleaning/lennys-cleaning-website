@@ -107,12 +107,12 @@ describe('Airtable Data Integrity', () => {
       expect(parseFloat(configMap.condition_moderate_multiplier)).toBeCloseTo(1.1, 2)
     })
 
-    it('condition multiplier: heavy = 1.20', () => {
-      expect(parseFloat(configMap.condition_heavy_multiplier)).toBeCloseTo(1.2, 2)
+    it('condition multiplier: heavy = 1.25', () => {
+      expect(parseFloat(configMap.condition_heavy_multiplier)).toBeCloseTo(1.25, 2)
     })
 
-    it('condition multiplier: extreme = 1.35', () => {
-      expect(parseFloat(configMap.condition_extreme_multiplier)).toBeCloseTo(1.35, 2)
+    it('condition multiplier: extreme = 1.50', () => {
+      expect(parseFloat(configMap.condition_extreme_multiplier)).toBeCloseTo(1.5, 2)
     })
   })
 
