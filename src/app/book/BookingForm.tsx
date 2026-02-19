@@ -210,14 +210,14 @@ export default function BookingForm() {
     <div>
       {/* Step 1 hero + trust signals */}
       {step === 1 && (
-        <div className="text-center mb-6">
-          <h1 className="font-display font-semibold text-charcoal leading-tight tracking-tight text-[clamp(24px,4vw,32px)]">
+        <div className="text-center pt-12 mb-8">
+          <h1 className="font-display font-semibold text-charcoal leading-tight tracking-tight text-[clamp(24px,4vw,32px)] mb-3">
             Book your cleaning in under 2 minutes
           </h1>
-          <p className="font-body text-[15px] text-charcoal-light mt-2">
+          <p className="font-body text-[15px] text-charcoal-light mb-6">
             Flat-rate pricing. No hidden fees. See your exact price before you commit.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <span className="flex items-center gap-1.5 text-xs font-medium text-charcoal-light">
               <svg className="w-4 h-4 text-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />

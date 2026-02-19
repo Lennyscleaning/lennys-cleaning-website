@@ -181,14 +181,13 @@ function buildDerivedData(
     { name: 'Recurring plans', price: `From $${weeklyPrice}/visit`, note: 'Save up to 15%', href: '/services/recurring' },
   ];
 
-  // Size ranges: min(standard) to max(post-construction or deep) per bedroom count
+  // Size ranges: standard (low) to deep (high) per bedroom count
   const sizeRanges = bedroomConfigs.map(([beds, _]) => {
     const std = basePriceMatrix.standard?.[beds] ?? 0;
-    const pc = basePriceMatrix['post-construction']?.[beds] ?? basePriceMatrix.deep?.[beds] ?? 0;
-    const maxPrice = Math.max(pc, basePriceMatrix.deep?.[beds] ?? 0, basePriceMatrix.move?.[beds] ?? 0);
+    const deep = basePriceMatrix.deep?.[beds] ?? 0;
     return {
       size: `${beds} bedroom${beds > 1 ? 's' : ''}`,
-      range: `$${std}\u2013$${maxPrice}`,
+      range: `$${std}\u2013$${deep}`,
     };
   });
 
