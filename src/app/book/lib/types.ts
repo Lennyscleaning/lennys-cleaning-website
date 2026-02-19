@@ -49,6 +49,42 @@ export interface IntakeAnswers {
   flooringType: FlooringType | '';
 }
 
+/* ─── Airbnb intake types ─── */
+
+export type AirbnbGuestCount = '1-2' | '3-4' | '5-6' | '7-plus';
+export type AirbnbPostCheckoutCondition = 'tidy' | 'average' | 'messy' | 'trashed';
+export type AirbnbPetsAllowed = 'no' | 'yes';
+export type AirbnbBathroomCount = '1' | '2' | '3' | '4-plus';
+export type AirbnbLinenChange = 'no' | 'yes';
+export type AirbnbSameDayTurnaround = 'no' | 'yes';
+
+export interface AirbnbIntakeAnswers {
+  guestCount: AirbnbGuestCount | '';
+  postCheckoutCondition: AirbnbPostCheckoutCondition | '';
+  petsAllowed: AirbnbPetsAllowed | '';
+  bathroomCount: AirbnbBathroomCount | '';
+  linenChange: AirbnbLinenChange | '';
+  sameDayTurnaround: AirbnbSameDayTurnaround | '';
+}
+
+/* ─── Post-construction intake types ─── */
+
+export type PostConstructionType = 'minor-remodel' | 'kitchen-bath' | 'major-remodel' | 'full-gut';
+export type DustDebrisLevel = 'light' | 'moderate-dust' | 'heavy-dust' | 'extreme-debris';
+export type PaintAdhesiveResidue = 'none' | 'few-spots' | 'multiple-areas';
+export type PostConstructionBathrooms = '1' | '2' | '3' | '4-plus';
+export type WindowsCleaning = 'no' | 'yes';
+export type DeadlineUrgency = 'no-rush' | 'within-week' | 'within-48hrs';
+
+export interface PostConstructionIntakeAnswers {
+  constructionType: PostConstructionType | '';
+  dustDebrisLevel: DustDebrisLevel | '';
+  paintAdhesiveResidue: PaintAdhesiveResidue | '';
+  bathroomCount: PostConstructionBathrooms | '';
+  windowsCleaning: WindowsCleaning | '';
+  deadlineUrgency: DeadlineUrgency | '';
+}
+
 export type ConditionTier = 'STANDARD' | 'MODERATE' | 'HEAVY' | 'EXTREME';
 
 export type TimeSlot =
@@ -90,6 +126,8 @@ export interface BookingFormData {
   bathrooms: Bathrooms | null;
   sqft: SqftRange | '';
   intake: IntakeAnswers;
+  airbnbIntake: AirbnbIntakeAnswers;
+  postConstructionIntake: PostConstructionIntakeAnswers;
   addons: Set<AddonKey>;
   date: string;
   timeSlot: TimeSlot | '';

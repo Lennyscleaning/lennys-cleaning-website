@@ -1,9 +1,17 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import type { BookingFormData, ServiceType, Bedrooms, Bathrooms } from './lib/types';
+import type { BookingFormData, ServiceType, Bedrooms, Bathrooms, AddonKey } from './lib/types';
 import { calculatePrice, type PricingConfig } from './lib/pricing';
-import { calculateIntakeScore, type TierConfig } from './lib/intake-scoring';
+import {
+  calculateIntakeScore,
+  calculateAirbnbIntakeScore,
+  calculatePostConstructionIntakeScore,
+  airbnbHasPets,
+  getAirbnbAutoAddons,
+  getPostConstructionAutoAddons,
+  type TierConfig,
+} from './lib/intake-scoring';
 import Step1ServiceType from './steps/Step1ServiceType';
 import Step2HomeDetails from './steps/Step2HomeDetails';
 import Step3Addons from './steps/Step3Addons';
@@ -34,6 +42,22 @@ const initialData: BookingFormData = {
     hasYoungChildren: '',
     flooringType: '',
   },
+  airbnbIntake: {
+    guestCount: '',
+    postCheckoutCondition: '',
+    petsAllowed: '',
+    bathroomCount: '',
+    linenChange: '',
+    sameDayTurnaround: '',
+  },
+  postConstructionIntake: {
+    constructionType: '',
+    dustDebrisLevel: '',
+    paintAdhesiveResidue: '',
+    bathroomCount: '',
+    windowsCleaning: '',
+    deadlineUrgency: '',
+  },
   addons: new Set(),
   date: '',
   timeSlot: '',
@@ -52,6 +76,30 @@ function isStepValid(step: number, data: BookingFormData): boolean {
     case 1:
       return data.serviceType !== '';
     case 2:
+      if (data.serviceType === 'airbnb') {
+        return (
+          data.bedrooms !== null &&
+          data.bathrooms !== null &&
+          data.airbnbIntake.guestCount !== '' &&
+          data.airbnbIntake.postCheckoutCondition !== '' &&
+          data.airbnbIntake.petsAllowed !== '' &&
+          data.airbnbIntake.bathroomCount !== '' &&
+          data.airbnbIntake.linenChange !== '' &&
+          data.airbnbIntake.sameDayTurnaround !== ''
+        );
+      }
+      if (data.serviceType === 'post-construction') {
+        return (
+          data.bedrooms !== null &&
+          data.bathrooms !== null &&
+          data.postConstructionIntake.constructionType !== '' &&
+          data.postConstructionIntake.dustDebrisLevel !== '' &&
+          data.postConstructionIntake.paintAdhesiveResidue !== '' &&
+          data.postConstructionIntake.bathroomCount !== '' &&
+          data.postConstructionIntake.windowsCleaning !== '' &&
+          data.postConstructionIntake.deadlineUrgency !== ''
+        );
+      }
       return (
         data.bedrooms !== null &&
         data.bathrooms !== null &&
@@ -136,14 +184,15 @@ export default function BookingForm() {
     setData((prev) => ({ ...prev, ...updates }));
   };
 
+  const isAirbnb = data.serviceType === 'airbnb';
+  const isPostConstruction = data.serviceType === 'post-construction';
+
   const price = useMemo(() => {
-    if (
-      data.serviceType &&
-      data.bedrooms &&
-      data.bathrooms &&
-      pricingConfig &&
-      calculateIntakeScore(data.intake) !== null
-    ) {
+    if (!data.serviceType || !data.bedrooms || !data.bathrooms || !pricingConfig) return null;
+
+    if (isAirbnb) {
+      const airbnbScore = calculateAirbnbIntakeScore(data.airbnbIntake);
+      if (airbnbScore === null) return null;
       return calculatePrice(
         {
           serviceType: data.serviceType as ServiceType,
@@ -151,14 +200,48 @@ export default function BookingForm() {
           bathrooms: data.bathrooms as Bathrooms,
           intake: data.intake,
           addons: data.addons,
-          isFirstVisit: true, // Booking form is for new bookings — backend verifies
+          isFirstVisit: true,
           foundingDiscountEligible,
+          conditionScoreOverride: airbnbScore,
+          hasPetsOverride: airbnbHasPets(data.airbnbIntake),
         },
         pricingConfig,
       );
     }
-    return null;
-  }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.addons, pricingConfig, foundingDiscountEligible]);
+
+    if (isPostConstruction) {
+      const pcScore = calculatePostConstructionIntakeScore(data.postConstructionIntake);
+      if (pcScore === null) return null;
+      return calculatePrice(
+        {
+          serviceType: data.serviceType as ServiceType,
+          bedrooms: data.bedrooms as Bedrooms,
+          bathrooms: data.bathrooms as Bathrooms,
+          intake: data.intake,
+          addons: data.addons,
+          isFirstVisit: true,
+          foundingDiscountEligible,
+          conditionScoreOverride: pcScore,
+          hasPetsOverride: false,
+        },
+        pricingConfig,
+      );
+    }
+
+    if (calculateIntakeScore(data.intake) === null) return null;
+    return calculatePrice(
+      {
+        serviceType: data.serviceType as ServiceType,
+        bedrooms: data.bedrooms as Bedrooms,
+        bathrooms: data.bathrooms as Bathrooms,
+        intake: data.intake,
+        addons: data.addons,
+        isFirstVisit: true,
+        foundingDiscountEligible,
+      },
+      pricingConfig,
+    );
+  }, [data.serviceType, data.bedrooms, data.bathrooms, data.intake, data.airbnbIntake, data.postConstructionIntake, data.addons, pricingConfig, foundingDiscountEligible, isAirbnb, isPostConstruction]);
 
   // Starting prices for Step 1 cards (1-bedroom base price per service type)
   const startingPrices = useMemo(() => {
@@ -169,6 +252,36 @@ export default function BookingForm() {
     }
     return Object.keys(prices).length > 0 ? prices : undefined;
   }, [pricingConfig]);
+
+  // Auto-add add-ons based on intake answers (Airbnb or post-construction)
+  const autoAddedAddons = useMemo(() => {
+    if (isAirbnb) return getAirbnbAutoAddons(data.airbnbIntake);
+    if (isPostConstruction) return getPostConstructionAutoAddons(data.postConstructionIntake);
+    return new Set<AddonKey>();
+  }, [isAirbnb, isPostConstruction, data.airbnbIntake, data.postConstructionIntake]);
+
+  useEffect(() => {
+    let autoKeys: Set<AddonKey>;
+    if (isAirbnb) {
+      autoKeys = getAirbnbAutoAddons(data.airbnbIntake);
+    } else if (isPostConstruction) {
+      autoKeys = getPostConstructionAutoAddons(data.postConstructionIntake);
+    } else {
+      return;
+    }
+    if (autoKeys.size === 0) return;
+    setData((prev) => {
+      const next = new Set(prev.addons);
+      let changed = false;
+      for (const key of autoKeys) {
+        if (!next.has(key)) {
+          next.add(key);
+          changed = true;
+        }
+      }
+      return changed ? { ...prev, addons: next } : prev;
+    });
+  }, [isAirbnb, isPostConstruction, data.airbnbIntake, data.postConstructionIntake]);
 
   const canContinue = isStepValid(step, data);
 
@@ -276,13 +389,14 @@ export default function BookingForm() {
 
       {/* Step content */}
       {step === 1 && <Step1ServiceType data={data} onChange={handleChange} startingPrices={startingPrices} />}
-      {step === 2 && <Step2HomeDetails data={data} onChange={handleChange} />}
+      {step === 2 && <Step2HomeDetails data={data} onChange={handleChange} serviceType={data.serviceType} />}
       {step === 3 && (
         <Step3Addons
           data={data}
           onChange={handleChange}
           addonPrices={pricingConfig?.addonPrices}
           addonNames={pricingConfig?.addonNames}
+          autoAddedAddons={autoAddedAddons}
         />
       )}
       {step === 4 && <Step4Schedule data={data} onChange={handleChange} />}

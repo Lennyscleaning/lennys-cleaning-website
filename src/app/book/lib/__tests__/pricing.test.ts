@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { calculatePrice, type PricingConfig } from '../pricing';
-import type { ServiceType, Bedrooms, Bathrooms, AddonKey, IntakeAnswers } from '../types';
+import type { ServiceType, Bedrooms, Bathrooms, AddonKey, IntakeAnswers, AirbnbIntakeAnswers, PostConstructionIntakeAnswers } from '../types';
+import {
+  calculateAirbnbIntakeScore,
+  calculatePostConstructionIntakeScore,
+  airbnbHasPets,
+  getAirbnbAutoAddons,
+  getPostConstructionAutoAddons,
+} from '../intake-scoring';
 
 /* ─── Test config matching Airtable values ─── */
 
@@ -45,26 +52,6 @@ const standardIntake: IntakeAnswers = {
   clutterLevel: 'minimal',
   hasYoungChildren: 'no',
   flooringType: 'hard-surface',
-};
-
-// Score 4 → MODERATE (multiplier 1.1)
-const moderateIntake: IntakeAnswers = {
-  lastProfessionalClean: '6-12-months', // 2
-  petSituation: '1-pet-shedding',       // 1
-  visibleBuildup: 'some-areas',         // 1
-  clutterLevel: 'minimal',              // 0
-  hasYoungChildren: 'no',               // 0
-  flooringType: 'hard-surface',         // 0
-};
-
-// Score 7 → HEAVY (multiplier 1.25)
-const heavyIntake: IntakeAnswers = {
-  lastProfessionalClean: 'over-year',   // 3
-  petSituation: '2-pets',               // 2
-  visibleBuildup: 'some-areas',         // 1
-  clutterLevel: 'moderate',             // 1
-  hasYoungChildren: 'no',               // 0
-  flooringType: 'hard-surface',         // 0
 };
 
 // Score 10 → EXTREME (multiplier 1.50)
@@ -523,5 +510,235 @@ describe('GROUP 11 — Edge Cases', () => {
       { foundingDiscountPercent: 0 },
     );
     expect(result.foundingDiscount).toBe(0);
+  });
+});
+
+/* ════════════════════════════════════════════════
+   GROUP 12 — Airbnb Intake Scoring (6 tests)
+   ════════════════════════════════════════════════ */
+
+// Airbnb intake presets
+const airbnbMinimal: AirbnbIntakeAnswers = {
+  guestCount: '1-2',              // 0
+  postCheckoutCondition: 'tidy',  // 0
+  petsAllowed: 'no',              // 0
+  bathroomCount: '1',             // 0
+  linenChange: 'no',              // 0
+  sameDayTurnaround: 'no',        // 0
+}; // score = 0 → STANDARD
+
+const airbnbModerate: AirbnbIntakeAnswers = {
+  guestCount: '3-4',              // 1
+  postCheckoutCondition: 'average', // 1
+  petsAllowed: 'yes',             // 2
+  bathroomCount: '1',             // 0
+  linenChange: 'no',              // 0
+  sameDayTurnaround: 'no',        // 0
+}; // score = 4 → MODERATE
+
+const airbnbWorstCase: AirbnbIntakeAnswers = {
+  guestCount: '7-plus',           // 3
+  postCheckoutCondition: 'trashed', // 3
+  petsAllowed: 'yes',             // 2
+  bathroomCount: '4-plus',        // 3
+  linenChange: 'yes',             // 1
+  sameDayTurnaround: 'yes',       // 1
+}; // score = 13 → EXTREME
+
+describe('GROUP 12 — Airbnb Intake Scoring', () => {
+  it('minimal Airbnb answers → score 0 → STANDARD', () => {
+    const score = calculateAirbnbIntakeScore(airbnbMinimal);
+    expect(score).toBe(0);
+  });
+
+  it('moderate Airbnb answers → score 4 → MODERATE', () => {
+    const score = calculateAirbnbIntakeScore(airbnbModerate);
+    expect(score).toBe(4);
+  });
+
+  it('worst-case Airbnb answers → score 13 → EXTREME', () => {
+    const score = calculateAirbnbIntakeScore(airbnbWorstCase);
+    expect(score).toBe(13);
+  });
+
+  it('incomplete Airbnb answers → null', () => {
+    const incomplete: AirbnbIntakeAnswers = {
+      guestCount: '1-2',
+      postCheckoutCondition: '',
+      petsAllowed: '',
+      bathroomCount: '',
+      linenChange: '',
+      sameDayTurnaround: '',
+    };
+    expect(calculateAirbnbIntakeScore(incomplete)).toBeNull();
+  });
+
+  it('airbnbHasPets returns true when pets allowed', () => {
+    expect(airbnbHasPets(airbnbModerate)).toBe(true);
+    expect(airbnbHasPets(airbnbMinimal)).toBe(false);
+  });
+
+  it('getAirbnbAutoAddons returns laundry and same-day when selected', () => {
+    const addons = getAirbnbAutoAddons(airbnbWorstCase);
+    expect(addons.has('laundry')).toBe(true);
+    expect(addons.has('same-day')).toBe(true);
+    expect(addons.size).toBe(2);
+
+    const noAddons = getAirbnbAutoAddons(airbnbMinimal);
+    expect(noAddons.size).toBe(0);
+  });
+});
+
+/* ════════════════════════════════════════════════
+   GROUP 13 — Airbnb Pricing with Overrides (4 tests)
+   ════════════════════════════════════════════════ */
+
+describe('GROUP 13 — Airbnb Pricing with Overrides', () => {
+  it('Airbnb 2BR, standard condition (score override 0), no pets', () => {
+    const result = calc({
+      serviceType: 'airbnb',
+      bedrooms: 2 as Bedrooms,
+      bathrooms: 1 as Bathrooms,
+      conditionScoreOverride: 0,
+      hasPetsOverride: false,
+    });
+    expect(result.base).toBe(135);
+    expect(result.conditionTier).toBe('STANDARD');
+    expect(result.conditionMultiplier).toBe(1.0);
+    expect(result.petsSurcharge).toBe(0);
+    expect(result.subtotal).toBe(135);
+  });
+
+  it('Airbnb 3BR, moderate condition (score override 4), pets allowed', () => {
+    const result = calc({
+      serviceType: 'airbnb',
+      bedrooms: 3 as Bedrooms,
+      bathrooms: 1 as Bathrooms,
+      conditionScoreOverride: 4,
+      hasPetsOverride: true,
+    });
+    // adjustedBase = Math.round((195 + 0) * 1.1 + 15) = Math.round(214.5 + 15) = Math.round(229.5) = 230
+    expect(result.base).toBe(195);
+    expect(result.conditionTier).toBe('MODERATE');
+    expect(result.conditionMultiplier).toBe(1.1);
+    expect(result.petsSurcharge).toBe(15);
+    expect(result.subtotal).toBe(230);
+  });
+
+  it('Airbnb 4BR, extreme condition (score override 13), pets, first visit', () => {
+    const result = calc({
+      serviceType: 'airbnb',
+      bedrooms: 4 as Bedrooms,
+      bathrooms: 2 as Bathrooms,
+      conditionScoreOverride: 13,
+      hasPetsOverride: true,
+      isFirstVisit: true,
+    });
+    // base = 255, bathSurcharge = 20
+    // adjustedBase = Math.round((255 + 20) * 1.5 + 15) = Math.round(412.5 + 15) = Math.round(427.5) = 428
+    expect(result.base).toBe(255);
+    expect(result.conditionTier).toBe('EXTREME');
+    expect(result.conditionMultiplier).toBe(1.5);
+    expect(result.petsSurcharge).toBe(15);
+    // firstVisitPremium = Math.round(428 * 15/100) = Math.round(64.2) = 64
+    expect(result.firstVisitPremium).toBe(64);
+    // subtotal = 428 + 64 = 492
+    expect(result.subtotal).toBe(492);
+  });
+
+  it('conditionScoreOverride takes precedence over residential intake', () => {
+    // Pass extreme residential intake but override score to 0
+    const result = calc({
+      intake: extremeIntake,
+      conditionScoreOverride: 0,
+    });
+    expect(result.conditionTier).toBe('STANDARD');
+    expect(result.conditionMultiplier).toBe(1.0);
+  });
+});
+
+/* ════════════════════════════════════════════════
+   GROUP 14 — Post-Construction Intake Scoring (6 tests)
+   ════════════════════════════════════════════════ */
+
+const pcMinimal: PostConstructionIntakeAnswers = {
+  constructionType: 'minor-remodel',  // 0
+  dustDebrisLevel: 'light',           // 0
+  paintAdhesiveResidue: 'none',       // 0
+  bathroomCount: '1',                 // 0
+  windowsCleaning: 'no',              // 0
+  deadlineUrgency: 'no-rush',         // 0
+}; // score = 0 → STANDARD
+
+const pcModerate: PostConstructionIntakeAnswers = {
+  constructionType: 'kitchen-bath',   // 1
+  dustDebrisLevel: 'moderate-dust',   // 1
+  paintAdhesiveResidue: 'few-spots',  // 1
+  bathroomCount: '2',                 // 1
+  windowsCleaning: 'no',              // 0
+  deadlineUrgency: 'within-week',     // 1
+}; // score = 5 → MODERATE
+
+const pcWorstCase: PostConstructionIntakeAnswers = {
+  constructionType: 'full-gut',           // 3
+  dustDebrisLevel: 'extreme-debris',      // 3
+  paintAdhesiveResidue: 'multiple-areas', // 2
+  bathroomCount: '4-plus',               // 3
+  windowsCleaning: 'yes',                // 1
+  deadlineUrgency: 'within-48hrs',       // 2
+}; // score = 14 → EXTREME
+
+describe('GROUP 14 — Post-Construction Intake Scoring', () => {
+  it('minimal post-construction answers → score 0 → STANDARD', () => {
+    const score = calculatePostConstructionIntakeScore(pcMinimal);
+    expect(score).toBe(0);
+  });
+
+  it('moderate post-construction answers → score 5 → MODERATE', () => {
+    const score = calculatePostConstructionIntakeScore(pcModerate);
+    expect(score).toBe(5);
+  });
+
+  it('worst-case post-construction answers → score 14 → EXTREME', () => {
+    const score = calculatePostConstructionIntakeScore(pcWorstCase);
+    expect(score).toBe(14);
+  });
+
+  it('incomplete post-construction answers → null', () => {
+    const incomplete: PostConstructionIntakeAnswers = {
+      constructionType: 'minor-remodel',
+      dustDebrisLevel: '',
+      paintAdhesiveResidue: '',
+      bathroomCount: '',
+      windowsCleaning: '',
+      deadlineUrgency: '',
+    };
+    expect(calculatePostConstructionIntakeScore(incomplete)).toBeNull();
+  });
+
+  it('getPostConstructionAutoAddons returns windows when selected', () => {
+    const addons = getPostConstructionAutoAddons(pcWorstCase);
+    expect(addons.has('windows')).toBe(true);
+    expect(addons.size).toBe(1);
+
+    const noAddons = getPostConstructionAutoAddons(pcMinimal);
+    expect(noAddons.size).toBe(0);
+  });
+
+  it('Post-construction 3BR pricing with score override → MODERATE ×1.1', () => {
+    const result = calc({
+      serviceType: 'post-construction',
+      bedrooms: 3 as Bedrooms,
+      bathrooms: 1 as Bathrooms,
+      conditionScoreOverride: 5,
+      hasPetsOverride: false,
+    });
+    // base = 390, bathSurcharge = 0
+    // adjustedBase = Math.round((390 + 0) * 1.1 + 0) = Math.round(429) = 429
+    expect(result.base).toBe(390);
+    expect(result.conditionTier).toBe('MODERATE');
+    expect(result.conditionMultiplier).toBe(1.1);
+    expect(result.petsSurcharge).toBe(0);
+    expect(result.subtotal).toBe(429);
   });
 });

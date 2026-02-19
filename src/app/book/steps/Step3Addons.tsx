@@ -23,9 +23,10 @@ interface Props {
   onChange: (updates: Partial<BookingFormData>) => void;
   addonPrices?: Record<string, number>;
   addonNames?: Record<string, string>;
+  autoAddedAddons?: Set<string>;
 }
 
-export default function Step3Addons({ data, onChange, addonPrices, addonNames }: Props) {
+export default function Step3Addons({ data, onChange, addonPrices, addonNames, autoAddedAddons }: Props) {
   const toggle = (key: AddonKey) => {
     const next = new Set(data.addons);
     if (next.has(key)) {
@@ -62,6 +63,11 @@ export default function Step3Addons({ data, onChange, addonPrices, addonNames }:
             >
               <span className="font-body text-sm font-medium text-charcoal">
                 {label}
+                {autoAddedAddons?.has(key) && (
+                  <span className="block text-xs font-normal text-forest mt-0.5">
+                    Added based on your answers
+                  </span>
+                )}
               </span>
               {price != null && (
                 <span className="font-body text-sm text-charcoal-light ml-3 shrink-0">

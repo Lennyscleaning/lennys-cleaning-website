@@ -70,6 +70,8 @@ export function calculatePrice(
     addons: Set<AddonKey>;
     isFirstVisit?: boolean;
     foundingDiscountEligible?: boolean;
+    conditionScoreOverride?: number;
+    hasPetsOverride?: boolean;
   },
   config: PricingConfig,
 ): PriceBreakdown {
@@ -88,11 +90,11 @@ export function calculatePrice(
   const extraBathrooms = Math.max(0, Math.floor(opts.bathrooms) - 1);
   const bathroomSurcharge = extraBathrooms * bathSurcharge;
 
-  const score = calculateIntakeScore(opts.intake) ?? 0;
+  const score = opts.conditionScoreOverride ?? (calculateIntakeScore(opts.intake) ?? 0);
   const tier = getTierFromScore(score, tierConfig);
   const conditionMultiplier = tier.multiplier;
 
-  const petsSurcharge = hasPets(opts.intake) ? petSurchargeAmount : 0;
+  const petsSurcharge = (opts.hasPetsOverride ?? hasPets(opts.intake)) ? petSurchargeAmount : 0;
 
   // Adjusted base price: base + bathroom surcharge, scaled by condition, plus pets
   const adjustedBase = Math.round((base + bathroomSurcharge) * conditionMultiplier + petsSurcharge);
