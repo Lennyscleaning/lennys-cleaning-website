@@ -37,30 +37,29 @@ export default function ContactForm() {
         </div>
 
         <p className="font-display font-semibold text-xl text-charcoal mb-4">
-          Message received. A real human will get back to you.
+          Message received. We&apos;ll be in touch.
         </p>
 
         <div className="font-body text-[15px] text-charcoal-light leading-relaxed space-y-4 mb-6 text-left">
           <p>
-            We&apos;re in the final stages of launching Lenny&apos;s Cleaning in Tacoma,
-            which means we&apos;re a small (but mighty) team right now. We&apos;ve got your
-            message and we&apos;ll respond personally — just not quite at full speed yet.
+            We&apos;re in the final stages of launching Lenny&apos;s Cleaning in Tacoma —
+            flat-rate pricing, no surprises, and cleaners who are paid like professionals.
+            We&apos;re building this for people exactly like you.
           </p>
           <p>
-            Expect to hear back from Eric directly at{' '}
-            <a
-              href="mailto:eric@lennyscleaning.com"
-              className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
-            >
-              eric@lennyscleaning.com
-            </a>
-            {' '}within a day or two. If it&apos;s urgent, feel free to shoot an email
-            there directly and skip the queue.
+            We&apos;ve got your message. When we&apos;re ready to launch, you&apos;ll be among
+            the first to know — and we&apos;ll make it worth the wait.
           </p>
         </div>
 
         <p className="font-body text-sm text-charcoal-light/70 mb-6">
-          Thanks for taking the time to reach out — it genuinely means a lot at this stage.
+          If it&apos;s urgent, email Eric directly at{' '}
+          <a
+            href="mailto:eric@lennyscleaning.com"
+            className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
+          >
+            eric@lennyscleaning.com
+          </a>
         </p>
 
         <button
@@ -74,7 +73,7 @@ export default function ContactForm() {
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6L9 17l-5-5" />
           </svg>
-          Got it — talk soon
+          Got it — I&apos;ll wait for the good stuff
         </button>
       </div>
     );
