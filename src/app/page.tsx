@@ -38,7 +38,6 @@ const jsonLd = {
   name: "Lenny's Cleaning",
   description: 'Professional residential cleaning service in Tacoma, WA',
   url: 'https://lennyscleaning.com',
-  telephone: '+12536003355',
   email: 'hello@lennyscleaning.com',
   address: {
     '@type': 'PostalAddress',
@@ -540,12 +539,12 @@ export default async function HomePage() {
 
           <Reveal delay={200}>
             <p className="text-center text-charcoal-light text-sm md:text-[0.9375rem]">
-              Don&apos;t see your area? Call us at{' '}
+              Don&apos;t see your area? Email us at{' '}
               <a
-                href="tel:+12536003355"
+                href="mailto:hello@lennyscleaning.com"
                 className="text-forest font-medium hover:text-forest-dark transition-colors"
               >
-                (253) 600-3355
+                hello@lennyscleaning.com
               </a>{' '}
               — we may be closer than you think.
             </p>
@@ -583,12 +582,6 @@ export default async function HomePage() {
               <Link href="/book" className="btn-primary">
                 Book a cleaning
               </Link>
-              <a
-                href="tel:+12536003355"
-                className="text-warm-white/70 text-sm font-medium hover:text-warm-white transition-colors"
-              >
-                Or call us: (253) 600-3355
-              </a>
             </div>
           </Reveal>
         </div>

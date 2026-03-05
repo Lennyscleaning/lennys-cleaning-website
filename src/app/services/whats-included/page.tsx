@@ -235,12 +235,12 @@ export default function WhatsIncludedPage() {
               Book a cleaning
             </Link>
             <p className="font-body text-sm text-charcoal-light mt-4">
-              Need something not listed? Add it on during booking or call us at{' '}
+              Need something not listed? Add it on during booking or email us at{' '}
               <a
-                href="tel:+12536003355"
+                href="mailto:hello@lennyscleaning.com"
                 className="text-forest hover:text-forest-dark font-medium"
               >
-                (253) 600-3355
+                hello@lennyscleaning.com
               </a>
               .
             </p>

@@ -4,7 +4,7 @@ import { createRecord, fetchRecords, updateRecord, AirtableError } from '@/lib/a
 
 /* ─── Constants ─── */
 
-const SUPPORT_NUMBER = '(253) 600-3355';
+const SUPPORT_EMAIL = 'hello@lennyscleaning.com';
 const STRIKE_EXPIRY_DAYS = 90;
 
 const STRIKE_STATUS_MAP: Record<number, string> = {
@@ -15,8 +15,8 @@ const STRIKE_STATUS_MAP: Record<number, string> = {
 };
 
 const RESOLUTION_PATHS: Record<number, string> = {
-  1: `This is a coaching conversation. Review the issue below, and reply to this message or call us at ${SUPPORT_NUMBER} within 24 hours to discuss.`,
-  2: `Your account has been restricted. You'll continue serving existing customers but won't receive new customer assignments until we've spoken. Call us at ${SUPPORT_NUMBER} to discuss your path back to full access.`,
+  1: `This is a coaching conversation. Review the issue below, and reply to this message or email us at ${SUPPORT_EMAIL} within 24 hours to discuss.`,
+  2: `Your account has been restricted. You'll continue serving existing customers but won't receive new customer assignments until we've spoken. Email us at ${SUPPORT_EMAIL} to discuss your path back to full access.`,
   3: 'Your account has been suspended. You may reapply after 90 days. See the email we sent for full details.',
 };
 
@@ -231,7 +231,7 @@ export async function POST(request: Request) {
           description: body.description,
           evidence: body.evidence,
           resolution_path: resolutionPath,
-          support_number: SUPPORT_NUMBER,
+          support_email: SUPPORT_EMAIL,
           expires_date: expiresAt.toLocaleDateString('en-US'),
           reapply_date: expiresAt.toLocaleDateString('en-US'),
           strike_1_date: priorStrikes[0]?.date ?? '',

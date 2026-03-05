@@ -29,11 +29,6 @@ const serviceAreas = [
 
 /* ─── Inline SVG icons ─── */
 const icons = {
-  phone: (
-    <svg className="w-7 h-7 text-forest" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-    </svg>
-  ),
   email: (
     <svg className="w-7 h-7 text-forest" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -53,7 +48,6 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   name: "Lenny's Cleaning",
-  telephone: '+12536003355',
   email: 'hello@lennyscleaning.com',
   url: 'https://lennyscleaning.com',
   areaServed: serviceAreas.map((city) => ({
@@ -101,18 +95,8 @@ export default function ContactPage() {
 
       {/* ══════ CONTACT METHODS ══════ */}
       <section className="py-24 px-6">
-        <div className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-[700px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
           <Reveal>
-            <a
-              href="tel:+12536003355"
-              className="bg-cream rounded-md p-7 text-center h-full flex flex-col items-center hover:shadow-md transition-shadow duration-200"
-            >
-              <div className="mb-4">{icons.phone}</div>
-              <p className="font-body text-lg font-semibold text-charcoal mb-1">(253) 600-3355</p>
-              <p className="font-body text-[15px] text-charcoal-light">Mon–Sat, 8am–6pm</p>
-            </a>
-          </Reveal>
-          <Reveal delay={80}>
             <a
               href="mailto:hello@lennyscleaning.com"
               className="bg-cream rounded-md p-7 text-center h-full flex flex-col items-center hover:shadow-md transition-shadow duration-200"
@@ -122,7 +106,7 @@ export default function ContactPage() {
               <p className="font-body text-[15px] text-charcoal-light">We respond within 24 hours</p>
             </a>
           </Reveal>
-          <Reveal delay={160}>
+          <Reveal delay={80}>
             <Link
               href="/book"
               className="bg-cream rounded-md p-7 text-center h-full flex flex-col items-center hover:shadow-md transition-shadow duration-200"

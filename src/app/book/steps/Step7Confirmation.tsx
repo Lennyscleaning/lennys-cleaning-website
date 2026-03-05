@@ -1,22 +1,8 @@
-import type { BookingFormData, ServiceType } from '../lib/types';
-import type { PriceBreakdown } from '../lib/pricing';
+import Link from 'next/link';
 
-const serviceLabels: Record<ServiceType, string> = {
-  standard: 'Standard cleaning',
-  deep: 'Deep cleaning',
-  move: 'Move-in / move-out',
-  airbnb: 'Airbnb turnover',
-  'post-construction': 'Post-construction',
-};
-
-interface Props {
-  data: BookingFormData;
-  price: PriceBreakdown | null;
-}
-
-export default function Step7Confirmation({ data, price }: Props) {
+export default function Step7Confirmation() {
   return (
-    <div className="text-center py-6">
+    <div className="py-6 max-w-lg mx-auto">
       {/* Checkmark icon */}
       <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-forest/10 flex items-center justify-center">
         <svg
@@ -32,71 +18,50 @@ export default function Step7Confirmation({ data, price }: Props) {
         </svg>
       </div>
 
-      <h2 className="font-display font-semibold text-2xl text-charcoal mb-3">
-        Booking request submitted
+      <h2 className="font-display font-semibold text-2xl text-charcoal mb-4 text-center">
+        You&apos;re first in line. Literally.
       </h2>
-      <p className="font-body text-[15px] text-charcoal-light mb-8 max-w-sm mx-auto">
-        We&apos;ll confirm your booking within 2 hours. You&apos;ll receive a text
-        at {data.phone || 'your number on file'}.
-      </p>
 
-      {/* Summary card */}
-      <div className="bg-cream/50 rounded-md p-5 text-left max-w-sm mx-auto mb-8">
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <span className="font-body text-sm text-charcoal-light">Service</span>
-            <span className="font-body text-sm font-medium text-charcoal">
-              {data.serviceType ? serviceLabels[data.serviceType as ServiceType] : ''}
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="font-body text-sm text-charcoal-light">Date</span>
-            <span className="font-body text-sm font-medium text-charcoal">{data.date}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="font-body text-sm text-charcoal-light">Time</span>
-            <span className="font-body text-sm font-medium text-charcoal">{data.timeSlot}</span>
-          </div>
-          {price && (
-            <>
-              {price.firstVisitPremium > 0 && (
-                <div className="flex justify-between pt-2 mt-2 border-t border-cream-dark">
-                  <span className="font-body text-sm text-charcoal-light">First Visit Assessment</span>
-                  <span className="font-body text-sm font-medium text-charcoal">${price.firstVisitPremium.toFixed(2)}</span>
-                </div>
-              )}
-              <div className={`flex justify-between ${price.firstVisitPremium > 0 ? 'pt-1' : 'pt-2 mt-2 border-t border-cream-dark'}`}>
-                <span className="font-body text-sm font-semibold text-charcoal">Estimated total</span>
-                <span className="font-body text-sm font-semibold text-forest">${price.total.toFixed(2)}</span>
-              </div>
-              {price.firstVisitPremium > 0 && (
-                <p className="font-body text-xs text-charcoal-light mt-2">
-                  Your cleaning specialist earns more on first visits to give your home the extra attention it deserves.
-                </p>
-              )}
-            </>
-          )}
-        </div>
+      <div className="font-body text-[15px] text-charcoal-light leading-relaxed space-y-4 mb-8">
+        <p>
+          We know — you just went through the whole booking process, and we&apos;re not
+          live yet. That&apos;s on us, and we&apos;re sorry for the friction. But here&apos;s
+          what&apos;s true: Lenny&apos;s Cleaning is coming to Tacoma, and the fact that you
+          made it this far tells us you&apos;re exactly who we&apos;re building this for.
+        </p>
+        <p>
+          We&apos;re a locally-owned cleaning service launching soon, and we&apos;re doing
+          things differently — flat-rate pricing, no surprise fees, and cleaners who are
+          paid like professionals because they are.
+        </p>
+        <p>
+          We saved your booking details. When we launch, you&apos;ll hear from us first —
+          and we&apos;ll honor a first-clean discount as a thank-you for your patience.
+        </p>
       </div>
 
-      <p className="font-body text-[15px] text-charcoal-light mb-1">
-        Questions? Call{' '}
+      <p className="font-body text-sm text-charcoal-light/70 text-center mb-8">
+        Questions? Email us at{' '}
         <a
-          href="tel:+12536003355"
+          href="mailto:eric@lennyscleaning.com"
           className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
         >
-          (253) 600-3355
+          eric@lennyscleaning.com
         </a>
+        {' '}— a real person will respond.
       </p>
-      <p className="font-body text-[15px] text-charcoal-light">
-        or email{' '}
-        <a
-          href="mailto:hello@lennyscleaning.com"
-          className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
+
+      <div className="text-center">
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-forest text-warm-white font-body font-semibold text-base rounded-sm hover:shadow-hover hover:-translate-y-px transition-all duration-200"
         >
-          hello@lennyscleaning.com
-        </a>
-      </p>
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+          Got it — I&apos;ll wait for the good stuff
+        </Link>
+      </div>
     </div>
   );
 }

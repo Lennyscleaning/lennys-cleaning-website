@@ -290,22 +290,27 @@ export default function BookingForm() {
       setSubmitting(true);
       setSubmitError('');
       try {
-        const res = await fetch('/api/book', {
+        const res = await fetch('/api/waitlist/customer', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ...data,
-            addons: Array.from(data.addons),
-            subtotal: price?.subtotal ?? null,
-            taxRate: price?.taxRate ?? null,
-            taxAmount: price?.taxAmount ?? null,
-            total: price?.total ?? null,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            serviceType: data.serviceType,
+            bedrooms: data.bedrooms ? String(data.bedrooms) : '',
+            address: [data.address, data.city, data.zip].filter(Boolean).join(', '),
+            preferredDate: data.date,
+            notes: [
+              data.timeSlot ? `Preferred time: ${data.timeSlot}` : '',
+              data.instructions || '',
+            ].filter(Boolean).join(' | '),
           }),
         });
         if (!res.ok) throw new Error();
         setStep(7);
       } catch {
-        setSubmitError('Something went wrong. Please call us at (253) 600-3355.');
+        setSubmitError('Something went wrong. Please email us at hello@lennyscleaning.com.');
       } finally {
         setSubmitting(false);
       }
@@ -402,7 +407,7 @@ export default function BookingForm() {
       {step === 4 && <Step4Schedule data={data} onChange={handleChange} />}
       {step === 5 && <Step6Review data={data} price={price} />}
       {step === 6 && <Step5ContactInfo data={data} onChange={handleChange} />}
-      {step === 7 && <Step7Confirmation data={data} price={price} />}
+      {step === 7 && <Step7Confirmation />}
 
       {/* Error message */}
       {submitError && (

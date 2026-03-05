@@ -76,8 +76,7 @@ export default function TermsOfServicePage() {
                 <h2 className="font-display font-medium text-xl text-charcoal mb-3">6. Satisfaction guarantee</h2>
                 <p className="font-body text-[15px] text-charcoal-light leading-relaxed">
                   We stand behind the quality of every cleaning. If you&apos;re not satisfied with your service, contact us within 24 hours of your appointment and we will work to resolve the issue. This may include sending a professional back to address specific areas at no additional charge, issuing a partial credit, or providing a full refund at our discretion. Contact us at{' '}
-                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>{' '}
-                  or <a href="tel:+12536003355" className="text-forest hover:text-forest-dark transition-colors">(253) 600-3355</a>.
+                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>.
                 </p>
               </div>
 
@@ -114,8 +113,7 @@ export default function TermsOfServicePage() {
               <div className="border-t border-cream-dark pt-8">
                 <p className="font-body text-sm text-charcoal-light">
                   Questions about these terms? Contact us at{' '}
-                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>{' '}
-                  or call <a href="tel:+12536003355" className="text-forest hover:text-forest-dark transition-colors">(253) 600-3355</a>.
+                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>.
                 </p>
               </div>
 

@@ -33,8 +33,7 @@ export default function PrivacyPolicyPage() {
                 <h2 className="font-display font-medium text-xl text-charcoal mb-3">1. Who we are</h2>
                 <p className="font-body text-[15px] text-charcoal-light leading-relaxed">
                   Lenny&apos;s Cleaning (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) operates the website lennyscleaning.com and provides residential cleaning services in the Tacoma, Washington area. For privacy-related questions, contact us at{' '}
-                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a> or{' '}
-                  <a href="tel:+12536003355" className="text-forest hover:text-forest-dark transition-colors">(253) 600-3355</a>.
+                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>.
                 </p>
               </div>
 
@@ -140,8 +139,7 @@ export default function PrivacyPolicyPage() {
               <div className="border-t border-cream-dark pt-8">
                 <p className="font-body text-sm text-charcoal-light">
                   Questions about this policy? Contact us at{' '}
-                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>{' '}
-                  or call <a href="tel:+12536003355" className="text-forest hover:text-forest-dark transition-colors">(253) 600-3355</a>.
+                  <a href="mailto:eric@lennyscleaning.com" className="text-forest hover:text-forest-dark transition-colors">eric@lennyscleaning.com</a>.
                 </p>
               </div>
 

@@ -65,7 +65,6 @@ export default async function PricingPage() {
     provider: {
       '@type': 'LocalBusiness',
       name: "Lenny's Cleaning",
-      telephone: '+12536003355',
       areaServed: { '@type': 'City', name: 'Tacoma', addressRegion: 'WA' },
     },
     description:

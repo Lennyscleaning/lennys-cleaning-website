@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-// TODO: Integrate with Formspree (or similar) for actual form submission
-
 const subjects = [
   'General question',
   'Booking help',
@@ -17,26 +15,100 @@ const inputBase =
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   if (submitted) {
     return (
-      <div className="bg-warm-white rounded-md p-10 text-center">
-        <p className="font-display font-medium text-xl text-charcoal mb-2">
-          Message sent
+      <div className="bg-warm-white rounded-md p-10 text-center max-w-lg mx-auto">
+        {/* Checkmark icon */}
+        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-forest/10 flex items-center justify-center">
+          <svg
+            className="w-7 h-7 text-forest"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </div>
+
+        <p className="font-display font-semibold text-xl text-charcoal mb-4">
+          Message received. A real human will get back to you.
         </p>
-        <p className="font-body text-[15px] text-charcoal-light">
-          We&apos;ll get back to you within 24 hours during business hours.
+
+        <div className="font-body text-[15px] text-charcoal-light leading-relaxed space-y-4 mb-6 text-left">
+          <p>
+            We&apos;re in the final stages of launching Lenny&apos;s Cleaning in Tacoma,
+            which means we&apos;re a small (but mighty) team right now. We&apos;ve got your
+            message and we&apos;ll respond personally — just not quite at full speed yet.
+          </p>
+          <p>
+            Expect to hear back from Eric directly at{' '}
+            <a
+              href="mailto:eric@lennyscleaning.com"
+              className="font-semibold text-forest hover:text-forest-dark transition-colors duration-200"
+            >
+              eric@lennyscleaning.com
+            </a>
+            {' '}within a day or two. If it&apos;s urgent, feel free to shoot an email
+            there directly and skip the queue.
+          </p>
+        </div>
+
+        <p className="font-body text-sm text-charcoal-light/70 mb-6">
+          Thanks for taking the time to reach out — it genuinely means a lot at this stage.
         </p>
+
+        <button
+          type="button"
+          onClick={() => {
+            setSubmitted(false);
+            setSubmitError('');
+          }}
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-forest text-warm-white font-body font-semibold text-base rounded-sm hover:shadow-hover hover:-translate-y-px transition-all duration-200"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+          Got it — talk soon
+        </button>
       </div>
     );
   }
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        // TODO: Submit to Formspree or similar service
-        setSubmitted(true);
+        setSubmitting(true);
+        setSubmitError('');
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+
+        try {
+          const res = await fetch('/api/waitlist/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: formData.get('name'),
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              topic: formData.get('subject'),
+              message: formData.get('message'),
+            }),
+          });
+          if (!res.ok) throw new Error();
+          setSubmitted(true);
+        } catch {
+          setSubmitError('Something went wrong. Please email us directly at hello@lennyscleaning.com.');
+        } finally {
+          setSubmitting(false);
+        }
       }}
       className="space-y-5"
     >
@@ -117,11 +189,18 @@ export default function ContactForm() {
         />
       </div>
 
+      {submitError && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="font-body text-sm text-red-700">{submitError}</p>
+        </div>
+      )}
+
       <button
         type="submit"
-        className="btn-primary w-full text-base px-8 py-4"
+        disabled={submitting}
+        className="btn-primary w-full text-base px-8 py-4 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        Send message
+        {submitting ? 'Sending...' : 'Send message'}
       </button>
 
       <p className="font-body text-sm text-charcoal-light text-center">

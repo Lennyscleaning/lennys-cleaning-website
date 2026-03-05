@@ -202,14 +202,8 @@ export default function FaqPage() {
             </h2>
           </Reveal>
           <Reveal delay={100}>
-            <p className="font-body text-lg text-warm-white/80 leading-relaxed mb-3">
-              Call us at{' '}
-              <a href="tel:+12536003355" className="text-warm-white underline underline-offset-2">
-                (253) 600-3355
-              </a>
-            </p>
             <p className="font-body text-lg text-warm-white/80 leading-relaxed mb-9">
-              or email{' '}
+              Email us at{' '}
               <a href="mailto:hello@lennyscleaning.com" className="text-warm-white underline underline-offset-2">
                 hello@lennyscleaning.com
               </a>

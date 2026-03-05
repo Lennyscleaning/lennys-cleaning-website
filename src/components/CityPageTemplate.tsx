@@ -73,7 +73,6 @@ export default async function CityPageTemplate({ cityName, citySlug, nearbyAreas
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: "Lenny's Cleaning",
-    telephone: '+12536003355',
     email: 'hello@lennyscleaning.com',
     url: `https://lennyscleaning.com/house-cleaning-${citySlug}`,
     areaServed: {

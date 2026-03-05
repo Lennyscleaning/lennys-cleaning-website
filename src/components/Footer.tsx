@@ -62,14 +62,6 @@ export default function Footer() {
                   hello@lennyscleaning.com
                 </a>
               </li>
-              <li>
-                <a
-                  href="tel:+12536003355"
-                  className="text-[15px] text-warm-white/80 hover:text-warm-white transition-colors duration-200"
-                >
-                  (253) 600-3355
-                </a>
-              </li>
               <li className="pt-1">
                 <p className="text-sm text-warm-white/60">
                   Serving Tacoma and surrounding communities
