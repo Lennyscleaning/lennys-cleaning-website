@@ -7,7 +7,7 @@ interface CustomerWaitlistFields {
   Email: string;
   Phone: string;
   'Service Type': string;
-  Bedrooms: string;
+  Bedrooms: number;
   Address: string;
   'Preferred Date': string;
   Notes: string;
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
           Email: email,
           Phone: phone || '',
           'Service Type': serviceType || '',
-          Bedrooms: bedrooms || '',
+          Bedrooms: bedrooms ? Number(bedrooms) : 0,
           Address: address || '',
           'Preferred Date': preferredDate || '',
           Notes: notes || '',
