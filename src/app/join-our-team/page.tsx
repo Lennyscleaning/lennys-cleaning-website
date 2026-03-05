@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import Reveal from '@/components/Reveal';
+import OperatorApplyForm from './OperatorApplyForm';
 
 /* ─── SEO ─── */
 export const metadata: Metadata = {
@@ -100,11 +100,11 @@ export default function JoinOurTeamPage() {
             </p>
           </Reveal>
           <Reveal delay={300}>
-            <Link href="/contact" className="btn-primary text-base px-8 py-4">
+            <a href="#apply" className="btn-primary text-base px-8 py-4">
               Apply now
-            </Link>
+            </a>
             <p className="font-body text-sm text-warm-white/50 mt-4">
-              Takes less than 5 minutes
+              Takes less than 2 minutes
             </p>
           </Reveal>
         </div>
@@ -164,13 +164,13 @@ export default function JoinOurTeamPage() {
           </div>
           <Reveal delay={300}>
             <p className="font-body text-[15px] text-charcoal-light text-center mt-10">
-              Already on the team?{' '}
-              <Link
-                href="/pro/availability"
+              Ready to join?{' '}
+              <a
+                href="#apply"
                 className="text-forest font-medium underline underline-offset-4 hover:text-forest-dark transition-colors"
               >
-                Set your availability
-              </Link>
+                Apply below
+              </a>
             </p>
           </Reveal>
         </div>
@@ -343,30 +343,20 @@ export default function JoinOurTeamPage() {
         </div>
       </section>
 
-      {/* ══════ BOTTOM CTA ══════ */}
-      <section className="relative py-24 px-6 bg-forest overflow-hidden text-center">
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{ backgroundImage: grainSvg }}
-        />
-        <div className="relative z-10 max-w-[600px] mx-auto">
+      {/* ══════ APPLY FORM ══════ */}
+      <section id="apply" className="py-24 px-6 bg-cream scroll-mt-24">
+        <div className="max-w-[640px] mx-auto">
           <Reveal>
-            <h2 className="font-display font-medium text-warm-white leading-[1.15] mb-4 text-[clamp(28px,4vw,44px)]">
+            <p className="overline text-center mb-3">APPLY NOW</p>
+            <h2 className="font-display font-medium text-charcoal leading-[1.15] tracking-tight text-center mb-4 text-[clamp(28px,4vw,44px)]">
               Ready to earn what you&apos;re worth?
             </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="font-body text-lg text-warm-white/80 leading-relaxed mb-9">
+            <p className="font-body text-[17px] text-charcoal-light leading-relaxed text-center mb-12">
               Join a growing team of cleaning professionals who are paid fairly and treated with respect.
             </p>
           </Reveal>
-          <Reveal delay={200}>
-            <Link
-              href="/contact"
-              className="btn-primary text-base px-8 py-4"
-            >
-              Apply now
-            </Link>
+          <Reveal delay={100}>
+            <OperatorApplyForm />
           </Reveal>
         </div>
       </section>
